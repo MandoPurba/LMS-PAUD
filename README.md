@@ -52,12 +52,19 @@ Sisanya sengaja dibiarkan kosong agar alur penempatan dan penghubungan bisa dipe
 | `/admin/tahun-ajaran` | CRUD tahun ajaran + set tahun aktif |
 | `/admin/kelas` | CRUD kelas + penetapan wali kelas |
 | `/guru/absensi` | Input absensi harian H/I/S/A untuk kelas yang diampu |
+| `/guru/daily-report` | Isi daily report per anak (hanya untuk anak yang Hadir) |
 | `/guru` | Dashboard Guru |
 | `/ortu` | Dashboard Orang Tua |
 | `/403` | Akses ditolak |
 | `/tokens` | Pratinjau token tema & palet warna |
 
 Setiap role hanya dapat membuka halaman miliknya. Membuka path role lain akan diarahkan ke `/403`.
+
+## Foto
+
+Foto daily report dikompres di browser sebelum disimpan: sisi terpanjang 1280 px, mutu JPEG
+diturunkan bertahap sampai di bawah 400 KB, maksimal 2 foto per report. Batas ini lebih ketat
+daripada NFR-09 (1 MB) karena kuota `localStorage` hanya sekitar 5 MB — lihat PRD §7.1.
 
 ## Mereset data
 
@@ -85,6 +92,8 @@ app/
 │   ├── repo.ts          repositori CRUD generik di atas localStorage
 │   ├── relasi.ts        pertanyaan lintas entitas + aturan keutuhan data
 │   ├── absensi.ts       simpan/baca absensi, label & warna status
+│   ├── daily-report.ts  simpan/baca report, gerbang "harus Hadir"
+│   ├── foto.ts          kompresi foto via canvas
 │   ├── tanggal.ts       helper tanggal zona waktu lokal
 │   ├── session.ts       login, logout, sesi, route guard
 │   ├── useTabelData.ts  pencarian + paginasi sisi klien

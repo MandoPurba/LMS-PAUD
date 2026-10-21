@@ -36,6 +36,27 @@ export function hapus(kunci: string): void {
   }
 }
 
+/**
+ * Perkiraan pemakaian localStorage dalam byte. Kuota browser sekitar 5 MB, dan
+ * foto base64 cepat menghabiskannya, jadi angka ini ditampilkan ke pengguna.
+ * Dihitung dari panjang string karena localStorage menyimpan UTF-16.
+ */
+export function perkiraanPemakaian(): { byte: number; kuota: number; persen: number } {
+  const kuota = 5 * 1024 * 1024;
+  if (typeof window === "undefined") return { byte: 0, kuota, persen: 0 };
+
+  try {
+    let byte = 0;
+    for (const kunci of Object.keys(window.localStorage)) {
+      if (!kunci.startsWith(PREFIX)) continue;
+      byte += (kunci.length + (window.localStorage.getItem(kunci)?.length ?? 0)) * 2;
+    }
+    return { byte, kuota, persen: Math.min(100, Math.round((byte / kuota) * 100)) };
+  } catch {
+    return { byte: 0, kuota, persen: 0 };
+  }
+}
+
 /** Kembalikan seluruh data ke kondisi seed. Dipakai saat demo. */
 export function resetSemua(): void {
   if (typeof window === "undefined") return;

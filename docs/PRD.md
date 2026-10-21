@@ -297,13 +297,25 @@ hal itu lebih berguna dicatat daripada diklaim terpenuhi.
 | NFR-06 | Usability | Input daily report satu anak ≤ 2 menit | ✅ Dipenuhi | Dapat diukur langsung saat demo |
 | NFR-07 | Usability | Bahasa Indonesia, ikon sederhana | ✅ Dipenuhi | Seluruh antarmuka berbahasa Indonesia |
 | NFR-08 | Availability | Android 9+/iOS 14+ untuk ortu; Chrome, Firefox, Edge untuk admin & guru | 🟡 Sebagian | Bagian web dipenuhi. Aplikasi mobile di luar scope (§2.3) |
-| NFR-09 | Efficiency | Foto dikompres otomatis ≤ 1 MB | 🟡 Disimulasikan | Kompresi di klien memakai `<canvas>` sebelum disimpan |
+| NFR-09 | Efficiency | Foto dikompres otomatis ≤ 1 MB | ✅ Dipenuhi | Kompresi di klien lewat `<canvas>`: sisi terpanjang 1280 px, mutu JPEG diturunkan bertahap sampai ≤ 400 KB; foto yang tetap > 1 MB ditolak. Lihat §7.1 |
 | NFR-10 | Reliability | Backup harian, retensi 30 hari | ❌ Tidak dipenuhi | Tidak ada basis data. Tersedia tombol *reset ke seed* sebagai pengganti saat demo |
 | NFR-11 | Responsiveness | Notifikasi diterima ≤ 1 menit | 🟡 Disimulasikan | Notifikasi in-app muncul seketika; tanpa push/email |
 | NFR-12 | Reliability | Log aktivitas untuk absensi, observasi, rapor | 🟡 Disimulasikan | Log disimpan sebagai array di localStorage dan dapat ditampilkan |
 
-**Rekapitulasi:** 2 dipenuhi · 6 disimulasikan/sebagian · 4 tidak dipenuhi.
+**Rekapitulasi:** 3 dipenuhi · 5 disimulasikan/sebagian · 4 tidak dipenuhi.
 Seluruh yang tidak dipenuhi berakar pada satu sebab yang sama: tidak adanya backend.
+
+### 7.1 Ketegangan antara NFR-09 dan kuota localStorage
+
+NFR-09 mengizinkan foto sampai 1 MB, tetapi prototype menyimpan foto sebagai base64 di localStorage
+yang kuotanya hanya sekitar 5 MB — dan base64 membengkakkan ukuran sekitar 33%. Dengan batas 1 MB,
+empat foto saja sudah hampir menghabiskan kuota.
+
+Karena itu kompresi menargetkan **400 KB** per foto (di bawah ambang NFR-09, jadi NFR-09 tetap
+terpenuhi) dengan maksimal **2 foto per daily report**. Halaman daily report menampilkan persentase
+kuota yang terpakai, dan kegagalan penulisan ditangkap lalu disampaikan sebagai pesan, bukan dibiarkan
+hilang diam-diam. Pada implementasi nyata foto akan berada di object storage, sehingga batas 1 MB
+penuh dapat dipakai.
 
 ---
 

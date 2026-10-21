@@ -24,5 +24,8 @@ export default [
 
     // 3.0 Absensi & Izin — FR-05
     route("guru/absensi", "routes/guru/absensi.tsx"),
+
+    // 4.0 Daily Report & Galeri — FR-07
+    route("guru/daily-report", "routes/guru/daily-report.tsx"),
   ]),
 ] satisfies RouteConfig;
