@@ -1,15 +1,361 @@
 @import "tailwindcss";
 
+/* Variant */
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+
+/* Token warna */
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* brand */
+  --color-brand-50: hsl(169 81% 96%);
+  --color-brand-100: hsl(170 80% 90%);
+  --color-brand-200: hsl(170 76% 80%);
+  --color-brand-300: hsl(171 72% 67%);
+  --color-brand-400: hsl(172 62% 51%);
+  --color-brand-500: hsl(171 80% 40%);
+  --color-brand-600: hsl(172 84% 32%);
+  --color-brand-700: hsl(173 77% 26%);
+  --color-brand-800: hsl(174 69% 22%);
+  --color-brand-900: hsl(174 61% 19%);
+  --color-brand-950: hsl(176 84% 10%);
+
+  /* sun */
+  --color-sun-50: hsl(48 100% 96%);
+  --color-sun-100: hsl(48 96% 89%);
+  --color-sun-200: hsl(48 97% 77%);
+  --color-sun-300: hsl(46 97% 65%);
+  --color-sun-400: hsl(43 96% 56%);
+  --color-sun-500: hsl(38 92% 50%);
+  --color-sun-600: hsl(32 95% 44%);
+  --color-sun-700: hsl(26 90% 37%);
+  --color-sun-800: hsl(23 82% 31%);
+  --color-sun-900: hsl(22 78% 26%);
+  --color-sun-950: hsl(21 92% 14%);
+
+  /* leaf */
+  --color-leaf-50: hsl(138 76% 97%);
+  --color-leaf-100: hsl(141 84% 93%);
+  --color-leaf-200: hsl(141 79% 85%);
+  --color-leaf-300: hsl(142 77% 73%);
+  --color-leaf-400: hsl(142 69% 58%);
+  --color-leaf-500: hsl(142 71% 45%);
+  --color-leaf-600: hsl(142 76% 36%);
+  --color-leaf-700: hsl(142 72% 29%);
+  --color-leaf-800: hsl(143 64% 24%);
+  --color-leaf-900: hsl(144 61% 20%);
+  --color-leaf-950: hsl(145 80% 10%);
+
+  /* blossom */
+  --color-blossom-50: hsl(351 100% 97%);
+  --color-blossom-100: hsl(351 100% 95%);
+  --color-blossom-200: hsl(350 96% 90%);
+  --color-blossom-300: hsl(350 96% 82%);
+  --color-blossom-400: hsl(350 95% 71%);
+  --color-blossom-500: hsl(350 89% 60%);
+  --color-blossom-600: hsl(347 77% 50%);
+  --color-blossom-700: hsl(345 83% 41%);
+  --color-blossom-800: hsl(343 80% 35%);
+  --color-blossom-900: hsl(342 75% 30%);
+  --color-blossom-950: hsl(343 88% 16%);
+
+  /* sky */
+  --color-sky-50: hsl(214 100% 97%);
+  --color-sky-100: hsl(214 95% 93%);
+  --color-sky-200: hsl(213 97% 87%);
+  --color-sky-300: hsl(212 96% 78%);
+  --color-sky-400: hsl(213 94% 68%);
+  --color-sky-500: hsl(217 91% 60%);
+  --color-sky-600: hsl(221 83% 53%);
+  --color-sky-700: hsl(224 76% 48%);
+  --color-sky-800: hsl(226 71% 40%);
+  --color-sky-900: hsl(224 64% 33%);
+  --color-sky-950: hsl(226 57% 21%);
+
+  /* grape */
+  --color-grape-50: hsl(250 100% 98%);
+  --color-grape-100: hsl(251 91% 95%);
+  --color-grape-200: hsl(250 95% 92%);
+  --color-grape-300: hsl(252 95% 85%);
+  --color-grape-400: hsl(255 92% 76%);
+  --color-grape-500: hsl(258 90% 66%);
+  --color-grape-600: hsl(262 83% 58%);
+  --color-grape-700: hsl(263 70% 50%);
+  --color-grape-800: hsl(263 69% 42%);
+  --color-grape-900: hsl(264 67% 35%);
+  --color-grape-950: hsl(261 73% 23%);
+
+  /* sand */
+  --color-sand-50: hsl(40 23% 97%);
+  --color-sand-100: hsl(40 21% 95%);
+  --color-sand-200: hsl(36 19% 89%);
+  --color-sand-300: hsl(37 17% 82%);
+  --color-sand-400: hsl(38 11% 67%);
+  --color-sand-500: hsl(37 9% 53%);
+  --color-sand-600: hsl(35 9% 42%);
+  --color-sand-700: hsl(32 9% 33%);
+  --color-sand-800: hsl(33 10% 23%);
+  --color-sand-900: hsl(33 12% 15%);
+  --color-sand-950: hsl(30 13% 9%);
+
+  /* font */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-display: "Quicksand", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* radius */
+  --radius-card: 1rem;
+  --radius-field: 0.625rem;
+  --radius-pill: 9999px;
+
+  /* shadow */
+  --shadow-card: 0 1px 2px 0 hsl(33 12% 15% / 0.04), 0 4px 16px -4px hsl(33 12% 15% / 0.1);
+  --shadow-pop: 0 8px 32px -8px hsl(33 12% 15% / 0.18);
 }
 
-html,
-body {
-  @apply bg-white dark:bg-gray-950;
+/* Token semantik */
+@theme inline {
+  /* permukaan & teks */
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-hover: var(--surface-hover);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-fg-on-brand: var(--fg-on-brand);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ring: var(--ring);
 
-  @media (prefers-color-scheme: dark) {
+  /* aksi & status */
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+
+  /* peran */
+  --color-role-admin: var(--role-admin);
+  --color-role-admin-soft: var(--role-admin-soft);
+  --color-role-guru: var(--role-guru);
+  --color-role-guru-soft: var(--role-guru-soft);
+  --color-role-ortu: var(--role-ortu);
+  --color-role-ortu-soft: var(--role-ortu-soft);
+
+  /* absensi */
+  --color-hadir: var(--hadir);
+  --color-hadir-soft: var(--hadir-soft);
+  --color-izin: var(--izin);
+  --color-izin-soft: var(--izin-soft);
+  --color-sakit: var(--sakit);
+  --color-sakit-soft: var(--sakit-soft);
+  --color-alpa: var(--alpa);
+  --color-alpa-soft: var(--alpa-soft);
+
+  /* stppa */
+  --color-stppa-bb: var(--stppa-bb);
+  --color-stppa-bb-fg: var(--stppa-bb-fg);
+  --color-stppa-mb: var(--stppa-mb);
+  --color-stppa-mb-fg: var(--stppa-mb-fg);
+  --color-stppa-bsh: var(--stppa-bsh);
+  --color-stppa-bsh-fg: var(--stppa-bsh-fg);
+  --color-stppa-bsb: var(--stppa-bsb);
+  --color-stppa-bsb-fg: var(--stppa-bsb-fg);
+}
+
+/* Variable — mode terang */
+:root {
+  --surface: var(--color-sand-50);
+  --surface-raised: hsl(0 0% 100%);
+  --surface-sunken: var(--color-sand-100);
+  --surface-hover: var(--color-sand-100);
+  --fg: var(--color-sand-900);
+  --fg-muted: var(--color-sand-700);
+  --fg-subtle: var(--color-sand-500);
+  --fg-on-brand: hsl(0 0% 100%);
+  --border: var(--color-sand-200);
+  --border-strong: var(--color-sand-300);
+  --ring: var(--color-brand-500);
+
+  --primary: var(--color-brand-600);
+  --primary-hover: var(--color-brand-700);
+  --primary-soft: var(--color-brand-50);
+  --accent: var(--color-sun-500);
+  --accent-soft: var(--color-sun-50);
+
+  --success: var(--color-leaf-600);
+  --success-soft: var(--color-leaf-50);
+  --warning: var(--color-sun-600);
+  --warning-soft: var(--color-sun-50);
+  --danger: var(--color-blossom-600);
+  --danger-soft: var(--color-blossom-50);
+  --info: var(--color-sky-600);
+  --info-soft: var(--color-sky-50);
+
+  --role-admin: var(--color-grape-600);
+  --role-admin-soft: var(--color-grape-50);
+  --role-guru: var(--color-brand-600);
+  --role-guru-soft: var(--color-brand-50);
+  --role-ortu: var(--color-sun-600);
+  --role-ortu-soft: var(--color-sun-50);
+
+  --hadir: var(--color-leaf-600);
+  --hadir-soft: var(--color-leaf-100);
+  --izin: var(--color-sun-600);
+  --izin-soft: var(--color-sun-100);
+  --sakit: var(--color-sky-600);
+  --sakit-soft: var(--color-sky-100);
+  --alpa: var(--color-blossom-600);
+  --alpa-soft: var(--color-blossom-100);
+
+  --stppa-bb: var(--color-brand-100);
+  --stppa-bb-fg: var(--color-brand-900);
+  --stppa-mb: var(--color-brand-300);
+  --stppa-mb-fg: var(--color-brand-950);
+  --stppa-bsh: var(--color-brand-600);
+  --stppa-bsh-fg: hsl(0 0% 100%);
+  --stppa-bsb: var(--color-brand-800);
+  --stppa-bsb-fg: hsl(0 0% 100%);
+}
+
+/* Variable — mode gelap (ikut OS) */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light):not([data-theme="light"]) {
     color-scheme: dark;
+
+    --surface: var(--color-sand-950);
+    --surface-raised: var(--color-sand-900);
+    --surface-sunken: hsl(47 33% 5%);
+    --surface-hover: var(--color-sand-800);
+    --fg: var(--color-sand-50);
+    --fg-muted: var(--color-sand-300);
+    --fg-subtle: var(--color-sand-400);
+    --fg-on-brand: var(--color-brand-950);
+    --border: var(--color-sand-800);
+    --border-strong: var(--color-sand-700);
+    --ring: var(--color-brand-400);
+
+    --primary: var(--color-brand-400);
+    --primary-hover: var(--color-brand-300);
+    --primary-soft: var(--color-brand-950);
+    --accent: var(--color-sun-400);
+    --accent-soft: var(--color-sun-950);
+
+    --success: var(--color-leaf-400);
+    --success-soft: var(--color-leaf-950);
+    --warning: var(--color-sun-400);
+    --warning-soft: var(--color-sun-950);
+    --danger: var(--color-blossom-400);
+    --danger-soft: var(--color-blossom-950);
+    --info: var(--color-sky-400);
+    --info-soft: var(--color-sky-950);
+
+    --role-admin: var(--color-grape-400);
+    --role-admin-soft: var(--color-grape-950);
+    --role-guru: var(--color-brand-400);
+    --role-guru-soft: var(--color-brand-950);
+    --role-ortu: var(--color-sun-400);
+    --role-ortu-soft: var(--color-sun-950);
+
+    --hadir: var(--color-leaf-400);
+    --hadir-soft: var(--color-leaf-950);
+    --izin: var(--color-sun-400);
+    --izin-soft: var(--color-sun-950);
+    --sakit: var(--color-sky-400);
+    --sakit-soft: var(--color-sky-950);
+    --alpa: var(--color-blossom-400);
+    --alpa-soft: var(--color-blossom-950);
+
+    --stppa-bb: var(--color-brand-950);
+    --stppa-bb-fg: var(--color-brand-200);
+    --stppa-mb: var(--color-brand-800);
+    --stppa-mb-fg: var(--color-brand-100);
+    --stppa-bsh: var(--color-brand-500);
+    --stppa-bsh-fg: var(--color-brand-950);
+    --stppa-bsb: var(--color-brand-300);
+    --stppa-bsb-fg: var(--color-brand-950);
+  }
+}
+
+/* Variable — mode gelap (toggle manual) */
+:root.dark,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --surface: var(--color-sand-950);
+  --surface-raised: var(--color-sand-900);
+  --surface-sunken: hsl(47 33% 5%);
+  --surface-hover: var(--color-sand-800);
+  --fg: var(--color-sand-50);
+  --fg-muted: var(--color-sand-300);
+  --fg-subtle: var(--color-sand-400);
+  --fg-on-brand: var(--color-brand-950);
+  --border: var(--color-sand-800);
+  --border-strong: var(--color-sand-700);
+  --ring: var(--color-brand-400);
+
+  --primary: var(--color-brand-400);
+  --primary-hover: var(--color-brand-300);
+  --primary-soft: var(--color-brand-950);
+  --accent: var(--color-sun-400);
+  --accent-soft: var(--color-sun-950);
+
+  --success: var(--color-leaf-400);
+  --success-soft: var(--color-leaf-950);
+  --warning: var(--color-sun-400);
+  --warning-soft: var(--color-sun-950);
+  --danger: var(--color-blossom-400);
+  --danger-soft: var(--color-blossom-950);
+  --info: var(--color-sky-400);
+  --info-soft: var(--color-sky-950);
+
+  --role-admin: var(--color-grape-400);
+  --role-admin-soft: var(--color-grape-950);
+  --role-guru: var(--color-brand-400);
+  --role-guru-soft: var(--color-brand-950);
+  --role-ortu: var(--color-sun-400);
+  --role-ortu-soft: var(--color-sun-950);
+
+  --hadir: var(--color-leaf-400);
+  --hadir-soft: var(--color-leaf-950);
+  --izin: var(--color-sun-400);
+  --izin-soft: var(--color-sun-950);
+  --sakit: var(--color-sky-400);
+  --sakit-soft: var(--color-sky-950);
+  --alpa: var(--color-blossom-400);
+  --alpa-soft: var(--color-blossom-950);
+
+  --stppa-bb: var(--color-brand-950);
+  --stppa-bb-fg: var(--color-brand-200);
+  --stppa-mb: var(--color-brand-800);
+  --stppa-mb-fg: var(--color-brand-100);
+  --stppa-bsh: var(--color-brand-500);
+  --stppa-bsh-fg: var(--color-brand-950);
+  --stppa-bsb: var(--color-brand-300);
+  --stppa-bsb-fg: var(--color-brand-950);
+}
+
+/* Base */
+@layer base {
+  html,
+  body {
+    @apply bg-surface text-fg font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  :focus-visible {
+    @apply outline-ring outline-2 outline-offset-2;
   }
 }

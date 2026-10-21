@@ -1,0 +1,327 @@
+# PRD — Aplikasi LMS TK/PAUD (Prototype)
+
+| | |
+|---|---|
+| **Mata kuliah** | Software Development Fundamental (SDF03) |
+| **Repositori** | `MandoPurba/LMS-PAUD` |
+| **Versi dokumen** | 1.0 |
+| **Tanggal** | 21 Oktober 2026 |
+| **Status** | Disetujui untuk dikerjakan |
+| **Dokumen acuan** | Dokumen Analisis & Perancangan (Bab 1–8), `Diagram_LMS_TK_PAUD.drawio` |
+
+---
+
+## 1. Ringkasan
+
+Sebuah TK/PAUD swasta masih mengelola kegiatan belajar-mengajar secara manual: informasi harian
+disebar lewat grup WhatsApp, kehadiran dicatat di buku, observasi perkembangan ditulis di kertas, dan
+rapor baru disusun menjelang akhir semester. Akibatnya informasi sulit ditelusuri, orang tua tidak
+punya gambaran pasti soal aktivitas anaknya, catatan rawan hilang, dan penyusunan rapor lambat.
+
+Produk ini adalah aplikasi web yang menyatukan komunikasi sekolah–orang tua, mendigitalkan pencatatan
+harian dan observasi STPPA, serta menurunkan rapor dari data yang sudah terkumpul sepanjang semester.
+
+Karena anak usia TK/PAUD belum bisa mengoperasikan aplikasi, **anak bukan pengguna sistem** — datanya
+diakses melalui akun orang tuanya.
+
+---
+
+## 2. Tujuan & Batasan Prototype
+
+### 2.1 Tujuan dokumen ini
+
+Menerjemahkan dokumen analisis (use case, flowchart, DFD) menjadi rencana pengembangan yang bisa
+dieksekusi dan didemokan, bukan menjadi produk siap produksi.
+
+### 2.2 Yang dikerjakan
+
+- Aplikasi **web** untuk ketiga role (Admin, Guru, Orang Tua).
+- Seluruh 14 functional requirement (FR-01 – FR-14) dalam bentuk alur yang bisa diperagakan.
+- Antarmuka yang mencerminkan hak akses tiap role.
+
+### 2.3 Yang TIDAK dikerjakan — dan alasannya
+
+| Di luar scope | Alasan |
+|---|---|
+| Aplikasi mobile untuk Orang Tua | Prototype difokuskan ke satu platform (web). Role Ortu tetap ada, diakses lewat web. |
+| Backend, REST API, basis data | Prototype frontend-only. Tidak ada server yang perlu dinilai di matkul ini. |
+| FR-15 — payment gateway SPP | Berprioritas **Won't** di tabel MoSCoW. |
+| Deployment, CI/CD, monitoring | Tidak relevan untuk penilaian analisis & perancangan. |
+| Keamanan tingkat produksi | Lihat §7 — dicatat eksplisit mana yang tidak terpenuhi. |
+
+> **Konsekuensi yang diterima:** karena tidak ada backend, prototype ini **tidak aman** dan tidak
+> memenuhi sebagian NFR keamanan. Itu bukan cacat, melainkan batasan scope yang disengaja dan
+> didokumentasikan di §7.
+
+---
+
+## 3. Aktor & Hak Akses
+
+| Aktor | Deskripsi | Hak akses |
+|---|---|---|
+| **Admin Sekolah** | Kepala sekolah / staf tata usaha | Kelola siswa, guru, ortu, kelas, tahun ajaran; pengumuman & jadwal; lihat semua rekap |
+| **Guru** | Guru kelas | Absensi, verifikasi izin, daily report, galeri, observasi, susun rapor — **hanya untuk kelasnya** |
+| **Orang Tua** | Wali dari ≥1 anak terdaftar | Lihat daily report, galeri, rapor; ajukan izin; terima notifikasi — **hanya anaknya sendiri** |
+
+Dua aturan scoping di atas (guru → kelasnya, ortu → anaknya) adalah turunan NFR-04 dan wajib terlihat
+di setiap layar, bukan hanya di menu.
+
+---
+
+## 4. Keputusan Teknis
+
+| # | Keputusan | Alasan |
+|---|---|---|
+| T-1 | React Router v8 (framework mode) + TypeScript | Sudah terpasang di repo; routing berbasis file memudahkan pemetaan ke proses DFD. |
+| T-2 | Tailwind CSS v4, token tema di `app/app.css` | Satu sumber warna untuk seluruh aplikasi; token domain (peran, absensi, STPPA) sudah tersedia. |
+| T-3 | **Seed JSON (statis) → localStorage (perubahan)** | Pengganti basis data. JSON di repo = kondisi awal yang bisa di-reset; localStorage menyimpan hasil CRUD agar alur terasa nyata saat demo. |
+| T-4 | Agregasi & filter dihitung di sisi klien | Tidak ada query engine. Data prototype berukuran kecil. |
+| T-5 | Route guard di frontend | Satu-satunya lapisan otorisasi yang mungkin tanpa server. |
+| T-6 | Foto disimpan sebagai base64, dikompres via `<canvas>` | Tidak ada object storage. Sekaligus memperagakan NFR-09. |
+
+### 4.1 Struktur data store
+
+Tujuh data store pada DFD Level 1 dipetakan satu-ke-satu menjadi berkas seed:
+
+```
+app/data/
+├── types.ts                  ← tipe TypeScript seluruh entitas
+├── store.ts                  ← baca seed → localStorage, helper CRUD, reset
+└── seed/
+    ├── users.json            ← D1  User
+    ├── siswa.json            ← D2  Siswa & Kelas
+    ├── kelas.json            ← D2
+    ├── tahun-ajaran.json     ← D2
+    ├── absensi.json          ← D3  Absensi
+    ├── izin.json             ← D4  Izin
+    ├── daily-report.json     ← D5  Daily Report
+    ├── galeri.json           ← D5
+    ├── stppa.json            ← master aspek & indikator STPPA
+    ├── observasi.json        ← D6  Observasi
+    ├── rapor.json            ← D7  Rapor
+    ├── pengumuman.json       ← pendukung FR-04
+    └── notifikasi.json       ← pendukung FR-13
+```
+
+### 4.2 Skema entitas inti
+
+```ts
+Role = "admin" | "guru" | "ortu"
+StatusHadir = "H" | "I" | "S" | "A"
+Capaian = "BB" | "MB" | "BSH" | "BSB"
+AspekStppa = "nilai-moral-sosial" | "fisik-motorik" | "kognitif"
+           | "bahasa" | "sosial-emosional" | "seni"
+
+User         { id, nama, email, password, role, aktif }
+TahunAjaran  { id, nama, semester, aktif }
+Kelas        { id, nama, tahunAjaranId, guruId }
+Siswa        { id, nama, nisn, tglLahir, jenisKelamin, kelasId, ortuIds[] }
+Absensi      { id, siswaId, tanggal, status, catatan, dicatatOleh }
+Izin         { id, siswaId, diajukanOleh, tanggal, jenis, alasan,
+               status: "pending"|"disetujui"|"ditolak", diverifikasiOleh }
+DailyReport  { id, siswaId, tanggal, kegiatan, makan, tidur, mood,
+               foto[], status: "draft"|"published", dibuatOleh }
+Observasi    { id, siswaId, tanggal, aspek, indikatorId, capaian,
+               catatan, dicatatOleh }
+Rapor        { id, siswaId, tahunAjaranId, semester,
+               capaian: [{ aspek, capaian, narasi }],
+               status: "draft"|"published", tglPublikasi }
+```
+
+Relasi ortu–anak disimpan sebagai `Siswa.ortuIds[]` sehingga satu orang tua bisa punya lebih dari satu
+anak, dan satu anak bisa punya lebih dari satu wali.
+
+### 4.2.1 Enam aspek perkembangan
+
+| Slug | Label tampilan | Cakupan |
+|---|---|---|
+| `nilai-moral-sosial` | **Nilai Moral & Sosial** | Kasih terhadap sesama, sopan santun, kejujuran, tanggung jawab, kepedulian |
+| `fisik-motorik` | Fisik-Motorik | Motorik kasar, motorik halus, kesehatan & perilaku keselamatan |
+| `kognitif` | Kognitif | Belajar & pemecahan masalah, berpikir logis, berpikir simbolik |
+| `bahasa` | Bahasa | Memahami bahasa, mengungkapkan bahasa, keaksaraan |
+| `sosial-emosional` | Sosial-Emosional | Kesadaran diri, rasa tanggung jawab, perilaku prososial |
+| `seni` | Seni | Mengeksplorasi & mengekspresikan diri secara kreatif |
+
+**Catatan penyimpangan dari standar.** Permendikbud 137/2014 menamai aspek pertama
+*"Nilai Agama dan Moral"*. Prototype ini menggunakan **"Nilai Moral & Sosial"** — aspek yang dinilai
+tetap sama (sikap, akhlak, dan kepedulian terhadap sesama), namun penekanannya diletakkan pada nilai
+moral dan kasih terhadap sesama alih-alih pada ajaran agama tertentu, agar penilaian tetap netral bagi
+anak dari latar belakang keyakinan apa pun. Penyimpangan ini disengaja dan dicatat di sini supaya
+perbedaan dengan dokumen analisis (Bab 1.4) dapat dipertanggungjawabkan; mengembalikannya ke penamaan
+resmi hanya memerlukan perubahan satu slug dan satu label di `app/data/seed/stppa.json`.
+
+### 4.3 Pemetaan route ke proses DFD
+
+| Proses DFD | Route | FR |
+|---|---|---|
+| 1.0 Login & Autentikasi | `/login` | FR-01 |
+| 2.0 Kelola Master Data | `/admin/siswa`, `/admin/guru`, `/admin/ortu` | FR-02 |
+| 2.0 | `/admin/kelas`, `/admin/tahun-ajaran` | FR-03 |
+| 2.0 | `/admin/pengumuman`, `/admin/jadwal`, `/admin/menu-makan` | FR-04 |
+| 3.0 Absensi & Izin | `/guru/absensi` | FR-05 |
+| 3.0 | `/ortu/izin`, `/guru/izin` | FR-06 |
+| 4.0 Daily Report & Galeri | `/guru/daily-report` | FR-07 |
+| 4.0 | `/ortu/daily-report` | FR-08 |
+| 4.0 | `/galeri` | FR-09 |
+| 5.0 Observasi & Rapor | `/guru/observasi` | FR-10 |
+| 5.0 | `/guru/rapor` | FR-11 |
+| 5.0 | `/ortu/rapor` | FR-12 |
+| 6.0 Laporan | `/laporan` | FR-14 |
+| (lintas proses) | ikon notifikasi di header | FR-13 |
+
+---
+
+## 5. Functional Requirements
+
+Acceptance criteria rinci berada di masing-masing GitHub issue. Tabel ini merangkum dan memetakan
+prioritas, ketergantungan, serta proses DFD terkait.
+
+| FR | Kebutuhan | MoSCoW | Aktor | Proses | Issue | Bergantung pada |
+|---|---|---|---|---|---|---|
+| FR-01 | Login & menu berbasis role | **Must** | Semua | 1.0 | [#2](https://github.com/MandoPurba/LMS-PAUD/issues/2) | — |
+| FR-02 | CRUD siswa, guru, orang tua | **Must** | Admin | 2.0 | [#3](https://github.com/MandoPurba/LMS-PAUD/issues/3) | FR-01 |
+| FR-03 | Kelas, tahun ajaran, relasi ortu–anak | **Must** | Admin | 2.0 | [#4](https://github.com/MandoPurba/LMS-PAUD/issues/4) | FR-02 |
+| FR-04 | Pengumuman, jadwal, menu makan | Should | Admin | 2.0 | [#5](https://github.com/MandoPurba/LMS-PAUD/issues/5) | FR-01, FR-03 |
+| FR-05 | Absensi harian H/I/S/A | **Must** | Guru | 3.0 | [#6](https://github.com/MandoPurba/LMS-PAUD/issues/6) | FR-03 |
+| FR-06 | Pengajuan izin + approval guru | Should | Ortu, Guru | 3.0 | [#7](https://github.com/MandoPurba/LMS-PAUD/issues/7) | FR-05 |
+| FR-07 | Input daily report per anak | **Must** | Guru | 4.0 | [#8](https://github.com/MandoPurba/LMS-PAUD/issues/8) | FR-03 |
+| FR-08 | Ortu membaca daily report | **Must** | Ortu | 4.0 | [#9](https://github.com/MandoPurba/LMS-PAUD/issues/9) | FR-07 |
+| FR-09 | Galeri foto kegiatan kelas | Should | Guru, Ortu | 4.0 | [#10](https://github.com/MandoPurba/LMS-PAUD/issues/10) | FR-03 |
+| FR-10 | Observasi STPPA (BB/MB/BSH/BSB) | Should | Guru | 5.0 | [#11](https://github.com/MandoPurba/LMS-PAUD/issues/11) | FR-03 |
+| FR-11 | Draft rapor + narasi guru | Could | Guru | 5.0 | [#12](https://github.com/MandoPurba/LMS-PAUD/issues/12) | FR-10 |
+| FR-12 | Ortu lihat & unduh rapor PDF | Could | Ortu | 5.0 | [#13](https://github.com/MandoPurba/LMS-PAUD/issues/13) | FR-11 |
+| FR-13 | Notifikasi otomatis | Should | Sistem | lintas | [#14](https://github.com/MandoPurba/LMS-PAUD/issues/14) | FR-04, 06, 07, 11 |
+| FR-14 | Rekap absensi & capaian | Could | Admin, Guru | 6.0 | [#15](https://github.com/MandoPurba/LMS-PAUD/issues/15) | FR-05, FR-10 |
+| ~~FR-15~~ | ~~Payment gateway SPP~~ | **Won't** | — | — | — | tidak dikerjakan |
+
+### 5.1 Aturan bisnis yang mengikat
+
+Empat aturan berikut berasal dari flowchart dan relasi use case, dan harus benar-benar berlaku di
+prototype — bukan hanya digambar:
+
+| Kode | Aturan | Sumber |
+|---|---|---|
+| BR-1 | Daily report hanya dapat dibuat bila anak berstatus **Hadir** pada tanggal tersebut. | Flowchart, cabang pertama |
+| BR-2 | Field **kegiatan wajib** terisi sebelum daily report dapat disimpan. | Flowchart, cabang kedua |
+| BR-3 | Guru menyetujui izin → status absensi tanggal itu otomatis berubah menjadi **I** atau **S**. | Use case: Verifikasi Izin «extend» Input Absensi |
+| BR-4 | Rapor selalu diturunkan dari data observasi yang sudah tercatat; tidak bisa dibuat dari nol. | Use case: Rapor «include» Input Observasi |
+| BR-5 | Satu record absensi per siswa per tanggal; satu daily report per anak per hari. | AC issue #6 dan #8 |
+| BR-6 | Guru hanya mengakses data kelasnya; ortu hanya data anaknya. | NFR-04 |
+
+---
+
+## 6. Alur Development
+
+### 6.1 Prinsip urutan
+
+Urutan dikunci oleh dependensi data, bukan oleh prioritas MoSCoW semata: **tidak ada fitur yang bisa
+dikerjakan sebelum entitas yang dirujuknya ada.** FR-03 adalah simpul terpenting — tujuh FR bergantung
+padanya, langsung atau tidak langsung, karena di situlah relasi kelas–siswa–ortu terbentuk.
+
+```
+FR-01 ──┬── FR-02 ── FR-03 ──┬── FR-04
+        │                    ├── FR-05 ── FR-06
+        │                    ├── FR-07 ── FR-08
+        │                    ├── FR-09
+        │                    └── FR-10 ── FR-11 ── FR-12
+        │                                   │
+        │                    FR-05 + FR-10 ─┴── FR-14
+        └── FR-13 (menempel pada FR-04, 06, 07, 11)
+```
+
+### 6.2 Fase
+
+| Fase | Tanggal | Isi | Keluaran yang bisa didemokan |
+|---|---|---|---|
+| **0 — Fondasi UI** | 21 Okt *(selesai)* | Token tema & palet warna, halaman pratinjau `/tokens` | Design system konsisten, mode terang & gelap |
+| **1 — Fondasi data** | Dev 22 Okt → QA 23 Okt | FR-01, FR-02, FR-03 | Login 3 role, menu berbeda per role, data master terisi dan saling terhubung |
+| **2 — Operasional harian** | Dev 23 Okt → QA 24 Okt | FR-05, FR-07, FR-08 | Guru absen → isi daily report → ortu membacanya. **Inti nilai produk.** |
+| **3 — Pelengkap** | Dev 24 Okt → QA 25 Okt | FR-04, FR-06, FR-09, FR-10 | Pengumuman, siklus izin (BR-3), galeri, observasi STPPA |
+| **4 — Rapor & laporan** | Dev 25 Okt → QA 26 Okt | FR-11, FR-12, FR-13, FR-14 | Draft rapor dari observasi, unduh PDF, notifikasi, rekap |
+
+Fase 2 adalah fase yang paling menentukan: alur guru → ortu di situ persis menjawab permasalahan utama
+pada Bab 1.2, dan merupakan proses yang dirinci oleh flowchart.
+
+### 6.3 Definition of Done per issue
+
+Sebuah issue ditutup bila:
+
+1. Seluruh checkbox acceptance criteria di issue tercentang.
+2. Scoping role berlaku (BR-6) — diuji dengan login sebagai role lain.
+3. Perubahan data bertahan setelah halaman di-*refresh* (localStorage).
+4. Layar tetap terbaca di lebar 360 px dan pada mode gelap.
+5. `npm run typecheck` dan `npm run build` lolos.
+6. Hanya memakai token tema dari `app/app.css`, tanpa warna hardcode.
+
+### 6.4 Konvensi kerja
+
+- Satu branch per issue: `feat/fr-01-auth`, `feat/fr-02-master-siswa`, …
+- Commit menyebut kode FR: `feat(fr-01): login & route guard per role`.
+- Pull request menutup issue dengan `Closes #2`.
+
+---
+
+## 7. Non-Functional Requirements — Status Pemenuhan
+
+Kolom status dinilai apa adanya. Prototype frontend-only memang tidak dapat memenuhi sebagian NFR, dan
+hal itu lebih berguna dicatat daripada diklaim terpenuhi.
+
+| NFR | Kategori | Kebutuhan | Status | Keterangan |
+|---|---|---|---|---|
+| NFR-01 | Performance | Daily report tampil ≤ 3 detik di 4G | ⚠️ Tidak dapat diuji sahih | Data dibaca dari localStorage, tanpa jaringan — angkanya tidak mewakili kondisi nyata |
+| NFR-02 | Availability | Uptime ≥ 99% / bulan | ❌ Tidak dipenuhi | Tidak ada deployment maupun server |
+| NFR-03 | Security | Password di-hash bcrypt, komunikasi HTTPS | ❌ Tidak dipenuhi | Password tersimpan sebagai teks biasa di seed JSON. Titik integrasi untuk implementasi nyata |
+| NFR-04 | Security | Data & foto anak hanya untuk ortu, guru kelas, admin | 🟡 Disimulasikan | Route guard + filter per role di klien. Alur otorisasinya terlihat, tetapi tidak aman karena seluruh data ada di sisi klien |
+| NFR-05 | Security | Foto lewat signed URL yang kedaluwarsa | ❌ Tidak dipenuhi | Foto disimpan base64 di klien; tidak ada object storage yang bisa menandatangani URL |
+| NFR-06 | Usability | Input daily report satu anak ≤ 2 menit | ✅ Dipenuhi | Dapat diukur langsung saat demo |
+| NFR-07 | Usability | Bahasa Indonesia, ikon sederhana | ✅ Dipenuhi | Seluruh antarmuka berbahasa Indonesia |
+| NFR-08 | Availability | Android 9+/iOS 14+ untuk ortu; Chrome, Firefox, Edge untuk admin & guru | 🟡 Sebagian | Bagian web dipenuhi. Aplikasi mobile di luar scope (§2.3) |
+| NFR-09 | Efficiency | Foto dikompres otomatis ≤ 1 MB | 🟡 Disimulasikan | Kompresi di klien memakai `<canvas>` sebelum disimpan |
+| NFR-10 | Reliability | Backup harian, retensi 30 hari | ❌ Tidak dipenuhi | Tidak ada basis data. Tersedia tombol *reset ke seed* sebagai pengganti saat demo |
+| NFR-11 | Responsiveness | Notifikasi diterima ≤ 1 menit | 🟡 Disimulasikan | Notifikasi in-app muncul seketika; tanpa push/email |
+| NFR-12 | Reliability | Log aktivitas untuk absensi, observasi, rapor | 🟡 Disimulasikan | Log disimpan sebagai array di localStorage dan dapat ditampilkan |
+
+**Rekapitulasi:** 2 dipenuhi · 6 disimulasikan/sebagian · 4 tidak dipenuhi.
+Seluruh yang tidak dipenuhi berakar pada satu sebab yang sama: tidak adanya backend.
+
+---
+
+## 8. Skenario Demo
+
+Satu alur berurutan yang menyentuh semua Must-have dan membuktikan BR-1 sampai BR-4:
+
+1. **Login sebagai Admin** → tambah 1 siswa, buat kelas, tetapkan guru kelas, hubungkan ke akun ortu. *(FR-01, 02, 03)*
+2. **Login sebagai Guru** → buka absensi hari ini, tandai satu anak **Alpa**, sisanya Hadir. *(FR-05)*
+3. **Coba buat daily report untuk anak yang Alpa** → sistem menolak. *(BR-1 terbukti)*
+4. **Buat daily report untuk anak yang Hadir**, kosongkan kegiatan → ditolak; isi lengkap + unggah foto besar → foto terkompres, tersimpan. *(FR-07, BR-2, NFR-09)*
+5. **Login sebagai Ortu** → notifikasi muncul, buka daily report anaknya. Coba akses data anak lain → ditolak. *(FR-08, FR-13, BR-6)*
+6. **Ortu ajukan izin** untuk besok → **Guru menyetujui** → absensi besok otomatis menjadi **I**. *(FR-06, BR-3)*
+7. **Guru catat observasi STPPA**, lalu **generate draft rapor** → narasi terisi otomatis dari observasi, guru melengkapi, publikasikan. *(FR-10, FR-11, BR-4)*
+8. **Ortu unduh rapor PDF**; **Admin buka rekap** absensi & capaian per kelas. *(FR-12, FR-14)*
+
+---
+
+## 9. Risiko
+
+| Risiko | Dampak | Penanganan |
+|---|---|---|
+| Kuota localStorage (±5 MB) habis karena foto base64 | Penyimpanan gagal, demo terhenti | Kompres ≤ 1 MB, batasi jumlah foto per report, sediakan tombol reset |
+| FR-03 terlambat | Tujuh FR ikut tertahan | Jadikan prioritas tertinggi di Fase 1; boleh dirilis dengan UI minimal |
+| Fase 4 menumpuk di satu hari | FR-11/12/14 tidak selesai | Ketiganya berprioritas *Could* — boleh diturunkan tanpa mengganggu penilaian Must-have |
+| Perbedaan antara dokumen analisis dan implementasi | Nilai keterkaitan analisis–desain turun | Penamaan berkas dan route mengikuti D1–D7 serta proses 1.0–6.0 (§4.1, §4.3) |
+
+---
+
+## 10. Matriks Keterkaitan
+
+Menghubungkan permasalahan pada Bab 1.2 dokumen analisis sampai ke issue yang mengerjakannya.
+
+| Permasalahan (Bab 1.2) | Dijawab FR | Proses DFD | Data store | Issue |
+|---|---|---|---|---|
+| Informasi tersebar di WhatsApp, sulit ditelusuri | FR-04, FR-13 | 2.0, lintas | — | #5, #14 |
+| Ortu tak tahu aktivitas harian anak | FR-07, FR-08 | 4.0 | D5 | #8, #9 |
+| Catatan observasi di kertas, rawan hilang | FR-10 | 5.0 | D6 | #11 |
+| Penyusunan rapor lama | FR-11, FR-12 | 5.0 | D6 → D7 | #12, #13 |
+| Izin lewat chat pribadi, tanpa rekap | FR-06 | 3.0 | D4 → D3 | #7 |
+| Foto anak berisiko dilihat pihak lain | FR-09 + NFR-04, NFR-05 | 4.0 | D5 | #10 |
+| Kehadiran dicatat manual di buku | FR-05, FR-14 | 3.0, 6.0 | D3 | #6, #15 |
