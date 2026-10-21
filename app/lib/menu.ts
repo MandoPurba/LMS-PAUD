@@ -35,7 +35,7 @@ export const MENU: Record<Role, ItemMenu[]> = {
   ],
   ortu: [
     { label: "Dashboard", to: "/ortu", ikon: "🏠", fr: "FR-01", siap: true },
-    { label: "Daily Report", to: "/ortu/daily-report", ikon: "📔", fr: "FR-08", siap: false },
+    { label: "Daily Report", to: "/ortu/daily-report", ikon: "📔", fr: "FR-08", siap: true },
     { label: "Galeri", to: "/ortu/galeri", ikon: "🖼️", fr: "FR-09", siap: false },
     { label: "Ajukan Izin", to: "/ortu/izin", ikon: "📝", fr: "FR-06", siap: false },
     { label: "Rapor", to: "/ortu/rapor", ikon: "📄", fr: "FR-12", siap: false },

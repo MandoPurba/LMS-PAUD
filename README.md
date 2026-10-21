@@ -53,6 +53,7 @@ Sisanya sengaja dibiarkan kosong agar alur penempatan dan penghubungan bisa dipe
 | `/admin/kelas` | CRUD kelas + penetapan wali kelas |
 | `/guru/absensi` | Input absensi harian H/I/S/A untuk kelas yang diampu |
 | `/guru/daily-report` | Isi daily report per anak (hanya untuk anak yang Hadir) |
+| `/ortu/daily-report` | Orang tua membaca daily report anaknya (hanya yang terbit) |
 | `/guru` | Dashboard Guru |
 | `/ortu` | Dashboard Orang Tua |
 | `/403` | Akses ditolak |

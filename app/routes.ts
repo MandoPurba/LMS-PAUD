@@ -27,5 +27,6 @@ export default [
 
     // 4.0 Daily Report & Galeri — FR-07
     route("guru/daily-report", "routes/guru/daily-report.tsx"),
+    route("ortu/daily-report", "routes/ortu/daily-report.tsx"),
   ]),
 ] satisfies RouteConfig;
