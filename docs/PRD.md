@@ -78,6 +78,7 @@ di setiap layar, bukan hanya di menu.
 | T-4 | Agregasi & filter dihitung di sisi klien | Tidak ada query engine. Data prototype berukuran kecil. |
 | T-5 | Route guard di frontend | Satu-satunya lapisan otorisasi yang mungkin tanpa server. |
 | T-6 | Foto disimpan sebagai base64, dikompres via `<canvas>` | Tidak ada object storage. Sekaligus memperagakan NFR-09. |
+| T-7 | Tanggal selalu dihitung di zona waktu lokal lewat `app/lib/tanggal.ts`, tidak pernah dari `toISOString()` | Di WIB (UTC+7), potongan ISO menunjukkan tanggal kemarin sebelum pukul 07.00 — absensi "hari ini" bisa tercatat di tanggal yang keliru. |
 
 ### 4.1 Struktur data store
 
@@ -222,7 +223,7 @@ prototype — bukan hanya digambar:
 | BR-2 | Field **kegiatan wajib** terisi sebelum daily report dapat disimpan. | Flowchart, cabang kedua |
 | BR-3 | Guru menyetujui izin → status absensi tanggal itu otomatis berubah menjadi **I** atau **S**. | Use case: Verifikasi Izin «extend» Input Absensi |
 | BR-4 | Rapor selalu diturunkan dari data observasi yang sudah tercatat; tidak bisa dibuat dari nol. | Use case: Rapor «include» Input Observasi |
-| BR-5 | Satu record absensi per siswa per tanggal; satu daily report per anak per hari. | AC issue #6 dan #8 |
+| BR-5 | Satu record absensi per siswa per tanggal; satu daily report per anak per hari. Menyimpan ulang menimpa, tidak menambah. | AC issue #6 dan #8 |
 | BR-6 | Guru hanya mengakses data kelasnya; ortu hanya data anaknya. | NFR-04 |
 | BR-7 | Tepat satu tahun ajaran berstatus aktif; mengaktifkan satu tahun menonaktifkan yang lain. | AC issue #4 |
 | BR-8 | Satu guru menjadi wali paling banyak satu kelas per tahun ajaran, sehingga "kelas saya" selalu tunggal. | Dok. analisis menyebut "kelasnya" dalam bentuk tunggal |

@@ -1,7 +1,8 @@
 import { Link } from "react-router";
 
 import type { Route } from "./+types/dashboard";
-import { JudulHalaman, KartuFitur, Panel, tanggalPanjang } from "../../components/ui";
+import { JudulHalaman, KartuFitur, Panel } from "../../components/ui";
+import { tanggalPanjang } from "../../lib/tanggal";
 import { MENU } from "../../lib/menu";
 import { tahunAktif } from "../../lib/relasi";
 import { repoKelas, repoSiswa, repoUser } from "../../lib/repo";

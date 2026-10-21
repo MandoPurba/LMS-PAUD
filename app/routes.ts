@@ -21,5 +21,8 @@ export default [
     // 2.0 Kelola Master Data — FR-03
     route("admin/tahun-ajaran", "routes/admin/tahun-ajaran.tsx"),
     route("admin/kelas", "routes/admin/kelas.tsx"),
+
+    // 3.0 Absensi & Izin — FR-05
+    route("guru/absensi", "routes/guru/absensi.tsx"),
   ]),
 ] satisfies RouteConfig;

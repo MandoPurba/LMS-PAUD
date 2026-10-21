@@ -51,6 +51,18 @@ export type Siswa = {
   ortuId: string | null;
 };
 
+/** D3 — Absensi. Satu record per siswa per tanggal. */
+export type Absensi = {
+  id: string;
+  siswaId: string;
+  /** Format ISO, yyyy-mm-dd. */
+  tanggal: string;
+  status: StatusHadir;
+  catatan: string | null;
+  /** ID user yang mencatat. */
+  dicatatOleh: string;
+};
+
 /** D1 — User */
 export type User = {
   id: string;

@@ -1,8 +1,9 @@
+import seedAbsensi from "../data/seed/absensi.json";
 import seedKelas from "../data/seed/kelas.json";
 import seedSiswa from "../data/seed/siswa.json";
 import seedTahunAjaran from "../data/seed/tahun-ajaran.json";
 import seedUsers from "../data/seed/users.json";
-import type { Kelas, Siswa, TahunAjaran, User } from "../data/types";
+import type { Absensi, Kelas, Siswa, TahunAjaran, User } from "../data/types";
 import { baca, hapus as hapusKunci, tulis } from "./storage";
 
 /** Dilempar bila localStorage menolak penulisan, mis. kuota penuh. */
@@ -100,6 +101,7 @@ export function buatRepo<T extends { id: string }>(
 export const repoUser = buatRepo<User>("users", "u", seedUsers as User[]);
 export const repoSiswa = buatRepo<Siswa>("siswa", "s", seedSiswa as Siswa[]);
 export const repoKelas = buatRepo<Kelas>("kelas", "k", seedKelas as Kelas[]);
+export const repoAbsensi = buatRepo<Absensi>("absensi", "ab", seedAbsensi as Absensi[]);
 export const repoTahunAjaran = buatRepo<TahunAjaran>(
   "tahun-ajaran",
   "ta",
