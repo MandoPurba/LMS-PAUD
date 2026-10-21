@@ -1,0 +1,50 @@
+[
+  {
+    "id": "u-001",
+    "nama": "Siti Aminah",
+    "email": "admin@paud.sch.id",
+    "password": "admin123",
+    "role": "admin",
+    "aktif": true
+  },
+  {
+    "id": "u-002",
+    "nama": "Sari Wulandari",
+    "email": "sari@paud.sch.id",
+    "password": "guru123",
+    "role": "guru",
+    "aktif": true
+  },
+  {
+    "id": "u-003",
+    "nama": "Budi Santoso",
+    "email": "budi@paud.sch.id",
+    "password": "guru123",
+    "role": "guru",
+    "aktif": true
+  },
+  {
+    "id": "u-004",
+    "nama": "Rina Kartika",
+    "email": "rina@gmail.com",
+    "password": "ortu123",
+    "role": "ortu",
+    "aktif": true
+  },
+  {
+    "id": "u-005",
+    "nama": "Andi Pratama",
+    "email": "andi@gmail.com",
+    "password": "ortu123",
+    "role": "ortu",
+    "aktif": true
+  },
+  {
+    "id": "u-006",
+    "nama": "Dewi Lestari",
+    "email": "dewi@paud.sch.id",
+    "password": "guru123",
+    "role": "guru",
+    "aktif": false
+  }
+]

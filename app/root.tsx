@@ -45,6 +45,15 @@ export default function App() {
   return <Outlet />;
 }
 
+/** Mode SPA: tampil sesaat selagi clientLoader memeriksa sesi di localStorage. */
+export function HydrateFallback() {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <p className="text-sm text-fg-subtle">Memuat…</p>
+    </div>
+  );
+}
+
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Oops!";
   let details = "An unexpected error occurred.";
