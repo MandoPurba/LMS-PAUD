@@ -128,8 +128,8 @@ export default function AdminSiswa({ loaderData }: Route.ComponentProps) {
 
     try {
       if (form.mode === "tambah") {
-        // kelasId & ortuIds dihubungkan di FR-03.
-        repoSiswa.tambah({ ...isi, kelasId: null, ortuIds: [] });
+        // kelasId & ortuId dihubungkan di FR-03.
+        repoSiswa.tambah({ ...isi, kelasId: null, ortuId: null });
       } else if (form.siswa) {
         repoSiswa.ubah(form.siswa.id, isi);
       }

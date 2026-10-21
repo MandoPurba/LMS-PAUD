@@ -115,7 +115,7 @@ AspekStppa = "nilai-moral-sosial" | "fisik-motorik" | "kognitif"
 User         { id, nama, email, password, role, aktif }
 TahunAjaran  { id, nama, semester, aktif }
 Kelas        { id, nama, tahunAjaranId, guruId }
-Siswa        { id, nama, nisn, tglLahir, jenisKelamin, kelasId, ortuIds[] }
+Siswa        { id, nama, nisn, tglLahir, jenisKelamin, kelasId, ortuId }
 Absensi      { id, siswaId, tanggal, status, catatan, dicatatOleh }
 Izin         { id, siswaId, diajukanOleh, tanggal, jenis, alasan,
                status: "pending"|"disetujui"|"ditolak", diverifikasiOleh }
@@ -128,8 +128,14 @@ Rapor        { id, siswaId, tahunAjaranId, semester,
                status: "draft"|"published", tglPublikasi }
 ```
 
-Relasi ortu–anak disimpan sebagai `Siswa.ortuIds[]` sehingga satu orang tua bisa punya lebih dari satu
-anak, dan satu anak bisa punya lebih dari satu wali.
+**Relasi ortu–anak bersifat satu-ke-banyak.** Satu siswa memiliki **satu** orang tua, dan satu orang
+tua dapat memiliki **lebih dari satu** siswa. Karena itu relasinya disimpan sebagai `Siswa.ortuId`
+(bukan daftar di sisi siswa): daftar anak seorang orang tua diperoleh dengan menyaring siswa
+berdasarkan `ortuId`-nya.
+
+Penyederhanaan yang disengaja: di kenyataan seorang anak sering punya dua wali (ayah dan ibu). Untuk
+prototype, satu anak dipetakan ke satu akun wali agar aturan akses NFR-04 tetap tunggal dan mudah
+diperagakan. Mengubahnya menjadi banyak-ke-banyak kelak hanya menyentuh satu field.
 
 ### 4.2.1 Enam aspek perkembangan
 

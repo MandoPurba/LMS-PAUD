@@ -19,7 +19,7 @@ export type AspekStppa =
 
 export type JenisKelamin = "L" | "P";
 
-/** D2 — Siswa. kelasId & ortuIds ditetapkan di FR-03. */
+/** D2 — Siswa. kelasId & ortuId ditetapkan di FR-03. */
 export type Siswa = {
   id: string;
   nama: string;
@@ -28,7 +28,8 @@ export type Siswa = {
   tglLahir: string;
   jenisKelamin: JenisKelamin;
   kelasId: string | null;
-  ortuIds: string[];
+  /** Satu siswa punya satu orang tua; satu orang tua bisa punya beberapa siswa. */
+  ortuId: string | null;
 };
 
 /** D1 — User */

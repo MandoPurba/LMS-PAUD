@@ -155,7 +155,7 @@ export function HalamanUser({
         </div>
 
         <div className="mt-4 -mx-4 overflow-x-auto sm:mx-0">
-          <table className="w-full min-w-[32rem] text-left text-sm">
+          <table className="w-full min-w-lg text-left text-sm">
             <thead>
               <tr className="border-b border-border text-xs text-fg-muted">
                 <th scope="col" className="px-3 py-2 font-semibold">Nama</th>
