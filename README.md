@@ -51,6 +51,7 @@ Sisanya sengaja dibiarkan kosong agar alur penempatan dan penghubungan bisa dipe
 | `/admin/orang-tua` | CRUD akun orang tua |
 | `/admin/tahun-ajaran` | CRUD tahun ajaran + set tahun aktif |
 | `/admin/kelas` | CRUD kelas + penetapan wali kelas |
+| `/guru/absensi` | Input absensi harian H/I/S/A untuk kelas yang diampu |
 | `/guru` | Dashboard Guru |
 | `/ortu` | Dashboard Orang Tua |
 | `/403` | Akses ditolak |
@@ -83,6 +84,8 @@ app/
 │   ├── storage.ts       pembungkus localStorage + reset
 │   ├── repo.ts          repositori CRUD generik di atas localStorage
 │   ├── relasi.ts        pertanyaan lintas entitas + aturan keutuhan data
+│   ├── absensi.ts       simpan/baca absensi, label & warna status
+│   ├── tanggal.ts       helper tanggal zona waktu lokal
 │   ├── session.ts       login, logout, sesi, route guard
 │   ├── useTabelData.ts  pencarian + paginasi sisi klien
 │   └── menu.ts          menu per role

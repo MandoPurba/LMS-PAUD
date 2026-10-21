@@ -1,5 +1,6 @@
 import type { Route } from "./+types/dashboard";
-import { JudulHalaman, KartuFitur, Panel, tanggalPanjang } from "../../components/ui";
+import { JudulHalaman, KartuFitur, Panel } from "../../components/ui";
+import { tanggalPanjang } from "../../lib/tanggal";
 import { MENU } from "../../lib/menu";
 import { anakDariOrtu, namaKelas, namaUser, tahunAktif } from "../../lib/relasi";
 import { repoKelas } from "../../lib/repo";

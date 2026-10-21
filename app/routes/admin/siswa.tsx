@@ -16,6 +16,7 @@ import { BarisKosong, Paginasi, Pencarian } from "../../components/TabelToolbar"
 import { JudulHalaman } from "../../components/ui";
 import type { JenisKelamin, Siswa } from "../../data/types";
 import { namaKelas, namaTahun, namaUser } from "../../lib/relasi";
+import { tanggalLokal, tanggalPendek, usia } from "../../lib/tanggal";
 import { GagalSimpan, repoKelas, repoSiswa, repoUser } from "../../lib/repo";
 import { useTabelData } from "../../lib/useTabelData";
 
@@ -81,9 +82,11 @@ function validasi(draf: Draf, idSaatIni?: string): Galat {
   if (!draf.tglLahir) {
     galat.tglLahir = "Tanggal lahir wajib diisi.";
   } else {
-    const tgl = new Date(draf.tglLahir);
-    if (Number.isNaN(tgl.getTime())) galat.tglLahir = "Tanggal tidak valid.";
-    else if (tgl > new Date()) galat.tglLahir = "Tanggal lahir tidak boleh di masa depan.";
+    if (Number.isNaN(new Date(`${draf.tglLahir}T00:00:00`).getTime())) {
+      galat.tglLahir = "Tanggal tidak valid.";
+    } else if (draf.tglLahir > tanggalLokal()) {
+      galat.tglLahir = "Tanggal lahir tidak boleh di masa depan.";
+    }
   }
 
   if (!draf.jenisKelamin) galat.jenisKelamin = "Jenis kelamin wajib dipilih.";
@@ -91,25 +94,7 @@ function validasi(draf: Draf, idSaatIni?: string): Galat {
   return galat;
 }
 
-function tanggalIndo(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "—";
-  return new Intl.DateTimeFormat("id-ID", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(d);
-}
 
-function usia(iso: string): string {
-  const lahir = new Date(iso);
-  if (Number.isNaN(lahir.getTime())) return "—";
-  const kini = new Date();
-  let bulan = (kini.getFullYear() - lahir.getFullYear()) * 12 + (kini.getMonth() - lahir.getMonth());
-  if (kini.getDate() < lahir.getDate()) bulan -= 1;
-  if (bulan < 0) return "—";
-  return `${Math.floor(bulan / 12)} th ${bulan % 12} bln`;
-}
 
 export default function AdminSiswa({ loaderData }: Route.ComponentProps) {
   const { revalidate } = useRevalidator();
@@ -238,7 +223,7 @@ export default function AdminSiswa({ loaderData }: Route.ComponentProps) {
                     <td className="px-3 py-2.5 font-medium">{s.nama}</td>
                     <td className="px-3 py-2.5 font-mono text-xs text-fg-muted">{s.nisn}</td>
                     <td className="px-3 py-2.5">{s.jenisKelamin}</td>
-                    <td className="px-3 py-2.5 text-fg-muted" title={tanggalIndo(s.tglLahir)}>
+                    <td className="px-3 py-2.5 text-fg-muted" title={tanggalPendek(s.tglLahir)}>
                       {usia(s.tglLahir)}
                     </td>
                     <td className="px-3 py-2.5">
@@ -320,7 +305,7 @@ export default function AdminSiswa({ loaderData }: Route.ComponentProps) {
                 id="tglLahir"
                 type="date"
                 value={draf.tglLahir}
-                max={new Date().toISOString().slice(0, 10)}
+                max={tanggalLokal()}
                 onChange={(e) => setDraf({ ...draf, tglLahir: e.target.value })}
               />
             </Field>

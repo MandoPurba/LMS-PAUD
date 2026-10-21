@@ -32,12 +32,3 @@ export function KartuFitur({ item }: { item: ItemMenu }) {
     </div>
   );
 }
-
-export function tanggalPanjang(d = new Date()): string {
-  return new Intl.DateTimeFormat("id-ID", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(d);
-}
