@@ -1,0 +1,5 @@
+[
+  { "id": "k-001", "nama": "Kelompok A", "tahunAjaranId": "ta-002", "guruId": "u-002" },
+  { "id": "k-002", "nama": "Kelompok B", "tahunAjaranId": "ta-002", "guruId": "u-003" },
+  { "id": "k-003", "nama": "Kelompok A", "tahunAjaranId": "ta-001", "guruId": null }
+]

@@ -1,0 +1,4 @@
+[
+  { "id": "ta-001", "nama": "2025/2026", "semesterAktif": 2, "aktif": false },
+  { "id": "ta-002", "nama": "2026/2027", "semesterAktif": 1, "aktif": true }
+]
