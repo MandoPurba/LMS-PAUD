@@ -63,6 +63,27 @@ export type Absensi = {
   dicatatOleh: string;
 };
 
+export type Mood = "senang" | "biasa" | "rewel" | "sedih" | "lelah";
+export type PorsiMakan = "habis" | "sebagian" | "tidak";
+export type TidurSiang = "nyenyak" | "sebentar" | "tidak";
+
+/** D5 — Daily Report. Satu report per anak per hari. */
+export type DailyReport = {
+  id: string;
+  siswaId: string;
+  /** Format ISO, yyyy-mm-dd. */
+  tanggal: string;
+  kegiatan: string;
+  makan: PorsiMakan;
+  tidur: TidurSiang;
+  mood: Mood;
+  catatan: string | null;
+  /** Data URL hasil kompresi. */
+  foto: string[];
+  status: "draft" | "published";
+  dibuatOleh: string;
+};
+
 /** D1 — User */
 export type User = {
   id: string;

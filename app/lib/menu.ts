@@ -27,7 +27,7 @@ export const MENU: Record<Role, ItemMenu[]> = {
     { label: "Dashboard", to: "/guru", ikon: "🏠", fr: "FR-01", siap: true },
     { label: "Absensi", to: "/guru/absensi", ikon: "✅", fr: "FR-05", siap: true },
     { label: "Pengajuan Izin", to: "/guru/izin", ikon: "📝", fr: "FR-06", siap: false },
-    { label: "Daily Report", to: "/guru/daily-report", ikon: "📔", fr: "FR-07", siap: false },
+    { label: "Daily Report", to: "/guru/daily-report", ikon: "📔", fr: "FR-07", siap: true },
     { label: "Galeri", to: "/guru/galeri", ikon: "🖼️", fr: "FR-09", siap: false },
     { label: "Observasi STPPA", to: "/guru/observasi", ikon: "🌱", fr: "FR-10", siap: false },
     { label: "Rapor", to: "/guru/rapor", ikon: "📄", fr: "FR-11", siap: false },
