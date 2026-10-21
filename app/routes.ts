@@ -17,5 +17,9 @@ export default [
     route("admin/siswa", "routes/admin/siswa.tsx"),
     route("admin/guru", "routes/admin/guru.tsx"),
     route("admin/orang-tua", "routes/admin/orang-tua.tsx"),
+
+    // 2.0 Kelola Master Data — FR-03
+    route("admin/tahun-ajaran", "routes/admin/tahun-ajaran.tsx"),
+    route("admin/kelas", "routes/admin/kelas.tsx"),
   ]),
 ] satisfies RouteConfig;

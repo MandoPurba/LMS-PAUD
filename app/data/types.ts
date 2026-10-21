@@ -17,6 +17,25 @@ export type AspekStppa =
   | "sosial-emosional"
   | "seni";
 
+export type Semester = 1 | 2;
+
+/** D2 — Tahun ajaran. Tepat satu baris berstatus aktif. */
+export type TahunAjaran = {
+  id: string;
+  /** Mis. "2026/2027". */
+  nama: string;
+  semesterAktif: Semester;
+  aktif: boolean;
+};
+
+/** D2 — Kelas. Satu guru menjadi wali paling banyak satu kelas per tahun ajaran. */
+export type Kelas = {
+  id: string;
+  nama: string;
+  tahunAjaranId: string;
+  guruId: string | null;
+};
+
 export type JenisKelamin = "L" | "P";
 
 /** D2 — Siswa. kelasId & ortuId ditetapkan di FR-03. */

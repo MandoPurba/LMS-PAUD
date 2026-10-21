@@ -5,8 +5,8 @@
     "nisn": "0098765001",
     "tglLahir": "2021-03-14",
     "jenisKelamin": "P",
-    "kelasId": null,
-    "ortuId": null
+    "kelasId": "k-001",
+    "ortuId": "u-004"
   },
   {
     "id": "s-002",
@@ -14,8 +14,8 @@
     "nisn": "0098765002",
     "tglLahir": "2021-01-22",
     "jenisKelamin": "L",
-    "kelasId": null,
-    "ortuId": null
+    "kelasId": "k-001",
+    "ortuId": "u-005"
   },
   {
     "id": "s-003",
@@ -23,8 +23,8 @@
     "nisn": "0098765003",
     "tglLahir": "2021-07-09",
     "jenisKelamin": "P",
-    "kelasId": null,
-    "ortuId": null
+    "kelasId": "k-001",
+    "ortuId": "u-004"
   },
   {
     "id": "s-004",
@@ -32,7 +32,7 @@
     "nisn": "0098765004",
     "tglLahir": "2020-11-30",
     "jenisKelamin": "L",
-    "kelasId": null,
+    "kelasId": "k-001",
     "ortuId": null
   },
   {
@@ -41,8 +41,8 @@
     "nisn": "0098765005",
     "tglLahir": "2021-05-18",
     "jenisKelamin": "P",
-    "kelasId": null,
-    "ortuId": null
+    "kelasId": "k-002",
+    "ortuId": "u-004"
   },
   {
     "id": "s-006",
@@ -50,8 +50,8 @@
     "nisn": "0098765006",
     "tglLahir": "2020-09-02",
     "jenisKelamin": "L",
-    "kelasId": null,
-    "ortuId": null
+    "kelasId": "k-002",
+    "ortuId": "u-005"
   },
   {
     "id": "s-007",
@@ -59,7 +59,7 @@
     "nisn": "0098765007",
     "tglLahir": "2021-02-25",
     "jenisKelamin": "P",
-    "kelasId": null,
+    "kelasId": "k-002",
     "ortuId": null
   },
   {
@@ -68,7 +68,7 @@
     "nisn": "0098765008",
     "tglLahir": "2021-08-11",
     "jenisKelamin": "L",
-    "kelasId": null,
+    "kelasId": "k-002",
     "ortuId": null
   },
   {

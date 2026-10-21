@@ -57,12 +57,18 @@ export function HalamanUser({
   deskripsi,
   labelSatuan,
   data,
+  kolomTambahan,
+  cekHapus,
 }: {
   role: Extract<Role, "guru" | "ortu">;
   judul: string;
   deskripsi: string;
   labelSatuan: string;
   data: User[];
+  /** Kolom khusus per role, mis. kelas yang diampu atau jumlah anak. */
+  kolomTambahan?: { judul: string; render: (user: User) => React.ReactNode };
+  /** Mengembalikan alasan bila user tidak boleh dihapus, atau null bila boleh. */
+  cekHapus?: (user: User) => string | null;
 }) {
   const { sesi } = useOutletContext<KontekAplikasi>();
   const { revalidate } = useRevalidator();
@@ -161,13 +167,16 @@ export function HalamanUser({
                 <th scope="col" className="px-3 py-2 font-semibold">Nama</th>
                 <th scope="col" className="px-3 py-2 font-semibold">Email</th>
                 <th scope="col" className="px-3 py-2 font-semibold">Status</th>
+                {kolomTambahan && (
+                  <th scope="col" className="px-3 py-2 font-semibold">{kolomTambahan.judul}</th>
+                )}
                 <th scope="col" className="px-3 py-2 text-right font-semibold">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {tabel.baris.length === 0 ? (
                 <BarisKosong
-                  kolom={4}
+                  kolom={kolomTambahan ? 5 : 4}
                   pesan={
                     tabel.totalSemua === 0
                       ? `Belum ada data ${labelSatuan.toLowerCase()}.`
@@ -176,7 +185,10 @@ export function HalamanUser({
                 />
               ) : (
                 tabel.baris.map((u) => {
-                  const diriSendiri = u.id === sesi.id;
+                  const alasanTolak =
+                    u.id === sesi.id
+                      ? "Tidak dapat menghapus akun sendiri."
+                      : (cekHapus?.(u) ?? null);
                   return (
                     <tr key={u.id} className="border-b border-border last:border-0">
                       <td className="px-3 py-2.5 font-medium">{u.nama}</td>
@@ -190,6 +202,9 @@ export function HalamanUser({
                           {u.aktif ? "Aktif" : "Nonaktif"}
                         </span>
                       </td>
+                      {kolomTambahan && (
+                        <td className="px-3 py-2.5 text-fg-muted">{kolomTambahan.render(u)}</td>
+                      )}
                       <td className="px-3 py-2.5">
                         <div className="flex justify-end gap-1.5">
                           <button
@@ -202,8 +217,8 @@ export function HalamanUser({
                           <button
                             type="button"
                             onClick={() => setTargetHapus(u)}
-                            disabled={diriSendiri}
-                            title={diriSendiri ? "Tidak dapat menghapus akun sendiri" : undefined}
+                            disabled={alasanTolak !== null}
+                            title={alasanTolak ?? undefined}
                             className="rounded-field px-2 py-1 text-xs font-semibold text-danger transition enabled:hover:bg-danger-soft disabled:opacity-40"
                           >
                             Hapus

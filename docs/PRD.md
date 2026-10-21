@@ -113,8 +113,8 @@ AspekStppa = "nilai-moral-sosial" | "fisik-motorik" | "kognitif"
            | "bahasa" | "sosial-emosional" | "seni"
 
 User         { id, nama, email, password, role, aktif }
-TahunAjaran  { id, nama, semester, aktif }
-Kelas        { id, nama, tahunAjaranId, guruId }
+TahunAjaran  { id, nama, semesterAktif, aktif }   // tepat satu aktif
+Kelas        { id, nama, tahunAjaranId, guruId }  // guruId = wali kelas
 Siswa        { id, nama, nisn, tglLahir, jenisKelamin, kelasId, ortuId }
 Absensi      { id, siswaId, tanggal, status, catatan, dicatatOleh }
 Izin         { id, siswaId, diajukanOleh, tanggal, jenis, alasan,
@@ -175,6 +175,17 @@ resmi hanya memerlukan perubahan satu slug dan satu label di `app/data/seed/stpp
 | 6.0 Laporan | `/laporan` | FR-14 |
 | (lintas proses) | ikon notifikasi di header | FR-13 |
 
+### 4.4 Keutuhan data tanpa basis data
+
+Tanpa basis data tidak ada *foreign key*, jadi aturan referensi ditegakkan di `app/lib/relasi.ts`.
+Alasannya praktis: bila sebuah kelas dihapus sementara siswanya masih menunjuk ke kelas itu, rujukan
+yang menggantung baru terasa akibatnya di FR-05 ke atas, ketika absensi dan daily report mulai menyaring
+berdasarkan kelas. Karena itu penghapusan **ditolak** selagi masih ada yang merujuk (BR-9), dengan pesan
+yang menyebutkan apa yang harus dibereskan lebih dulu.
+
+Dengan alasan yang sama, nomor urut ID disimpan terpisah dari datanya, sehingga ID yang sudah dihapus
+tidak pernah dipakai ulang oleh record baru.
+
 ---
 
 ## 5. Functional Requirements
@@ -213,6 +224,9 @@ prototype — bukan hanya digambar:
 | BR-4 | Rapor selalu diturunkan dari data observasi yang sudah tercatat; tidak bisa dibuat dari nol. | Use case: Rapor «include» Input Observasi |
 | BR-5 | Satu record absensi per siswa per tanggal; satu daily report per anak per hari. | AC issue #6 dan #8 |
 | BR-6 | Guru hanya mengakses data kelasnya; ortu hanya data anaknya. | NFR-04 |
+| BR-7 | Tepat satu tahun ajaran berstatus aktif; mengaktifkan satu tahun menonaktifkan yang lain. | AC issue #4 |
+| BR-8 | Satu guru menjadi wali paling banyak satu kelas per tahun ajaran, sehingga "kelas saya" selalu tunggal. | Dok. analisis menyebut "kelasnya" dalam bentuk tunggal |
+| BR-9 | Penghapusan ditolak bila masih dirujuk: ortu yang punya anak, guru yang jadi wali kelas, kelas yang berisi siswa, tahun ajaran yang aktif atau masih punya kelas. | Pengganti foreign key, lihat §4.4 |
 
 ---
 

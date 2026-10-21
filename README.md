@@ -33,6 +33,10 @@ Tersedia tombol pengisian cepat di halaman masuk.
 
 Akun terakhir sengaja dibuat nonaktif untuk memperagakan penolakan login.
 
+Kondisi awal data: tahun ajaran **2026/2027 Semester 1** aktif, dua kelas (Kelompok A diampu Sari,
+Kelompok B diampu Budi), 8 dari 10 siswa sudah ditempatkan, Rina punya 3 anak dan Andi 2 anak.
+Sisanya sengaja dibiarkan kosong agar alur penempatan dan penghubungan bisa diperagakan.
+
 > Password tersimpan sebagai teks biasa di seed JSON. Ini batasan prototype tanpa backend —
 > lihat status NFR-03 di PRD §7.
 
@@ -45,6 +49,8 @@ Akun terakhir sengaja dibuat nonaktif untuk memperagakan penolakan login.
 | `/admin/siswa` | CRUD data siswa |
 | `/admin/guru` | CRUD akun guru |
 | `/admin/orang-tua` | CRUD akun orang tua |
+| `/admin/tahun-ajaran` | CRUD tahun ajaran + set tahun aktif |
+| `/admin/kelas` | CRUD kelas + penetapan wali kelas |
 | `/guru` | Dashboard Guru |
 | `/ortu` | Dashboard Orang Tua |
 | `/403` | Akses ditolak |
@@ -76,6 +82,7 @@ app/
 ├── lib/
 │   ├── storage.ts       pembungkus localStorage + reset
 │   ├── repo.ts          repositori CRUD generik di atas localStorage
+│   ├── relasi.ts        pertanyaan lintas entitas + aturan keutuhan data
 │   ├── session.ts       login, logout, sesi, route guard
 │   ├── useTabelData.ts  pencarian + paginasi sisi klien
 │   └── menu.ts          menu per role
