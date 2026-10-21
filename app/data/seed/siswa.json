@@ -1,0 +1,92 @@
+[
+  {
+    "id": "s-001",
+    "nama": "Aisyah Putri Ramadhani",
+    "nisn": "0098765001",
+    "tglLahir": "2021-03-14",
+    "jenisKelamin": "P",
+    "kelasId": null,
+    "ortuIds": []
+  },
+  {
+    "id": "s-002",
+    "nama": "Bagas Dwi Nugroho",
+    "nisn": "0098765002",
+    "tglLahir": "2021-01-22",
+    "jenisKelamin": "L",
+    "kelasId": null,
+    "ortuIds": []
+  },
+  {
+    "id": "s-003",
+    "nama": "Chelsea Anindya",
+    "nisn": "0098765003",
+    "tglLahir": "2021-07-09",
+    "jenisKelamin": "P",
+    "kelasId": null,
+    "ortuIds": []
+  },
+  {
+    "id": "s-004",
+    "nama": "Daffa Alfarizi",
+    "nisn": "0098765004",
+    "tglLahir": "2020-11-30",
+    "jenisKelamin": "L",
+    "kelasId": null,
+    "ortuIds": []
+  },
+  {
+    "id": "s-005",
+    "nama": "Elvina Maharani",
+    "nisn": "0098765005",
+    "tglLahir": "2021-05-18",
+    "jenisKelamin": "P",
+    "kelasId": null,
+    "ortuIds": []
+  },
+  {
+    "id": "s-006",
+    "nama": "Fariz Abdurrahman",
+    "nisn": "0098765006",
+    "tglLahir": "2020-09-02",
+    "jenisKelamin": "L",
+    "kelasId": null,
+    "ortuIds": []
+  },
+  {
+    "id": "s-007",
+    "nama": "Gita Permatasari",
+    "nisn": "0098765007",
+    "tglLahir": "2021-02-25",
+    "jenisKelamin": "P",
+    "kelasId": null,
+    "ortuIds": []
+  },
+  {
+    "id": "s-008",
+    "nama": "Hafiz Nurcahyo",
+    "nisn": "0098765008",
+    "tglLahir": "2021-08-11",
+    "jenisKelamin": "L",
+    "kelasId": null,
+    "ortuIds": []
+  },
+  {
+    "id": "s-009",
+    "nama": "Intan Kusuma Wardani",
+    "nisn": "0098765009",
+    "tglLahir": "2020-12-06",
+    "jenisKelamin": "P",
+    "kelasId": null,
+    "ortuIds": []
+  },
+  {
+    "id": "s-010",
+    "nama": "Joshua Pratama Siregar",
+    "nisn": "0098765010",
+    "tglLahir": "2021-04-29",
+    "jenisKelamin": "L",
+    "kelasId": null,
+    "ortuIds": []
+  }
+]

@@ -13,9 +13,9 @@ export type ItemMenu = {
 export const MENU: Record<Role, ItemMenu[]> = {
   admin: [
     { label: "Dashboard", to: "/admin", ikon: "🏠", fr: "FR-01", siap: true },
-    { label: "Data Siswa", to: "/admin/siswa", ikon: "👶", fr: "FR-02", siap: false },
-    { label: "Data Guru", to: "/admin/guru", ikon: "👩‍🏫", fr: "FR-02", siap: false },
-    { label: "Data Orang Tua", to: "/admin/orang-tua", ikon: "👪", fr: "FR-02", siap: false },
+    { label: "Data Siswa", to: "/admin/siswa", ikon: "👶", fr: "FR-02", siap: true },
+    { label: "Data Guru", to: "/admin/guru", ikon: "👩‍🏫", fr: "FR-02", siap: true },
+    { label: "Data Orang Tua", to: "/admin/orang-tua", ikon: "👪", fr: "FR-02", siap: true },
     { label: "Kelas", to: "/admin/kelas", ikon: "🏫", fr: "FR-03", siap: false },
     { label: "Tahun Ajaran", to: "/admin/tahun-ajaran", ikon: "📅", fr: "FR-03", siap: false },
     { label: "Pengumuman", to: "/admin/pengumuman", ikon: "📢", fr: "FR-04", siap: false },

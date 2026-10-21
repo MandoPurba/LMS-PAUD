@@ -42,6 +42,9 @@ Akun terakhir sengaja dibuat nonaktif untuk memperagakan penolakan login.
 |---|---|
 | `/login` | Masuk, dengan pengisian cepat akun demo |
 | `/admin` | Dashboard Admin Sekolah |
+| `/admin/siswa` | CRUD data siswa |
+| `/admin/guru` | CRUD akun guru |
+| `/admin/orang-tua` | CRUD akun orang tua |
 | `/guru` | Dashboard Guru |
 | `/ortu` | Dashboard Orang Tua |
 | `/403` | Akses ditolak |
@@ -72,7 +75,9 @@ app/
 │   └── seed/            data awal, satu berkas per data store DFD
 ├── lib/
 │   ├── storage.ts       pembungkus localStorage + reset
+│   ├── repo.ts          repositori CRUD generik di atas localStorage
 │   ├── session.ts       login, logout, sesi, route guard
+│   ├── useTabelData.ts  pencarian + paginasi sisi klien
 │   └── menu.ts          menu per role
 └── routes/
     ├── login.tsx  forbidden.tsx  home.tsx  tokens.tsx

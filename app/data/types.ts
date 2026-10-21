@@ -17,6 +17,20 @@ export type AspekStppa =
   | "sosial-emosional"
   | "seni";
 
+export type JenisKelamin = "L" | "P";
+
+/** D2 — Siswa. kelasId & ortuIds ditetapkan di FR-03. */
+export type Siswa = {
+  id: string;
+  nama: string;
+  nisn: string;
+  /** Format ISO, yyyy-mm-dd. */
+  tglLahir: string;
+  jenisKelamin: JenisKelamin;
+  kelasId: string | null;
+  ortuIds: string[];
+};
+
 /** D1 — User */
 export type User = {
   id: string;

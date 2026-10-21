@@ -122,6 +122,9 @@
   --color-fg-muted: var(--fg-muted);
   --color-fg-subtle: var(--fg-subtle);
   --color-fg-on-brand: var(--fg-on-brand);
+  --color-fg-on-strong: var(--fg-on-strong);
+  --color-fg-on-accent: var(--fg-on-accent);
+  --color-overlay: var(--overlay);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
   --color-ring: var(--ring);
@@ -180,6 +183,9 @@
   --fg-muted: var(--color-sand-700);
   --fg-subtle: var(--color-sand-500);
   --fg-on-brand: hsl(0 0% 100%);
+  --fg-on-strong: hsl(0 0% 100%);
+  --fg-on-accent: var(--color-sand-950);
+  --overlay: hsl(30 13% 9% / 0.4);
   --border: var(--color-sand-200);
   --border-strong: var(--color-sand-300);
   --ring: var(--color-brand-500);
@@ -238,6 +244,9 @@
     --fg-muted: var(--color-sand-300);
     --fg-subtle: var(--color-sand-400);
     --fg-on-brand: var(--color-brand-950);
+    --fg-on-strong: var(--color-sand-950);
+    --fg-on-accent: var(--color-sand-950);
+    --overlay: hsl(30 13% 4% / 0.6);
     --border: var(--color-sand-800);
     --border-strong: var(--color-sand-700);
     --ring: var(--color-brand-400);
@@ -297,6 +306,9 @@
   --fg-muted: var(--color-sand-300);
   --fg-subtle: var(--color-sand-400);
   --fg-on-brand: var(--color-brand-950);
+  --fg-on-strong: var(--color-sand-950);
+  --fg-on-accent: var(--color-sand-950);
+  --overlay: hsl(30 13% 4% / 0.6);
   --border: var(--color-sand-800);
   --border-strong: var(--color-sand-700);
   --ring: var(--color-brand-400);
