@@ -45,7 +45,10 @@ Seluruh token ada di `app/app.css`. **Tidak boleh ada warna hardcode** (`#fff`, 
 `rgb(...)`) di komponen.
 
 - Pakai token semantik: `bg-surface`, `bg-surface-raised`, `text-fg`, `text-fg-muted`, `border-border`,
-  `bg-primary`, `text-fg-on-brand`, `bg-danger-soft`, …
+  `bg-primary`, `bg-danger-soft`, …
+- Teks di atas isian berwarna penuh: `text-fg-on-brand` (primary), `text-fg-on-strong`
+  (danger/success/info), `text-fg-on-accent` (accent/warning — isian kuning butuh teks gelap di
+  kedua mode). Latar gelap modal: `bg-overlay`.
 - Token domain: `role-admin|guru|ortu`, `hadir|izin|sakit|alpa`, `stppa-bb|mb|bsh|bsb` (+ pasangan `-fg`).
 - Ramp mentah (`brand`, `sun`, `leaf`, `blossom`, `sky`, `grape`, `sand`) hanya bila tidak ada token
   semantik yang cocok.

@@ -21,11 +21,11 @@ const steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] as const;
 
 const semantics = [
   { label: "primary", bg: "bg-primary", fg: "text-fg-on-brand" },
-  { label: "accent", bg: "bg-accent", fg: "text-sand-950" },
-  { label: "success", bg: "bg-success", fg: "text-white" },
-  { label: "warning", bg: "bg-warning", fg: "text-white" },
-  { label: "danger", bg: "bg-danger", fg: "text-white" },
-  { label: "info", bg: "bg-info", fg: "text-white" },
+  { label: "accent", bg: "bg-accent", fg: "text-fg-on-accent" },
+  { label: "success", bg: "bg-success", fg: "text-fg-on-strong" },
+  { label: "warning", bg: "bg-warning", fg: "text-fg-on-accent" },
+  { label: "danger", bg: "bg-danger", fg: "text-fg-on-strong" },
+  { label: "info", bg: "bg-info", fg: "text-fg-on-strong" },
 ] as const;
 
 const roles = [

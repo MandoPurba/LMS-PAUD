@@ -1,13 +1,12 @@
-import seedUsers from "../data/seed/users.json";
 import type { Role, Session, User } from "../data/types";
+import { repoUser } from "./repo";
 import { baca, hapus, tulis } from "./storage";
 
 const KUNCI_SESI = "sesi";
-const KUNCI_USERS = "users";
 
-/** Daftar user: dari localStorage bila sudah pernah diubah, kalau belum dari seed. */
+/** Satu sumber data user, jadi perubahan dari FR-02 langsung berlaku saat login. */
 export function daftarUser(): User[] {
-  return baca<User[]>(KUNCI_USERS, seedUsers as User[]);
+  return repoUser.semua();
 }
 
 export type HasilLogin = { ok: true; sesi: Session } | { ok: false; pesan: string };
