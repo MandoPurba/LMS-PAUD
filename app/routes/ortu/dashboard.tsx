@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 import type { Route } from "./+types/dashboard";
 import { JudulHalaman, KartuFitur, Panel } from "../../components/ui";
 import { tanggalPanjang } from "../../lib/tanggal";
@@ -58,6 +60,12 @@ export default function DashboardOrtu({ loaderData }: Route.ComponentProps) {
                       </>
                     )}
                   </p>
+                  <Link
+                    to={`/ortu/daily-report?anak=${a.id}`}
+                    className="mt-2 inline-block text-xs font-semibold text-primary underline"
+                  >
+                    Lihat daily report →
+                  </Link>
                 </li>
               ))}
             </ul>

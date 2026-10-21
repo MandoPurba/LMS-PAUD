@@ -39,6 +39,17 @@ export function reportSiswa(siswaId: string, tanggal: string): DailyReport | und
   return repoDailyReport.semua().find((r) => r.siswaId === siswaId && r.tanggal === tanggal);
 }
 
+/**
+ * Report yang boleh dibaca orang tua: hanya yang sudah terbit, terbaru di atas.
+ * Draft milik guru tidak pernah ikut.
+ */
+export function reportTerbitSiswa(siswaId: string): DailyReport[] {
+  return repoDailyReport
+    .semua()
+    .filter((r) => r.siswaId === siswaId && r.status === "published")
+    .sort((a, b) => b.tanggal.localeCompare(a.tanggal));
+}
+
 export function reportTanggal(tanggal: string): DailyReport[] {
   return repoDailyReport.semua().filter((r) => r.tanggal === tanggal);
 }
