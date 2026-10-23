@@ -49,3 +49,19 @@ export function usia(iso: string): string {
 
   return `${Math.floor(bulan / 12)} th ${bulan % 12} bln`;
 }
+
+/**
+ * Periode akademik sebuah tanggal, mengikuti kalender sekolah Indonesia:
+ * Juli–Desember = Semester 1, Januari–Juni = Semester 2. Dipakai untuk
+ * menyaring observasi dan menyusun rapor per semester.
+ */
+export function periodeAkademik(tanggal: string): { tahunAjaran: string; semester: 1 | 2 } {
+  const [tahun, bulan] = tanggal.split("-").map(Number);
+  if (bulan >= 7) return { tahunAjaran: `${tahun}/${tahun + 1}`, semester: 1 };
+  return { tahunAjaran: `${tahun - 1}/${tahun}`, semester: 2 };
+}
+
+/** Mis. "2026/2027 Semester 1". */
+export function labelPeriode(p: { tahunAjaran: string; semester: 1 | 2 }): string {
+  return `${p.tahunAjaran} Semester ${p.semester}`;
+}

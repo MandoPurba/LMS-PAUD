@@ -84,6 +84,28 @@ export type DailyReport = {
   dibuatOleh: string;
 };
 
+export type IndikatorStppa = { id: string; teks: string };
+
+/** Master STPPA: satu baris per aspek beserta indikatornya. */
+export type AspekMaster = {
+  aspek: AspekStppa;
+  label: string;
+  indikator: IndikatorStppa[];
+};
+
+/** D6 — Observasi. Satu catatan per indikator per tanggal. */
+export type Observasi = {
+  id: string;
+  siswaId: string;
+  /** Format ISO, yyyy-mm-dd. */
+  tanggal: string;
+  aspek: AspekStppa;
+  indikatorId: string;
+  capaian: Capaian;
+  catatan: string | null;
+  dicatatOleh: string;
+};
+
 /** D1 — User */
 export type User = {
   id: string;

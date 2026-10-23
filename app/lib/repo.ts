@@ -1,10 +1,19 @@
 import seedAbsensi from "../data/seed/absensi.json";
 import seedDailyReport from "../data/seed/daily-report.json";
 import seedKelas from "../data/seed/kelas.json";
+import seedObservasi from "../data/seed/observasi.json";
 import seedSiswa from "../data/seed/siswa.json";
 import seedTahunAjaran from "../data/seed/tahun-ajaran.json";
 import seedUsers from "../data/seed/users.json";
-import type { Absensi, DailyReport, Kelas, Siswa, TahunAjaran, User } from "../data/types";
+import type {
+  Absensi,
+  DailyReport,
+  Kelas,
+  Observasi,
+  Siswa,
+  TahunAjaran,
+  User,
+} from "../data/types";
 import { baca, hapus as hapusKunci, tulis } from "./storage";
 
 /** Dilempar bila localStorage menolak penulisan, mis. kuota penuh. */
@@ -103,6 +112,7 @@ export const repoUser = buatRepo<User>("users", "u", seedUsers as User[]);
 export const repoSiswa = buatRepo<Siswa>("siswa", "s", seedSiswa as Siswa[]);
 export const repoKelas = buatRepo<Kelas>("kelas", "k", seedKelas as Kelas[]);
 export const repoAbsensi = buatRepo<Absensi>("absensi", "ab", seedAbsensi as Absensi[]);
+export const repoObservasi = buatRepo<Observasi>("observasi", "ob", seedObservasi as Observasi[]);
 export const repoDailyReport = buatRepo<DailyReport>(
   "daily-report",
   "dr",
