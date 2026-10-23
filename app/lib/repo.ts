@@ -1,5 +1,6 @@
 import seedAbsensi from "../data/seed/absensi.json";
 import seedDailyReport from "../data/seed/daily-report.json";
+import seedIzin from "../data/seed/izin.json";
 import seedKelas from "../data/seed/kelas.json";
 import seedObservasi from "../data/seed/observasi.json";
 import seedRapor from "../data/seed/rapor.json";
@@ -9,6 +10,7 @@ import seedUsers from "../data/seed/users.json";
 import type {
   Absensi,
   DailyReport,
+  Izin,
   Kelas,
   Observasi,
   Rapor,
@@ -114,6 +116,7 @@ export const repoUser = buatRepo<User>("users", "u", seedUsers as User[]);
 export const repoSiswa = buatRepo<Siswa>("siswa", "s", seedSiswa as Siswa[]);
 export const repoKelas = buatRepo<Kelas>("kelas", "k", seedKelas as Kelas[]);
 export const repoAbsensi = buatRepo<Absensi>("absensi", "ab", seedAbsensi as Absensi[]);
+export const repoIzin = buatRepo<Izin>("izin", "iz", seedIzin as Izin[]);
 export const repoObservasi = buatRepo<Observasi>("observasi", "ob", seedObservasi as Observasi[]);
 export const repoRapor = buatRepo<Rapor>("rapor", "rp", seedRapor as Rapor[]);
 export const repoDailyReport = buatRepo<DailyReport>(

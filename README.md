@@ -52,6 +52,8 @@ Sisanya sengaja dibiarkan kosong agar alur penempatan dan penghubungan bisa dipe
 | `/admin/tahun-ajaran` | CRUD tahun ajaran + set tahun aktif |
 | `/admin/kelas` | CRUD kelas + penetapan wali kelas |
 | `/guru/absensi` | Input absensi harian H/I/S/A untuk kelas yang diampu |
+| `/guru/izin` | Guru menyetujui / menolak pengajuan izin |
+| `/ortu/izin` | Orang tua mengajukan izin atau sakit + riwayat status |
 | `/guru/daily-report` | Isi daily report per anak (hanya untuk anak yang Hadir) |
 | `/ortu/daily-report` | Orang tua membaca daily report anaknya (hanya yang terbit) |
 | `/guru/observasi` | Catat observasi STPPA per aspek & indikator, filter semester |
@@ -104,6 +106,7 @@ app/
 │   ├── repo.ts          repositori CRUD generik di atas localStorage
 │   ├── relasi.ts        pertanyaan lintas entitas + aturan keutuhan data
 │   ├── absensi.ts       simpan/baca absensi, label & warna status
+│   ├── izin.ts          pengajuan izin + persetujuan yang mengubah absensi
 │   ├── daily-report.ts  simpan/baca report, gerbang "harus Hadir"
 │   ├── foto.ts          kompresi foto via canvas
 │   ├── stppa.ts         master aspek/indikator, observasi, capaian per aspek

@@ -224,7 +224,7 @@ prototype — bukan hanya digambar:
 |---|---|---|
 | BR-1 | Daily report hanya dapat dibuat bila anak berstatus **Hadir** pada tanggal tersebut. | Flowchart, cabang pertama |
 | BR-2 | Field **kegiatan wajib** terisi sebelum daily report dapat disimpan. | Flowchart, cabang kedua |
-| BR-3 | Guru menyetujui izin → status absensi tanggal itu otomatis berubah menjadi **I** atau **S**. | Use case: Verifikasi Izin «extend» Input Absensi |
+| BR-3 | Guru menyetujui izin → status absensi tanggal itu otomatis berubah menjadi **I** atau **S**, menimpa status sebelumnya. | Use case: Verifikasi Izin «extend» Input Absensi |
 | BR-4 | Rapor selalu diturunkan dari data observasi yang sudah tercatat; tidak bisa dibuat dari nol. | Use case: Rapor «include» Input Observasi |
 | BR-5 | Satu record absensi per siswa per tanggal; satu daily report per anak per hari. Menyimpan ulang menimpa, tidak menambah. | AC issue #6 dan #8 |
 | BR-6 | Guru hanya mengakses data kelasnya; ortu hanya data anaknya. | NFR-04 |
@@ -235,6 +235,21 @@ prototype — bukan hanya digambar:
 | BR-11 | Capaian per aspek yang dipakai menyusun rapor adalah observasi **bertanggal paling baru** pada aspek tersebut dalam satu semester. | Dasar FR-11 |
 | BR-12 | Rapor berstatus terbit bersifat hanya-baca; penyuntingan dan perhitungan ulang ditolak. Untuk memperbaikinya, rapor ditarik kembali ke draft terlebih dahulu. | AC issue #12 |
 | BR-13 | Hanya aspek yang benar-benar punya observasi yang masuk ke rapor; aspek tanpa data tidak dibuat-buat. | Turunan BR-4 |
+| BR-14 | Menyetujui izin untuk tanggal yang sudah punya daily report terbit mengembalikan report itu ke **draft**. Datanya tidak dihapus. | Turunan BR-1 + BR-3, lihat §5.2 |
+| BR-15 | Satu siswa hanya boleh punya satu pengajuan izin aktif (menunggu atau disetujui) per tanggal. Pengajuan yang ditolak membebaskan tanggal itu. | AC issue #7 |
+
+### 5.2 Benturan antara BR-1 dan BR-3
+
+BR-3 mengizinkan izin disetujui untuk tanggal yang sudah lewat, sedangkan BR-1 mensyaratkan anak
+berstatus Hadir agar punya daily report. Keduanya bertemu pada satu kasus: guru menyetujui izin untuk
+tanggal yang **sudah** punya daily report terbit. Setelah disetujui anak menjadi tidak hadir, sehingga
+report tersebut tidak lagi sah menurut BR-1 — tetapi orang tua sudah dapat melihatnya.
+
+Tiga pilihan penanganan dipertimbangkan: menolak persetujuan, menghapus report, atau mengembalikan
+report ke draft. Yang dipakai adalah **mengembalikan ke draft** (BR-14): persetujuan tetap berjalan
+sebagaimana BR-3 mengharuskan, report berhenti terlihat orang tua sebagaimana BR-1 mengharuskan, dan
+catatan guru tidak hilang. Dialog persetujuan memberi tahu guru sebelum tindakan dijalankan, jadi
+akibatnya tidak terjadi diam-diam.
 
 ---
 

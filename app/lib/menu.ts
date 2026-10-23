@@ -26,7 +26,7 @@ export const MENU: Record<Role, ItemMenu[]> = {
   guru: [
     { label: "Dashboard", to: "/guru", ikon: "🏠", fr: "FR-01", siap: true },
     { label: "Absensi", to: "/guru/absensi", ikon: "✅", fr: "FR-05", siap: true },
-    { label: "Pengajuan Izin", to: "/guru/izin", ikon: "📝", fr: "FR-06", siap: false },
+    { label: "Pengajuan Izin", to: "/guru/izin", ikon: "📝", fr: "FR-06", siap: true },
     { label: "Daily Report", to: "/guru/daily-report", ikon: "📔", fr: "FR-07", siap: true },
     { label: "Galeri", to: "/guru/galeri", ikon: "🖼️", fr: "FR-09", siap: false },
     { label: "Observasi STPPA", to: "/guru/observasi", ikon: "🌱", fr: "FR-10", siap: true },
@@ -37,7 +37,7 @@ export const MENU: Record<Role, ItemMenu[]> = {
     { label: "Dashboard", to: "/ortu", ikon: "🏠", fr: "FR-01", siap: true },
     { label: "Daily Report", to: "/ortu/daily-report", ikon: "📔", fr: "FR-08", siap: true },
     { label: "Galeri", to: "/ortu/galeri", ikon: "🖼️", fr: "FR-09", siap: false },
-    { label: "Ajukan Izin", to: "/ortu/izin", ikon: "📝", fr: "FR-06", siap: false },
+    { label: "Ajukan Izin", to: "/ortu/izin", ikon: "📝", fr: "FR-06", siap: true },
     { label: "Rapor", to: "/ortu/rapor", ikon: "📄", fr: "FR-12", siap: true },
   ],
 };
