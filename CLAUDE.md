@@ -56,6 +56,8 @@ Seluruh token ada di `app/app.css`. **Tidak boleh ada warna hardcode** (`#fff`, 
 - Nilai warna ditulis dalam **HSL**.
 - Mode gelap wajib ikut jalan — karena memakai token semantik, ini otomatis.
 - Pratinjau seluruh token: route `/tokens`.
+- Kelas cetak: `tanpa-cetak` (sembunyikan saat dicetak), `hanya-cetak` (hanya muncul saat dicetak),
+  `area-cetak`, `putus-halaman`. Lihat blok `@media print` di `app/app.css`.
 
 ---
 

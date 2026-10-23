@@ -354,6 +354,52 @@
   --stppa-bsb-fg: var(--color-brand-950);
 }
 
+/* Cetak — dipakai FR-12 untuk mengunduh rapor sebagai PDF lewat window.print() */
+@media print {
+  @page {
+    margin: 16mm;
+  }
+
+  /* Paksa tema terang: latar gelap akan terbuang tinta dan sulit dibaca. */
+  :root,
+  :root.dark,
+  :root[data-theme="dark"] {
+    color-scheme: light;
+    --surface: hsl(0 0% 100%);
+    --surface-raised: hsl(0 0% 100%);
+    --surface-sunken: hsl(0 0% 100%);
+    --surface-hover: hsl(0 0% 100%);
+    --fg: hsl(30 13% 9%);
+    --fg-muted: hsl(32 9% 33%);
+    --fg-subtle: hsl(35 9% 42%);
+    --border: hsl(37 17% 82%);
+    --border-strong: hsl(38 11% 67%);
+  }
+
+  .tanpa-cetak {
+    display: none !important;
+  }
+
+  .hanya-cetak {
+    display: block !important;
+  }
+
+  /* Hilangkan bayangan & kartu bertumpuk agar hasil cetak bersih. */
+  .area-cetak,
+  .area-cetak * {
+    box-shadow: none !important;
+  }
+
+  .area-cetak {
+    border: 0 !important;
+    padding: 0 !important;
+  }
+
+  .putus-halaman {
+    break-inside: avoid;
+  }
+}
+
 /* Base */
 @layer base {
   html,
@@ -369,5 +415,10 @@
 
   :focus-visible {
     @apply outline-ring outline-2 outline-offset-2;
+  }
+
+  /* Hanya tampil saat dicetak; lihat blok @media print di atas. */
+  .hanya-cetak {
+    display: none;
   }
 }

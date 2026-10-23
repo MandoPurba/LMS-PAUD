@@ -18,7 +18,7 @@ export function AppShell({ sesi, children }: { sesi: Session; children: React.Re
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-20 border-b border-border bg-surface-raised">
+      <header className="tanpa-cetak sticky top-0 z-20 border-b border-border bg-surface-raised">
         <div className="flex items-center gap-3 px-4 py-3">
           <button
             type="button"
@@ -54,7 +54,7 @@ export function AppShell({ sesi, children }: { sesi: Session; children: React.Re
 
       <div className="md:flex">
         <nav
-          className={`${menuTerbuka ? "block" : "hidden"} border-b border-border bg-surface-raised p-3 md:block md:w-64 md:shrink-0 md:border-b-0 md:border-r`}
+          className={`tanpa-cetak ${menuTerbuka ? "block" : "hidden"} border-b border-border bg-surface-raised p-3 md:block md:w-64 md:shrink-0 md:border-b-0 md:border-r`}
           aria-label="Menu utama"
         >
           <ul className="space-y-1">
