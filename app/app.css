@@ -162,6 +162,14 @@
   --color-alpa: var(--alpa);
   --color-alpa-soft: var(--alpa-soft);
 
+  /* chart — nilai hasil validasi CVD, lihat PRD §4.5 */
+  --color-chart-surface: var(--chart-surface);
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-hadir: var(--chart-hadir);
+  --color-chart-izin: var(--chart-izin);
+  --color-chart-sakit: var(--chart-sakit);
+  --color-chart-alpa: var(--chart-alpa);
+
   /* stppa */
   --color-stppa-bb: var(--stppa-bb);
   --color-stppa-bb-fg: var(--stppa-bb-fg);
@@ -220,6 +228,13 @@
   --sakit-soft: var(--color-sky-100);
   --alpa: var(--color-blossom-600);
   --alpa-soft: var(--color-blossom-100);
+
+  --chart-surface: hsl(0 0% 100%);
+  --chart-grid: var(--color-sand-200);
+  --chart-hadir: var(--color-leaf-700);
+  --chart-izin: var(--color-sun-600);
+  --chart-sakit: var(--color-sky-600);
+  --chart-alpa: var(--color-blossom-600);
 
   --stppa-bb: var(--color-brand-100);
   --stppa-bb-fg: var(--color-brand-900);
@@ -282,6 +297,13 @@
     --alpa: var(--color-blossom-400);
     --alpa-soft: var(--color-blossom-950);
 
+    --chart-surface: var(--color-sand-950);
+    --chart-grid: var(--color-sand-800);
+    --chart-hadir: var(--color-leaf-600);
+    --chart-izin: var(--color-sun-700);
+    --chart-sakit: var(--color-sky-600);
+    --chart-alpa: var(--color-blossom-600);
+
     --stppa-bb: var(--color-brand-950);
     --stppa-bb-fg: var(--color-brand-200);
     --stppa-mb: var(--color-brand-800);
@@ -343,6 +365,13 @@
   --sakit-soft: var(--color-sky-950);
   --alpa: var(--color-blossom-400);
   --alpa-soft: var(--color-blossom-950);
+
+  --chart-surface: var(--color-sand-950);
+  --chart-grid: var(--color-sand-800);
+  --chart-hadir: var(--color-leaf-600);
+  --chart-izin: var(--color-sun-700);
+  --chart-sakit: var(--color-sky-600);
+  --chart-alpa: var(--color-blossom-600);
 
   --stppa-bb: var(--color-brand-950);
   --stppa-bb-fg: var(--color-brand-200);

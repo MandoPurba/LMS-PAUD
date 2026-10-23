@@ -58,6 +58,10 @@ Seluruh token ada di `app/app.css`. **Tidak boleh ada warna hardcode** (`#fff`, 
 - Pratinjau seluruh token: route `/tokens`.
 - Kelas cetak: `tanpa-cetak` (sembunyikan saat dicetak), `hanya-cetak` (hanya muncul saat dicetak),
   `area-cetak`, `putus-halaman`. Lihat blok `@media print` di `app/app.css`.
+- **Chart memakai token sendiri** (`bg-chart-hadir`, `bg-chart-izin`, `bg-chart-sakit`,
+  `bg-chart-alpa`, `bg-chart-surface`, `bg-chart-grid`), bukan token badge — syarat kontrasnya
+  berbeda. Nilainya hasil validasi buta warna, jangan diganti tanpa menjalankan ulang validator
+  palet; penalarannya di PRD §4.5.
 
 ---
 
