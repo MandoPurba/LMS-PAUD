@@ -57,6 +57,8 @@ Sisanya sengaja dibiarkan kosong agar alur penempatan dan penghubungan bisa dipe
 | `/guru/daily-report` | Isi daily report per anak (hanya untuk anak yang Hadir) |
 | `/ortu/daily-report` | Orang tua membaca daily report anaknya (hanya yang terbit) |
 | `/guru/observasi` | Catat observasi STPPA per aspek & indikator, filter semester |
+| `/admin/laporan` | Rekap absensi & capaian semua kelas |
+| `/guru/laporan` | Rekap absensi & capaian kelas yang diampu |
 | `/guru/rapor` | Susun draft rapor dari observasi, sunting narasi, terbitkan |
 | `/ortu/rapor` | Orang tua melihat & mengunduh rapor anaknya sebagai PDF |
 | `/guru` | Dashboard Guru |
@@ -111,6 +113,8 @@ app/
 │   ├── foto.ts          kompresi foto via canvas
 │   ├── stppa.ts         master aspek/indikator, observasi, capaian per aspek
 │   ├── rapor.ts         susun draft dari observasi, narasi, terbit/tarik
+│   ├── laporan.ts       agregasi rekap absensi & capaian
+│   ├── laporan-loader.ts  data laporan per role
 │   ├── tanggal.ts       helper tanggal zona waktu lokal
 │   ├── session.ts       login, logout, sesi, route guard
 │   ├── useTabelData.ts  pencarian + paginasi sisi klien

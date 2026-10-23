@@ -36,6 +36,10 @@ export default [
     // 5.0 Observasi & Rapor — FR-10
     route("guru/observasi", "routes/guru/observasi.tsx"),
     route("guru/rapor", "routes/guru/rapor.tsx"),
+
+    // 6.0 Laporan — FR-14
+    route("admin/laporan", "routes/admin/laporan.tsx"),
+    route("guru/laporan", "routes/guru/laporan.tsx"),
     route("ortu/rapor", "routes/ortu/rapor.tsx"),
   ]),
 ] satisfies RouteConfig;

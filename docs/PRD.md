@@ -176,7 +176,7 @@ resmi hanya memerlukan perubahan satu slug dan satu label di `app/data/seed/stpp
 | 5.0 Observasi & Rapor | `/guru/observasi` | FR-10 |
 | 5.0 | `/guru/rapor` | FR-11 |
 | 5.0 | `/ortu/rapor` | FR-12 |
-| 6.0 Laporan | `/laporan` | FR-14 |
+| 6.0 Laporan | `/admin/laporan`, `/guru/laporan` | FR-14 |
 | (lintas proses) | ikon notifikasi di header | FR-13 |
 
 ### 4.4 Keutuhan data tanpa basis data
@@ -189,6 +189,31 @@ yang menyebutkan apa yang harus dibereskan lebih dulu.
 
 Dengan alasan yang sama, nomor urut ID disimpan terpisah dari datanya, sehingga ID yang sudah dihapus
 tidak pernah dipakai ulang oleh record baru.
+
+### 4.5 Warna chart: hasil validasi, bukan selera
+
+Warna pada chart tidak memakai token badge (`--hadir`, `--izin`, …) melainkan token terpisah
+(`--chart-hadir`, …). Alasannya dua hal berbeda: badge duduk di atas latar `-soft` dan harus lolos
+kontras **teks**, sedangkan mark chart duduk di atas permukaan plot dan harus lolos **pemisahan buta
+warna** antar seri yang berdampingan.
+
+Palet keempat status diuji dengan validator (bukan dikira-kira). Hasil pertama **gagal**: `leaf-600`
+(hadir) ↔ `sun-600` (izin) hanya terpisah ΔE 5.8 pada protanopia — hijau dan oranye memang pasangan
+yang paling sering tertukar. Dari 135 kombinasi step yang diuji, nilai berikut dipakai:
+
+| Mode | Hadir | Izin | Sakit | Alpa | Permukaan plot | Hasil |
+|---|---|---|---|---|---|---|
+| Terang | `leaf-700` | `sun-600` | `sky-600` | `blossom-600` | putih | **lolos semua** |
+| Gelap | `leaf-600` | `sun-700` | `sky-600` | `blossom-600` | `sand-950` | lolos, CVD di band 6–8 |
+
+Mode gelap tidak bisa mencapai ΔE ≥ 8 dengan ramp yang ada karena band terang-gelap untuk mode gelap
+sempit (OKLCH L 0.48–0.67), sehingga jarak terang antara hijau dan oranye tidak cukup. Band 6–8 sah
+**hanya bila ada pengkodean kedua**, dan ketiganya disediakan: jarak 2 px antar segmen, label nilai
+langsung pada segmen yang cukup lebar, serta tabel padanan yang memuat seluruh angka. Permukaan plot
+di mode gelap memakai `sand-950`, bukan `sand-900`, karena hanya dengan itu kontras mark lolos 3:1.
+
+Skala capaian STPPA bukan kategori melainkan data berurutan (BB < MB < BSH < BSB), jadi memakai ramp
+satu rona terang→gelap, dan setiap sel selalu menuliskan kodenya sehingga tidak bergantung warna.
 
 ---
 
