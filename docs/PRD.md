@@ -80,6 +80,7 @@ di setiap layar, bukan hanya di menu.
 | T-6 | Foto disimpan sebagai base64, dikompres via `<canvas>` | Tidak ada object storage. Sekaligus memperagakan NFR-09. |
 | T-7 | Tanggal selalu dihitung di zona waktu lokal lewat `app/lib/tanggal.ts`, tidak pernah dari `toISOString()` | Di WIB (UTC+7), potongan ISO menunjukkan tanggal kemarin sebelum pukul 07.00 — absensi "hari ini" bisa tercatat di tanggal yang keliru. |
 | T-8 | Semester diturunkan dari tanggal: Juli–Desember = Semester 1, Januari–Juni = Semester 2 (`periodeAkademik()`) | Observasi dan rapor disaring per semester. Menyimpan semester di setiap record akan mudah tidak sinkron dengan tanggalnya. |
+| T-9 | Unduh PDF memakai `window.print()` dengan lembar gaya `@media print`, bukan pustaka seperti jsPDF | Nol dependensi tambahan, dan dialog cetak peramban sudah menyediakan "Save as PDF". Pustaka PDF juga harus menggambar ulang tata letak dari nol sehingga mudah berbeda dari yang terlihat di layar. |
 
 ### 4.1 Struktur data store
 
@@ -301,7 +302,7 @@ hal itu lebih berguna dicatat daripada diklaim terpenuhi.
 | NFR-04 | Security | Data & foto anak hanya untuk ortu, guru kelas, admin | 🟡 Disimulasikan | Route guard + filter per role di klien. Alur otorisasinya terlihat, tetapi tidak aman karena seluruh data ada di sisi klien |
 | NFR-05 | Security | Foto lewat signed URL yang kedaluwarsa | ❌ Tidak dipenuhi | Foto disimpan base64 di klien; tidak ada object storage yang bisa menandatangani URL |
 | NFR-06 | Usability | Input daily report satu anak ≤ 2 menit | ✅ Dipenuhi | Dapat diukur langsung saat demo |
-| NFR-07 | Usability | Bahasa Indonesia, ikon sederhana | ✅ Dipenuhi | Seluruh antarmuka berbahasa Indonesia |
+| NFR-07 | Usability | Bahasa Indonesia, ikon sederhana | ✅ Dipenuhi | Seluruh antarmuka berbahasa Indonesia; rapor cetak memakai istilah resmi STPPA |
 | NFR-08 | Availability | Android 9+/iOS 14+ untuk ortu; Chrome, Firefox, Edge untuk admin & guru | 🟡 Sebagian | Bagian web dipenuhi. Aplikasi mobile di luar scope (§2.3) |
 | NFR-09 | Efficiency | Foto dikompres otomatis ≤ 1 MB | ✅ Dipenuhi | Kompresi di klien lewat `<canvas>`: sisi terpanjang 1280 px, mutu JPEG diturunkan bertahap sampai ≤ 400 KB; foto yang tetap > 1 MB ditolak. Lihat §7.1 |
 | NFR-10 | Reliability | Backup harian, retensi 30 hari | ❌ Tidak dipenuhi | Tidak ada basis data. Tersedia tombol *reset ke seed* sebagai pengganti saat demo |

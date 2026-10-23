@@ -60,12 +60,20 @@ export default function DashboardOrtu({ loaderData }: Route.ComponentProps) {
                       </>
                     )}
                   </p>
-                  <Link
-                    to={`/ortu/daily-report?anak=${a.id}`}
-                    className="mt-2 inline-block text-xs font-semibold text-primary underline"
-                  >
-                    Lihat daily report →
-                  </Link>
+                  <div className="mt-2 flex flex-wrap gap-3">
+                    <Link
+                      to={`/ortu/daily-report?anak=${a.id}`}
+                      className="text-xs font-semibold text-primary underline"
+                    >
+                      Daily report →
+                    </Link>
+                    <Link
+                      to={`/ortu/rapor?anak=${a.id}`}
+                      className="text-xs font-semibold text-primary underline"
+                    >
+                      Rapor →
+                    </Link>
+                  </div>
                 </li>
               ))}
             </ul>

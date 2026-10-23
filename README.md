@@ -56,6 +56,7 @@ Sisanya sengaja dibiarkan kosong agar alur penempatan dan penghubungan bisa dipe
 | `/ortu/daily-report` | Orang tua membaca daily report anaknya (hanya yang terbit) |
 | `/guru/observasi` | Catat observasi STPPA per aspek & indikator, filter semester |
 | `/guru/rapor` | Susun draft rapor dari observasi, sunting narasi, terbitkan |
+| `/ortu/rapor` | Orang tua melihat & mengunduh rapor anaknya sebagai PDF |
 | `/guru` | Dashboard Guru |
 | `/ortu` | Dashboard Orang Tua |
 | `/403` | Akses ditolak |
@@ -68,6 +69,14 @@ Setiap role hanya dapat membuka halaman miliknya. Membuka path role lain akan di
 Foto daily report dikompres di browser sebelum disimpan: sisi terpanjang 1280 px, mutu JPEG
 diturunkan bertahap sampai di bawah 400 KB, maksimal 2 foto per report. Batas ini lebih ketat
 daripada NFR-09 (1 MB) karena kuota `localStorage` hanya sekitar 5 MB — lihat PRD §7.1.
+
+## Unduh rapor sebagai PDF
+
+Halaman `/ortu/rapor` memakai `window.print()` dengan lembar gaya `@media print` di `app/app.css`,
+tanpa pustaka PDF tambahan. Pilih tujuan **Save as PDF** di dialog cetak peramban.
+
+Saat dicetak, kerangka aplikasi (`.tanpa-cetak`) disembunyikan, kepala surat dan kolom tanda tangan
+(`.hanya-cetak`) dimunculkan, dan tema dipaksa terang agar tidak membuang tinta.
 
 ## Mereset data
 
