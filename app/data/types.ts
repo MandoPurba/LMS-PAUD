@@ -130,6 +130,25 @@ export type Rapor = {
   disusunOleh: string;
 };
 
+export type JenisIzin = "izin" | "sakit";
+export type StatusIzin = "pending" | "disetujui" | "ditolak";
+
+/** D4 — Izin. Diajukan orang tua, diverifikasi guru kelas. */
+export type Izin = {
+  id: string;
+  siswaId: string;
+  /** ID akun orang tua yang mengajukan. */
+  diajukanOleh: string;
+  /** Tanggal anak tidak masuk, format ISO yyyy-mm-dd. */
+  tanggal: string;
+  jenis: JenisIzin;
+  alasan: string;
+  status: StatusIzin;
+  tglPengajuan: string;
+  diverifikasiOleh: string | null;
+  catatanVerifikasi: string | null;
+};
+
 /** D1 — User */
 export type User = {
   id: string;

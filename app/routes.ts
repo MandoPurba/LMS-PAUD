@@ -25,6 +25,10 @@ export default [
     // 3.0 Absensi & Izin — FR-05
     route("guru/absensi", "routes/guru/absensi.tsx"),
 
+    // 3.0 Absensi & Izin — FR-06
+    route("guru/izin", "routes/guru/izin.tsx"),
+    route("ortu/izin", "routes/ortu/izin.tsx"),
+
     // 4.0 Daily Report & Galeri — FR-07
     route("guru/daily-report", "routes/guru/daily-report.tsx"),
     route("ortu/daily-report", "routes/ortu/daily-report.tsx"),
