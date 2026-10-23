@@ -79,6 +79,7 @@ di setiap layar, bukan hanya di menu.
 | T-5 | Route guard di frontend | Satu-satunya lapisan otorisasi yang mungkin tanpa server. |
 | T-6 | Foto disimpan sebagai base64, dikompres via `<canvas>` | Tidak ada object storage. Sekaligus memperagakan NFR-09. |
 | T-7 | Tanggal selalu dihitung di zona waktu lokal lewat `app/lib/tanggal.ts`, tidak pernah dari `toISOString()` | Di WIB (UTC+7), potongan ISO menunjukkan tanggal kemarin sebelum pukul 07.00 — absensi "hari ini" bisa tercatat di tanggal yang keliru. |
+| T-8 | Semester diturunkan dari tanggal: Juli–Desember = Semester 1, Januari–Juni = Semester 2 (`periodeAkademik()`) | Observasi dan rapor disaring per semester. Menyimpan semester di setiap record akan mudah tidak sinkron dengan tanggalnya. |
 
 ### 4.1 Struktur data store
 
@@ -228,6 +229,8 @@ prototype — bukan hanya digambar:
 | BR-7 | Tepat satu tahun ajaran berstatus aktif; mengaktifkan satu tahun menonaktifkan yang lain. | AC issue #4 |
 | BR-8 | Satu guru menjadi wali paling banyak satu kelas per tahun ajaran, sehingga "kelas saya" selalu tunggal. | Dok. analisis menyebut "kelasnya" dalam bentuk tunggal |
 | BR-9 | Penghapusan ditolak bila masih dirujuk: ortu yang punya anak, guru yang jadi wali kelas, kelas yang berisi siswa, tahun ajaran yang aktif atau masih punya kelas. | Pengganti foreign key, lihat §4.4 |
+| BR-10 | Satu indikator STPPA punya satu catatan observasi per tanggal; tanggal berbeda tetap menghasilkan record baru agar progresi anak terjaga. | AC issue #11 |
+| BR-11 | Capaian per aspek yang dipakai menyusun rapor adalah observasi **bertanggal paling baru** pada aspek tersebut dalam satu semester. | Dasar FR-11 |
 
 ---
 

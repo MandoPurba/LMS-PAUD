@@ -1,0 +1,62 @@
+[
+  {
+    "aspek": "nilai-moral-sosial",
+    "label": "Nilai Moral & Sosial",
+    "indikator": [
+      { "id": "nms-1", "teks": "Menunjukkan sikap sopan kepada guru dan teman" },
+      { "id": "nms-2", "teks": "Mau berbagi dan menolong teman" },
+      { "id": "nms-3", "teks": "Membiasakan mengucap terima kasih, maaf, dan tolong" },
+      { "id": "nms-4", "teks": "Menjaga kebersihan diri dan lingkungan" }
+    ]
+  },
+  {
+    "aspek": "fisik-motorik",
+    "label": "Fisik-Motorik",
+    "indikator": [
+      { "id": "fm-1", "teks": "Melakukan gerakan terkoordinasi: melompat, berlari, melempar" },
+      { "id": "fm-2", "teks": "Menggunakan alat tulis dan gunting dengan tepat" },
+      { "id": "fm-3", "teks": "Melakukan kegiatan kebersihan diri secara mandiri" },
+      { "id": "fm-4", "teks": "Menjaga keselamatan diri saat bermain" }
+    ]
+  },
+  {
+    "aspek": "kognitif",
+    "label": "Kognitif",
+    "indikator": [
+      { "id": "kog-1", "teks": "Menyelesaikan masalah sederhana dalam kegiatan bermain" },
+      { "id": "kog-2", "teks": "Mengenal bentuk, warna, ukuran, dan pola" },
+      { "id": "kog-3", "teks": "Mengenal konsep bilangan dan jumlah benda" },
+      { "id": "kog-4", "teks": "Mengelompokkan benda berdasarkan ciri tertentu" }
+    ]
+  },
+  {
+    "aspek": "bahasa",
+    "label": "Bahasa",
+    "indikator": [
+      { "id": "bhs-1", "teks": "Memahami dan melaksanakan perintah sederhana" },
+      { "id": "bhs-2", "teks": "Bercerita tentang pengalaman sendiri" },
+      { "id": "bhs-3", "teks": "Mengenal huruf dan bunyinya" },
+      { "id": "bhs-4", "teks": "Bertanya dan menjawab dengan kalimat lengkap" }
+    ]
+  },
+  {
+    "aspek": "sosial-emosional",
+    "label": "Sosial-Emosional",
+    "indikator": [
+      { "id": "se-1", "teks": "Menunjukkan kemandirian dalam memilih kegiatan" },
+      { "id": "se-2", "teks": "Mengendalikan emosi saat keinginan tidak terpenuhi" },
+      { "id": "se-3", "teks": "Bermain dan bekerja sama dalam kelompok" },
+      { "id": "se-4", "teks": "Menaati aturan kelas" }
+    ]
+  },
+  {
+    "aspek": "seni",
+    "label": "Seni",
+    "indikator": [
+      { "id": "sni-1", "teks": "Menyanyi dan mengikuti irama" },
+      { "id": "sni-2", "teks": "Menggambar dan mewarnai dengan ide sendiri" },
+      { "id": "sni-3", "teks": "Bermain peran sederhana" },
+      { "id": "sni-4", "teks": "Menghargai hasil karya diri dan teman" }
+    ]
+  }
+]
