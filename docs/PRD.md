@@ -125,9 +125,10 @@ DailyReport  { id, siswaId, tanggal, kegiatan, makan, tidur, mood,
                foto[], status: "draft"|"published", dibuatOleh }
 Observasi    { id, siswaId, tanggal, aspek, indikatorId, capaian,
                catatan, dicatatOleh }
-Rapor        { id, siswaId, tahunAjaranId, semester,
-               capaian: [{ aspek, capaian, narasi }],
-               status: "draft"|"published", tglPublikasi }
+Rapor        { id, siswaId, tahunAjaran, semester,
+               capaian: [{ aspek, capaian, jumlahObservasi, narasi }],
+               catatanUmum, status: "draft"|"published",
+               tglPublikasi, disusunOleh }
 ```
 
 **Relasi ortu–anak bersifat satu-ke-banyak.** Satu siswa memiliki **satu** orang tua, dan satu orang
@@ -231,6 +232,8 @@ prototype — bukan hanya digambar:
 | BR-9 | Penghapusan ditolak bila masih dirujuk: ortu yang punya anak, guru yang jadi wali kelas, kelas yang berisi siswa, tahun ajaran yang aktif atau masih punya kelas. | Pengganti foreign key, lihat §4.4 |
 | BR-10 | Satu indikator STPPA punya satu catatan observasi per tanggal; tanggal berbeda tetap menghasilkan record baru agar progresi anak terjaga. | AC issue #11 |
 | BR-11 | Capaian per aspek yang dipakai menyusun rapor adalah observasi **bertanggal paling baru** pada aspek tersebut dalam satu semester. | Dasar FR-11 |
+| BR-12 | Rapor berstatus terbit bersifat hanya-baca; penyuntingan dan perhitungan ulang ditolak. Untuk memperbaikinya, rapor ditarik kembali ke draft terlebih dahulu. | AC issue #12 |
+| BR-13 | Hanya aspek yang benar-benar punya observasi yang masuk ke rapor; aspek tanpa data tidak dibuat-buat. | Turunan BR-4 |
 
 ---
 

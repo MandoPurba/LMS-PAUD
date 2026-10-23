@@ -31,5 +31,6 @@ export default [
 
     // 5.0 Observasi & Rapor — FR-10
     route("guru/observasi", "routes/guru/observasi.tsx"),
+    route("guru/rapor", "routes/guru/rapor.tsx"),
   ]),
 ] satisfies RouteConfig;
