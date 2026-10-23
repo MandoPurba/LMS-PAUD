@@ -106,6 +106,30 @@ export type Observasi = {
   dicatatOleh: string;
 };
 
+export type CapaianRapor = {
+  aspek: AspekStppa;
+  capaian: Capaian;
+  /** Banyak observasi yang mendasari capaian ini. */
+  jumlahObservasi: number;
+  narasi: string;
+};
+
+/**
+ * D7 — Rapor. Periode disimpan sebagai nama tahun ajaran + semester, bukan id,
+ * agar sejalan dengan cara observasi dikelompokkan (lihat periodeAkademik()).
+ */
+export type Rapor = {
+  id: string;
+  siswaId: string;
+  tahunAjaran: string;
+  semester: Semester;
+  capaian: CapaianRapor[];
+  catatanUmum: string | null;
+  status: "draft" | "published";
+  tglPublikasi: string | null;
+  disusunOleh: string;
+};
+
 /** D1 — User */
 export type User = {
   id: string;

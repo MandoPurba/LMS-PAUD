@@ -55,6 +55,7 @@ Sisanya sengaja dibiarkan kosong agar alur penempatan dan penghubungan bisa dipe
 | `/guru/daily-report` | Isi daily report per anak (hanya untuk anak yang Hadir) |
 | `/ortu/daily-report` | Orang tua membaca daily report anaknya (hanya yang terbit) |
 | `/guru/observasi` | Catat observasi STPPA per aspek & indikator, filter semester |
+| `/guru/rapor` | Susun draft rapor dari observasi, sunting narasi, terbitkan |
 | `/guru` | Dashboard Guru |
 | `/ortu` | Dashboard Orang Tua |
 | `/403` | Akses ditolak |
@@ -97,6 +98,7 @@ app/
 │   ├── daily-report.ts  simpan/baca report, gerbang "harus Hadir"
 │   ├── foto.ts          kompresi foto via canvas
 │   ├── stppa.ts         master aspek/indikator, observasi, capaian per aspek
+│   ├── rapor.ts         susun draft dari observasi, narasi, terbit/tarik
 │   ├── tanggal.ts       helper tanggal zona waktu lokal
 │   ├── session.ts       login, logout, sesi, route guard
 │   ├── useTabelData.ts  pencarian + paginasi sisi klien
