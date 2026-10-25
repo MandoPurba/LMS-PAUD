@@ -61,6 +61,17 @@ export function jumlahPending(kelasId: string): number {
   return izinKelas(kelasId).filter((i) => i.status === "pending").length;
 }
 
+/**
+ * Pengajuan yang menghalangi tanggal ini, atau KOSONG bila tanggal masih bebas.
+ * Dikembalikan utuh agar antarmuka dapat menampilkan rincian pengajuan yang
+ * sudah ada, bukan hanya pesan kesalahan.
+ */
+export function izinBentrok(siswaId: string, tanggal: string): Izin | undefined {
+  return repoIzin
+    .semua()
+    .find((i) => i.siswaId === siswaId && i.tanggal === tanggal && i.status !== "ditolak");
+}
+
 /** Alasan pengajuan ditolak, atau null bila boleh diajukan. */
 export function validasiPengajuan(
   siswaId: string,
@@ -79,9 +90,7 @@ export function validasiPengajuan(
   if (!isi) return "Alasan wajib diisi.";
   if (isi.length < 5) return "Alasan terlalu singkat.";
 
-  const bentrok = repoIzin
-    .semua()
-    .find((i) => i.siswaId === siswaId && i.tanggal === tanggal && i.status !== "ditolak");
+  const bentrok = izinBentrok(siswaId, tanggal);
   if (bentrok) {
     return bentrok.status === "pending"
       ? "Sudah ada pengajuan yang menunggu persetujuan untuk tanggal ini."

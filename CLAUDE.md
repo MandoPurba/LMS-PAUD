@@ -75,6 +75,9 @@ Seluruh token ada di `app/app.css`. **Tidak boleh ada warna hardcode** (`#fff`, 
 - Seluruh teks **bahasa Indonesia** (NFR-07). Istilah domain tetap: Daily Report, STPPA, BB/MB/BSH/BSB.
 - Judul memakai `font-display` (Quicksand); teks isi memakai `font-sans` (Inter).
 - Harus terbaca di lebar 360 px.
+- **Galat di dalam modal ditampilkan di dalam modal itu**, jangan di badan halaman — badan halaman
+  tertutup overlay modal sehingga pesannya tidak terlihat. Bentrokan dengan data yang sudah ada
+  ditampilkan sebagai dialog tersendiri beserta rincian data penghalangnya.
 - Status selalu disertai **label teks**, tidak hanya warna — mis. badge absensi menampilkan huruf
   `H`/`I`/`S`/`A`, badge STPPA menampilkan `BB`/`MB`/`BSH`/`BSB`.
 

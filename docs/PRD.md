@@ -199,6 +199,12 @@ tidak pernah muncul — pengguna hanya melihat tombol kelabu tanpa penjelasan. K
 dibiarkan aktif, dan alasan penolakan ditampilkan di dalam dialog pada saat pengguna mencoba
 menghapus. Aturan yang tidak dapat ditemukan tidak berbeda dari cacat.
 
+Hal yang sama berlaku untuk galat di dalam dialog. Pesan galat yang dirender di badan halaman akan
+tertutup oleh dialog yang masih terbuka, sehingga pengguna tidak melihat apa pun saat pengiriman
+gagal. Karena itu galat formulir ditampilkan **di dalam** dialognya sendiri, dan bentrokan dengan data
+yang sudah ada — yang bukan salah ketik melainkan keadaan nyata — ditampilkan sebagai dialog
+tersendiri yang memuat rincian data penghalangnya.
+
 ### 4.5 Warna chart: hasil validasi, bukan selera
 
 Warna pada chart tidak memakai token badge (`--hadir`, `--izin`, …) melainkan token terpisah
@@ -301,7 +307,7 @@ prototype — bukan hanya digambar:
 | BR-12 | Rapor berstatus terbit bersifat hanya-baca; penyuntingan dan perhitungan ulang ditolak. Untuk memperbaikinya, rapor ditarik kembali ke draft terlebih dahulu. | AC issue #12 |
 | BR-13 | Hanya aspek yang benar-benar punya observasi yang masuk ke rapor; aspek tanpa data tidak dibuat-buat. | Turunan BR-4 |
 | BR-14 | Menyetujui izin untuk tanggal yang sudah punya daily report terbit mengembalikan report itu ke **draft**. Datanya tidak dihapus. | Turunan BR-1 + BR-3, lihat §5.2 |
-| BR-15 | Satu siswa hanya boleh punya satu pengajuan izin aktif (menunggu atau disetujui) per tanggal. Pengajuan yang ditolak membebaskan tanggal itu. | AC issue #7 |
+| BR-15 | Satu siswa hanya boleh punya satu pengajuan izin aktif (menunggu atau disetujui) per tanggal. Pengajuan yang ditolak membebaskan tanggal itu. Bentrokan ditampilkan sebagai dialog tersendiri beserta rincian pengajuan yang sudah ada, bukan sebagai pesan galat biasa. | AC issue #7 |
 
 ### 5.2 Benturan antara BR-1 dan BR-3
 
