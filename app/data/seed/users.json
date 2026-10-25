@@ -46,5 +46,13 @@
     "password": "guru123",
     "role": "guru",
     "aktif": false
+  },
+  {
+    "id": "u-007",
+    "nama": "Maya Safitri",
+    "email": "maya@gmail.com",
+    "password": "ortu123",
+    "role": "ortu",
+    "aktif": true
   }
 ]

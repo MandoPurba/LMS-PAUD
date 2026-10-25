@@ -79,7 +79,7 @@ di setiap layar, bukan hanya di menu.
 | T-5 | Route guard di frontend | Satu-satunya lapisan otorisasi yang mungkin tanpa server. |
 | T-6 | Foto disimpan sebagai base64, dikompres via `<canvas>` | Tidak ada object storage. Sekaligus memperagakan NFR-09. |
 | T-7 | Tanggal selalu dihitung di zona waktu lokal lewat `app/lib/tanggal.ts`, tidak pernah dari `toISOString()` | Di WIB (UTC+7), potongan ISO menunjukkan tanggal kemarin sebelum pukul 07.00 — absensi "hari ini" bisa tercatat di tanggal yang keliru. |
-| T-8 | Semester diturunkan dari tanggal: Juli–Desember = Semester 1, Januari–Juni = Semester 2 (`periodeAkademik()`) | Observasi dan rapor disaring per semester. Menyimpan semester di setiap record akan mudah tidak sinkron dengan tanggalnya. |
+| T-8 | Semester diturunkan dari tanggal: Juli–Desember = Semester 1, Januari–Juni = Semester 2 (`periodeAkademik()`). Berlaku pula untuk semester yang sedang berjalan (`semesterBerjalan()`), sehingga `TahunAjaran` tidak menyimpan field semester sama sekali | Observasi dan rapor disaring per semester. Menyimpan semester — baik di record maupun sebagai pengaturan tahun ajaran — membuka peluang labelnya tidak cocok dengan tanggal datanya. Anak menempuh TK satu tahun penuh, jadi kedua semester memang berjalan dan tidak ada yang perlu dipilih. |
 | T-9 | Unduh PDF memakai `window.print()` dengan lembar gaya `@media print`, bukan pustaka seperti jsPDF | Nol dependensi tambahan, dan dialog cetak peramban sudah menyediakan "Save as PDF". Pustaka PDF juga harus menggambar ulang tata letak dari nol sehingga mudah berbeda dari yang terlihat di layar. |
 | T-10 | Notifikasi diturunkan dari data, bukan disimpan sebagai record; hanya penanda bacanya yang disimpan | Dua jalur pembatalan (tarik rapor ke draft, BR-14) akan meninggalkan notifikasi basi bila notifikasi disimpan. Lihat §4.6. |
 
@@ -117,7 +117,9 @@ AspekStppa = "nilai-moral-sosial" | "fisik-motorik" | "kognitif"
            | "bahasa" | "sosial-emosional" | "seni"
 
 User         { id, nama, email, password, role, aktif }
-TahunAjaran  { id, nama, semesterAktif, aktif }   // tepat satu aktif
+TahunAjaran  { id, nama, aktif }                 // tepat satu aktif;
+                                                 // Semester 1 & 2 tersirat,
+                                                 // keduanya berjalan
 Kelas        { id, nama, tahunAjaranId, guruId }  // guruId = wali kelas
 Siswa        { id, nama, nisn, tglLahir, jenisKelamin, kelasId, ortuId }
 Absensi      { id, siswaId, tanggal, status, catatan, dicatatOleh }
@@ -190,6 +192,12 @@ yang menyebutkan apa yang harus dibereskan lebih dulu.
 
 Dengan alasan yang sama, nomor urut ID disimpan terpisah dari datanya, sehingga ID yang sudah dihapus
 tidak pernah dipakai ulang oleh record baru.
+
+Penolakan harus dapat ditemukan. Semula tombol Hapus dinonaktifkan dengan alasan ditaruh di atribut
+`title`, tetapi peramban menekan pointer event pada elemen nonaktif sehingga keterangannya sering
+tidak pernah muncul — pengguna hanya melihat tombol kelabu tanpa penjelasan. Karena itu tombol
+dibiarkan aktif, dan alasan penolakan ditampilkan di dalam dialog pada saat pengguna mencoba
+menghapus. Aturan yang tidak dapat ditemukan tidak berbeda dari cacat.
 
 ### 4.5 Warna chart: hasil validasi, bukan selera
 
@@ -285,9 +293,9 @@ prototype — bukan hanya digambar:
 | BR-4 | Rapor selalu diturunkan dari data observasi yang sudah tercatat; tidak bisa dibuat dari nol. | Use case: Rapor «include» Input Observasi |
 | BR-5 | Satu record absensi per siswa per tanggal; satu daily report per anak per hari. Menyimpan ulang menimpa, tidak menambah. | AC issue #6 dan #8 |
 | BR-6 | Guru hanya mengakses data kelasnya; ortu hanya data anaknya. | NFR-04 |
-| BR-7 | Tepat satu tahun ajaran berstatus aktif; mengaktifkan satu tahun menonaktifkan yang lain. | AC issue #4 |
+| BR-7 | Setiap tahun ajaran terdiri dari Semester 1 (Juli–Desember) dan Semester 2 (Januari–Juni), dan **keduanya berjalan** sepanjang tahun tersebut. Tepat satu **tahun ajaran** berstatus aktif; mengaktifkan satu menonaktifkan yang lain, dan wajib dikonfirmasi karena mengubah apa yang dilihat guru. Semester yang sedang berlangsung **diturunkan dari kalender**, bukan dipilih admin. | AC issue #4 |
 | BR-8 | Satu guru menjadi wali paling banyak satu kelas per tahun ajaran, sehingga "kelas saya" selalu tunggal. | Dok. analisis menyebut "kelasnya" dalam bentuk tunggal |
-| BR-9 | Penghapusan ditolak bila masih dirujuk: ortu yang punya anak, guru yang jadi wali kelas, kelas yang berisi siswa, tahun ajaran yang aktif atau masih punya kelas. | Pengganti foreign key, lihat §4.4 |
+| BR-9 | Penghapusan ditolak bila masih dirujuk: ortu yang punya anak, guru yang jadi wali kelas, kelas yang berisi siswa, tahun ajaran yang aktif atau masih punya kelas. Alasannya **wajib ditampilkan saat pengguna mencoba menghapus**, bukan hanya lewat tombol yang dinonaktifkan. | Pengganti foreign key, lihat §4.4 |
 | BR-10 | Satu indikator STPPA punya satu catatan observasi per tanggal; tanggal berbeda tetap menghasilkan record baru agar progresi anak terjaga. | AC issue #11 |
 | BR-11 | Capaian per aspek yang dipakai menyusun rapor adalah observasi **bertanggal paling baru** pada aspek tersebut dalam satu semester. | Dasar FR-11 |
 | BR-12 | Rapor berstatus terbit bersifat hanya-baca; penyuntingan dan perhitungan ulang ditolak. Untuk memperbaikinya, rapor ditarik kembali ke draft terlebih dahulu. | AC issue #12 |

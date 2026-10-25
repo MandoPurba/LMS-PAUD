@@ -19,12 +19,18 @@ export type AspekStppa =
 
 export type Semester = 1 | 2;
 
-/** D2 — Tahun ajaran. Tepat satu baris berstatus aktif. */
+/**
+ * D2 — Tahun ajaran. Tepat satu baris berstatus aktif.
+ *
+ * Semester tidak disimpan di sini. Setiap tahun ajaran selalu terdiri dari
+ * Semester 1 (Juli–Desember) dan Semester 2 (Januari–Juni), dan keduanya
+ * berjalan selama tahun tersebut. Semester mana yang sedang berlangsung adalah
+ * fakta kalender, bukan pengaturan — lihat semesterBerjalan() di relasi.ts.
+ */
 export type TahunAjaran = {
   id: string;
   /** Mis. "2026/2027". */
   nama: string;
-  semesterAktif: Semester;
   aktif: boolean;
 };
 

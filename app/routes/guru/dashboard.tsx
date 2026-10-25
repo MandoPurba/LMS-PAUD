@@ -4,7 +4,7 @@ import type { Route } from "./+types/dashboard";
 import { JudulHalaman, KartuFitur, Panel } from "../../components/ui";
 import { tanggalPanjang } from "../../lib/tanggal";
 import { MENU } from "../../lib/menu";
-import { kelasDariGuru, siswaDariKelas, tahunAktif } from "../../lib/relasi";
+import { kelasDariGuru, semesterBerjalan, siswaDariKelas, tahunAktif } from "../../lib/relasi";
 import { ambilSesi } from "../../lib/session";
 
 export function meta() {
@@ -19,13 +19,14 @@ export function clientLoader() {
   return {
     nama: sesi?.nama ?? "",
     tahun,
+    semester: semesterBerjalan(),
     kelas,
     siswa: kelas ? siswaDariKelas(kelas.id) : [],
   };
 }
 
 export default function DashboardGuru({ loaderData }: Route.ComponentProps) {
-  const { nama, tahun, kelas, siswa } = loaderData;
+  const { nama, tahun, semester, kelas, siswa } = loaderData;
   const belumSiap = MENU.guru.filter((m) => !m.siap);
 
   return (
@@ -45,7 +46,8 @@ export default function DashboardGuru({ loaderData }: Route.ComponentProps) {
                 <p className="font-display text-xl font-bold">{kelas.nama}</p>
                 {tahun && (
                   <p className="text-sm text-fg-muted">
-                    {tahun.nama} · Semester {tahun.semesterAktif}
+                    {tahun.nama}
+                    {semester ? ` · Semester ${semester}` : ""}
                   </p>
                 )}
               </div>

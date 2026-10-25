@@ -29,13 +29,31 @@ Tersedia tombol pengisian cepat di halaman masuk.
 | Guru | `budi@paud.sch.id` | `guru123` |
 | Orang Tua | `rina@gmail.com` | `ortu123` |
 | Orang Tua | `andi@gmail.com` | `ortu123` |
+| Orang Tua *(tanpa anak)* | `maya@gmail.com` | `ortu123` |
 | Guru *(nonaktif)* | `dewi@paud.sch.id` | `guru123` |
 
-Akun terakhir sengaja dibuat nonaktif untuk memperagakan penolakan login.
+Akun Dewi sengaja dibuat nonaktif untuk memperagakan penolakan login. Akun Maya sengaja dibiarkan
+tanpa anak, supaya penghapusan akun orang tua dapat diperagakan — akun yang masih punya anak
+ditolak oleh BR-9.
 
 Kondisi awal data: tahun ajaran **2026/2027 Semester 1** aktif, dua kelas (Kelompok A diampu Sari,
 Kelompok B diampu Budi), 8 dari 10 siswa sudah ditempatkan, Rina punya 3 anak dan Andi 2 anak.
 Sisanya sengaja dibiarkan kosong agar alur penempatan dan penghubungan bisa diperagakan.
+
+Beberapa data sengaja disiapkan agar **kedua sisi aturan BR-9** dapat diperagakan — yang ditolak
+maupun yang berhasil:
+
+| Data | Dapat dihapus? | Sebab |
+|---|---|---|
+| Orang tua Rina / Andi | tidak | masih punya anak |
+| Orang tua Maya | ya | tanpa anak |
+| Guru Sari / Budi | tidak | wali kelas aktif |
+| Guru Dewi | ya | nonaktif, bukan wali kelas |
+| Kelas Kelompok A & B (2026/2027) | tidak | masih berisi siswa |
+| Kelas Kelompok A (2025/2026) | ya | kosong |
+| Tahun ajaran 2026/2027 | tidak | sedang aktif |
+| Tahun ajaran 2025/2026 | tidak | masih punya kelas |
+| Tahun ajaran 2024/2025 | ya | tanpa kelas |
 
 > Password tersimpan sebagai teks biasa di seed JSON. Ini batasan prototype tanpa backend —
 > lihat status NFR-03 di PRD §7.

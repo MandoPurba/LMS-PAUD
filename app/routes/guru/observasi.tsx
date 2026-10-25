@@ -13,7 +13,7 @@ import {
 import { Modal } from "../../components/Modal";
 import { JudulHalaman, Panel } from "../../components/ui";
 import type { AspekStppa, Capaian, Observasi } from "../../data/types";
-import { kelasDariGuru, siswaDariKelas, tahunAktif } from "../../lib/relasi";
+import { kelasDariGuru, periodeAktif, siswaDariKelas, tahunAktif } from "../../lib/relasi";
 import { GagalSimpan, repoObservasi } from "../../lib/repo";
 import { ambilSesi } from "../../lib/session";
 import {
@@ -46,19 +46,17 @@ export function clientLoader({ request }: Route.ClientLoaderArgs) {
   const terpilih = siswa.find((s) => s.id === params.get("anak")) ?? siswa[0] ?? null;
   const tahun = tahunAktif() ?? null;
 
-  const periodeAktif = tahun
-    ? { tahunAjaran: tahun.nama, semester: tahun.semesterAktif }
-    : periodeAkademik(tanggalLokal());
+  const periodeAwal = periodeAktif() ?? periodeAkademik(tanggalLokal());
 
   // Periode yang bisa dipilih: yang punya data, plus periode aktif sekarang.
   const daftarPeriode = terpilih ? periodeTersedia(terpilih.id) : [];
-  if (!daftarPeriode.some((p) => labelPeriode(p) === labelPeriode(periodeAktif))) {
-    daftarPeriode.unshift(periodeAktif);
+  if (!daftarPeriode.some((p) => labelPeriode(p) === labelPeriode(periodeAwal))) {
+    daftarPeriode.unshift(periodeAwal);
   }
 
   const dimintaPeriode = params.get("periode");
   const periode =
-    daftarPeriode.find((p) => labelPeriode(p) === dimintaPeriode) ?? periodeAktif;
+    daftarPeriode.find((p) => labelPeriode(p) === dimintaPeriode) ?? periodeAwal;
 
   return {
     kelas,
@@ -196,7 +194,7 @@ export default function GuruObservasi({ loaderData }: Route.ComponentProps) {
     <>
       <JudulHalaman
         judul="Observasi STPPA"
-        deskripsi={`${kelas.nama}${tahun ? ` · ${tahun.nama} Semester ${tahun.semesterAktif}` : ""}`}
+        deskripsi={`${kelas.nama}${tahun ? ` · ${tahun.nama}` : ""}`}
       />
       <PesanGagal pesan={pesanGagal} />
 

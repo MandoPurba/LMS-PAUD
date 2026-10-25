@@ -85,6 +85,11 @@ export default function AdminKelas({ loaderData }: Route.ComponentProps) {
   const [targetHapus, setTargetHapus] = useState<Kelas | null>(null);
   const [pesanGagal, setPesanGagal] = useState<string | null>(null);
 
+  const alasanTolak =
+    targetHapus === null
+      ? null
+      : (loaderData.kelas.find((k) => k.id === targetHapus.id)?.alasanTolakHapus ?? null);
+
   // Daftar guru dihitung ulang sesuai tahun ajaran yang sedang dipilih di form.
   const guruPilihan =
     draf.tahunAjaranId === "" ? [] : guruTersedia(draf.tahunAjaranId, form?.kelas?.id);
@@ -222,9 +227,7 @@ export default function AdminKelas({ loaderData }: Route.ComponentProps) {
                         <button
                           type="button"
                           onClick={() => setTargetHapus(k)}
-                          disabled={k.alasanTolakHapus !== null}
-                          title={k.alasanTolakHapus ?? undefined}
-                          className="rounded-field px-2 py-1 text-xs font-semibold text-danger transition enabled:hover:bg-danger-soft disabled:opacity-40"
+                          className="rounded-field px-2 py-1 text-xs font-semibold text-danger transition hover:bg-danger-soft"
                         >
                           Hapus
                         </button>
@@ -308,19 +311,42 @@ export default function AdminKelas({ loaderData }: Route.ComponentProps) {
         </form>
       </Modal>
 
-      <Modal judul="Hapus kelas?" terbuka={targetHapus !== null} onTutup={() => setTargetHapus(null)}>
-        <p className="text-sm text-fg-muted">
-          Kelas <span className="font-semibold text-fg">{targetHapus?.nama}</span> akan dihapus.
-          Tindakan ini tidak dapat dibatalkan.
-        </p>
-        <div className="mt-5 flex justify-end gap-2">
-          <TombolSekunder type="button" onClick={() => setTargetHapus(null)}>
-            Batal
-          </TombolSekunder>
-          <TombolBahaya type="button" onClick={hapus}>
-            Ya, hapus
-          </TombolBahaya>
-        </div>
+      <Modal
+        judul={alasanTolak !== null ? "Kelas tidak dapat dihapus" : "Hapus kelas?"}
+        terbuka={targetHapus !== null}
+        onTutup={() => setTargetHapus(null)}
+      >
+        {alasanTolak !== null ? (
+          <>
+            <p className="text-sm text-fg-muted">
+              Kelas <span className="font-semibold text-fg">{targetHapus?.nama}</span> masih
+              dirujuk data lain, jadi belum dapat dihapus.
+            </p>
+            <p className="mt-3 rounded-field bg-warning-soft px-3 py-2 text-sm font-medium text-warning">
+              {alasanTolak}
+            </p>
+            <div className="mt-5 flex justify-end">
+              <TombolSekunder type="button" onClick={() => setTargetHapus(null)}>
+                Mengerti
+              </TombolSekunder>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="text-sm text-fg-muted">
+              Kelas <span className="font-semibold text-fg">{targetHapus?.nama}</span> akan
+              dihapus. Tindakan ini tidak dapat dibatalkan.
+            </p>
+            <div className="mt-5 flex justify-end gap-2">
+              <TombolSekunder type="button" onClick={() => setTargetHapus(null)}>
+                Batal
+              </TombolSekunder>
+              <TombolBahaya type="button" onClick={hapus}>
+                Ya, hapus
+              </TombolBahaya>
+            </div>
+          </>
+        )}
       </Modal>
     </>
   );
