@@ -29,9 +29,12 @@ Tersedia tombol pengisian cepat di halaman masuk.
 | Guru | `budi@paud.sch.id` | `guru123` |
 | Orang Tua | `rina@gmail.com` | `ortu123` |
 | Orang Tua | `andi@gmail.com` | `ortu123` |
+| Orang Tua *(tanpa anak)* | `maya@gmail.com` | `ortu123` |
 | Guru *(nonaktif)* | `dewi@paud.sch.id` | `guru123` |
 
-Akun terakhir sengaja dibuat nonaktif untuk memperagakan penolakan login.
+Akun Dewi sengaja dibuat nonaktif untuk memperagakan penolakan login. Akun Maya sengaja dibiarkan
+tanpa anak, supaya penghapusan akun orang tua dapat diperagakan — akun yang masih punya anak
+ditolak oleh BR-9.
 
 Kondisi awal data: tahun ajaran **2026/2027 Semester 1** aktif, dua kelas (Kelompok A diampu Sari,
 Kelompok B diampu Budi), 8 dari 10 siswa sudah ditempatkan, Rina punya 3 anak dan Andi 2 anak.

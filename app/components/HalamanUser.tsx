@@ -79,6 +79,15 @@ export function HalamanUser({
   const [targetHapus, setTargetHapus] = useState<User | null>(null);
   const [gagalSimpan, setGagalSimpan] = useState<string | null>(null);
 
+  /**
+   * Alasan penghapusan ditolak (BR-9), atau null bila boleh. Dipakai baris tabel
+   * dan modal sekaligus agar keduanya tidak bisa berbeda.
+   */
+  function alasanTolakHapus(user: User): string | null {
+    if (user.id === sesi.id) return "Tidak dapat menghapus akun sendiri.";
+    return cekHapus?.(user) ?? null;
+  }
+
   const tabel = useTabelData<User>(
     data,
     (u, q) => u.nama.toLowerCase().includes(q) || u.email.toLowerCase().includes(q),
@@ -185,10 +194,6 @@ export function HalamanUser({
                 />
               ) : (
                 tabel.baris.map((u) => {
-                  const alasanTolak =
-                    u.id === sesi.id
-                      ? "Tidak dapat menghapus akun sendiri."
-                      : (cekHapus?.(u) ?? null);
                   return (
                     <tr key={u.id} className="border-b border-border last:border-0">
                       <td className="px-3 py-2.5 font-medium">{u.nama}</td>
@@ -217,9 +222,7 @@ export function HalamanUser({
                           <button
                             type="button"
                             onClick={() => setTargetHapus(u)}
-                            disabled={alasanTolak !== null}
-                            title={alasanTolak ?? undefined}
-                            className="rounded-field px-2 py-1 text-xs font-semibold text-danger transition enabled:hover:bg-danger-soft disabled:opacity-40"
+                            className="rounded-field px-2 py-1 text-xs font-semibold text-danger transition hover:bg-danger-soft"
                           >
                             Hapus
                           </button>
@@ -307,22 +310,54 @@ export function HalamanUser({
       </Modal>
 
       <Modal
-        judul={`Hapus ${labelSatuan}?`}
+        judul={
+          targetHapus && alasanTolakHapus(targetHapus) !== null
+            ? `${labelSatuan} tidak dapat dihapus`
+            : `Hapus ${labelSatuan}?`
+        }
         terbuka={targetHapus !== null}
         onTutup={() => setTargetHapus(null)}
       >
-        <p className="text-sm text-fg-muted">
-          Akun <span className="font-semibold text-fg">{targetHapus?.nama}</span> (
-          {targetHapus?.email}) akan dihapus. Tindakan ini tidak dapat dibatalkan.
-        </p>
-        <div className="mt-5 flex justify-end gap-2">
-          <TombolSekunder type="button" onClick={() => setTargetHapus(null)}>
-            Batal
-          </TombolSekunder>
-          <TombolBahaya type="button" onClick={hapus}>
-            Ya, hapus
-          </TombolBahaya>
-        </div>
+        {targetHapus &&
+          (() => {
+            const alasan = alasanTolakHapus(targetHapus);
+
+            if (alasan !== null) {
+              return (
+                <>
+                  <p className="text-sm text-fg-muted">
+                    <span className="font-semibold text-fg">{targetHapus.nama}</span> masih
+                    dirujuk data lain, jadi belum dapat dihapus.
+                  </p>
+                  <p className="mt-3 rounded-field bg-warning-soft px-3 py-2 text-sm font-medium text-warning">
+                    {alasan}
+                  </p>
+                  <div className="mt-5 flex justify-end">
+                    <TombolSekunder type="button" onClick={() => setTargetHapus(null)}>
+                      Mengerti
+                    </TombolSekunder>
+                  </div>
+                </>
+              );
+            }
+
+            return (
+              <>
+                <p className="text-sm text-fg-muted">
+                  Akun <span className="font-semibold text-fg">{targetHapus.nama}</span> (
+                  {targetHapus.email}) akan dihapus. Tindakan ini tidak dapat dibatalkan.
+                </p>
+                <div className="mt-5 flex justify-end gap-2">
+                  <TombolSekunder type="button" onClick={() => setTargetHapus(null)}>
+                    Batal
+                  </TombolSekunder>
+                  <TombolBahaya type="button" onClick={hapus}>
+                    Ya, hapus
+                  </TombolBahaya>
+                </div>
+              </>
+            );
+          })()}
       </Modal>
     </>
   );

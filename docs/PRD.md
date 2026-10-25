@@ -190,6 +190,12 @@ yang menyebutkan apa yang harus dibereskan lebih dulu.
 Dengan alasan yang sama, nomor urut ID disimpan terpisah dari datanya, sehingga ID yang sudah dihapus
 tidak pernah dipakai ulang oleh record baru.
 
+Penolakan harus dapat ditemukan. Semula tombol Hapus dinonaktifkan dengan alasan ditaruh di atribut
+`title`, tetapi peramban menekan pointer event pada elemen nonaktif sehingga keterangannya sering
+tidak pernah muncul — pengguna hanya melihat tombol kelabu tanpa penjelasan. Karena itu tombol
+dibiarkan aktif, dan alasan penolakan ditampilkan di dalam dialog pada saat pengguna mencoba
+menghapus. Aturan yang tidak dapat ditemukan tidak berbeda dari cacat.
+
 ### 4.5 Warna chart: hasil validasi, bukan selera
 
 Warna pada chart tidak memakai token badge (`--hadir`, `--izin`, …) melainkan token terpisah
@@ -255,7 +261,7 @@ prototype — bukan hanya digambar:
 | BR-6 | Guru hanya mengakses data kelasnya; ortu hanya data anaknya. | NFR-04 |
 | BR-7 | Tepat satu tahun ajaran berstatus aktif; mengaktifkan satu tahun menonaktifkan yang lain. | AC issue #4 |
 | BR-8 | Satu guru menjadi wali paling banyak satu kelas per tahun ajaran, sehingga "kelas saya" selalu tunggal. | Dok. analisis menyebut "kelasnya" dalam bentuk tunggal |
-| BR-9 | Penghapusan ditolak bila masih dirujuk: ortu yang punya anak, guru yang jadi wali kelas, kelas yang berisi siswa, tahun ajaran yang aktif atau masih punya kelas. | Pengganti foreign key, lihat §4.4 |
+| BR-9 | Penghapusan ditolak bila masih dirujuk: ortu yang punya anak, guru yang jadi wali kelas, kelas yang berisi siswa, tahun ajaran yang aktif atau masih punya kelas. Alasannya **wajib ditampilkan saat pengguna mencoba menghapus**, bukan hanya lewat tombol yang dinonaktifkan. | Pengganti foreign key, lihat §4.4 |
 | BR-10 | Satu indikator STPPA punya satu catatan observasi per tanggal; tanggal berbeda tetap menghasilkan record baru agar progresi anak terjaga. | AC issue #11 |
 | BR-11 | Capaian per aspek yang dipakai menyusun rapor adalah observasi **bertanggal paling baru** pada aspek tersebut dalam satu semester. | Dasar FR-11 |
 | BR-12 | Rapor berstatus terbit bersifat hanya-baca; penyuntingan dan perhitungan ulang ditolak. Untuk memperbaikinya, rapor ditarik kembali ke draft terlebih dahulu. | AC issue #12 |
