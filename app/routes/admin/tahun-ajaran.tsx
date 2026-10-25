@@ -15,7 +15,7 @@ import { Modal } from "../../components/Modal";
 import { BarisKosong } from "../../components/TabelToolbar";
 import { JudulHalaman } from "../../components/ui";
 import type { Semester, TahunAjaran } from "../../data/types";
-import { aktifkanTahun, cekHapusTahunAjaran, kelasTahun } from "../../lib/relasi";
+import { aktifkanTahun, cekHapusTahunAjaran, kelasTahun, siswaDariKelas } from "../../lib/relasi";
 import { GagalSimpan, repoTahunAjaran } from "../../lib/repo";
 
 export function meta() {
@@ -29,11 +29,15 @@ export function clientLoader() {
     .sort((a, b) => b.nama.localeCompare(a.nama));
 
   return {
-    tahun: tahun.map((t) => ({
-      ...t,
-      jumlahKelas: kelasTahun(t.id).length,
-      alasanTolakHapus: cekHapusTahunAjaran(t),
-    })),
+    tahun: tahun.map((t) => {
+      const kelas = kelasTahun(t.id);
+      return {
+        ...t,
+        jumlahKelas: kelas.length,
+        jumlahSiswa: kelas.reduce((n, k) => n + siswaDariKelas(k.id).length, 0),
+        alasanTolakHapus: cekHapusTahunAjaran(t),
+      };
+    }),
   };
 }
 
@@ -69,7 +73,14 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
   const [draf, setDraf] = useState<Draf>(DRAF_KOSONG);
   const [galat, setGalat] = useState<Galat>({});
   const [targetHapus, setTargetHapus] = useState<TahunAjaran | null>(null);
+  const [targetAktif, setTargetAktif] = useState<TahunAjaran | null>(null);
   const [pesanGagal, setPesanGagal] = useState<string | null>(null);
+  const [pesanSukses, setPesanSukses] = useState<string | null>(null);
+
+  const ringkasanTarget =
+    targetAktif === null
+      ? null
+      : (loaderData.tahun.find((t) => t.id === targetAktif.id) ?? null);
 
   const alasanTolak =
     targetHapus === null
@@ -80,6 +91,7 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
     setDraf(DRAF_KOSONG);
     setGalat({});
     setPesanGagal(null);
+    setPesanSukses(null);
     setForm({ mode: "tambah" });
   }
 
@@ -113,12 +125,19 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
     }
   }
 
-  function aktifkan(id: string) {
+  function aktifkan() {
+    if (!targetAktif) return;
     try {
-      aktifkanTahun(id);
+      aktifkanTahun(targetAktif.id);
+      setTargetAktif(null);
+      setPesanSukses(
+        `Tahun ajaran ${targetAktif.nama} Semester ${targetAktif.semesterAktif} kini aktif. ` +
+          "Kelas, absensi, observasi, rapor, dan laporan mengikuti tahun ini.",
+      );
       revalidate();
     } catch {
       setPesanGagal("Gagal mengubah tahun aktif.");
+      setTargetAktif(null);
     }
   }
 
@@ -142,6 +161,15 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
       />
       <PesanGagal pesan={pesanGagal} />
 
+      {pesanSukses && (
+        <p
+          role="status"
+          className="mb-4 rounded-field bg-success-soft px-3 py-2 text-sm font-medium text-success"
+        >
+          {pesanSukses}
+        </p>
+      )}
+
       <div className="rounded-card border border-border bg-surface-raised p-4 shadow-card sm:p-5">
         <div className="flex flex-wrap items-center gap-3">
           <p className="text-sm text-fg-muted">{loaderData.tahun.length} tahun ajaran terdaftar</p>
@@ -159,19 +187,21 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
                 <th scope="col" className="px-3 py-2 font-semibold">Tahun ajaran</th>
                 <th scope="col" className="px-3 py-2 font-semibold">Semester aktif</th>
                 <th scope="col" className="px-3 py-2 font-semibold">Kelas</th>
+                <th scope="col" className="px-3 py-2 font-semibold">Siswa</th>
                 <th scope="col" className="px-3 py-2 font-semibold">Status</th>
                 <th scope="col" className="px-3 py-2 text-right font-semibold">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {loaderData.tahun.length === 0 ? (
-                <BarisKosong kolom={5} pesan="Belum ada tahun ajaran." />
+                <BarisKosong kolom={6} pesan="Belum ada tahun ajaran." />
               ) : (
                 loaderData.tahun.map((t) => (
                   <tr key={t.id} className="border-b border-border last:border-0">
                     <td className="px-3 py-2.5 font-medium">{t.nama}</td>
                     <td className="px-3 py-2.5 text-fg-muted">Semester {t.semesterAktif}</td>
                     <td className="px-3 py-2.5 text-fg-muted">{t.jumlahKelas}</td>
+                    <td className="px-3 py-2.5 text-fg-muted">{t.jumlahSiswa}</td>
                     <td className="px-3 py-2.5">
                       {t.aktif ? (
                         <span className="rounded-pill bg-success-soft px-2 py-0.5 text-xs font-semibold text-success">
@@ -186,7 +216,7 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
                         {!t.aktif && (
                           <button
                             type="button"
-                            onClick={() => aktifkan(t.id)}
+                            onClick={() => setTargetAktif(t)}
                             className="rounded-field px-2 py-1 text-xs font-semibold text-success transition hover:bg-success-soft"
                           >
                             Jadikan aktif
@@ -263,6 +293,50 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
             <TombolUtama type="submit">Simpan</TombolUtama>
           </div>
         </form>
+      </Modal>
+
+      <Modal
+        judul="Jadikan tahun ajaran ini aktif?"
+        terbuka={targetAktif !== null}
+        onTutup={() => setTargetAktif(null)}
+      >
+        {targetAktif && (
+          <>
+            <p className="text-sm text-fg-muted">
+              Tahun ajaran aktif akan berpindah dari{" "}
+              <span className="font-semibold text-fg">
+                {loaderData.tahun.find((t) => t.aktif)?.nama ?? "—"}
+              </span>{" "}
+              ke{" "}
+              <span className="font-semibold text-fg">
+                {targetAktif.nama} Semester {targetAktif.semesterAktif}
+              </span>
+              . Hanya satu tahun ajaran yang dapat aktif.
+            </p>
+
+            <p className="mt-3 text-sm font-medium">Yang akan mengikuti tahun ini:</p>
+            <ul className="mt-1 space-y-0.5 text-sm text-fg-muted">
+              <li>• Kelas yang tampil sebagai kelas berjalan</li>
+              <li>• Kelas yang diampu guru, beserta absensi dan daily report-nya</li>
+              <li>• Periode awal observasi STPPA, rapor, dan laporan</li>
+            </ul>
+
+            <p className="mt-3 rounded-field bg-info-soft px-3 py-2 text-xs text-info">
+              Tahun ini memiliki {ringkasanTarget?.jumlahKelas ?? 0} kelas dan{" "}
+              {ringkasanTarget?.jumlahSiswa ?? 0} siswa. Guru yang tidak mengampu kelas di tahun
+              ini akan melihat halamannya kosong.
+            </p>
+
+            <div className="mt-5 flex justify-end gap-2">
+              <TombolSekunder type="button" onClick={() => setTargetAktif(null)}>
+                Batal
+              </TombolSekunder>
+              <TombolUtama type="button" onClick={aktifkan}>
+                Ya, jadikan aktif
+              </TombolUtama>
+            </div>
+          </>
+        )}
       </Modal>
 
       <Modal
