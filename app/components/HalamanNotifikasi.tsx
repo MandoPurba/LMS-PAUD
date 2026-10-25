@@ -4,6 +4,7 @@ import type { Session } from "../data/types";
 import { type Peristiwa, tandaiDibaca, tandaiSemuaDibaca } from "../lib/notifikasi";
 import { tanggalPendek } from "../lib/tanggal";
 import { TombolSekunder } from "./form";
+import { Ikon } from "./Ikon";
 import { JudulHalaman, Panel } from "./ui";
 
 export function HalamanNotifikasi({
@@ -70,9 +71,7 @@ export function HalamanNotifikasi({
                   onClick={() => buka(n)}
                   className="flex w-full items-start gap-3 py-3 text-left transition hover:bg-surface-hover"
                 >
-                  <span aria-hidden="true" className="mt-0.5 text-lg">
-                    {n.ikon}
-                  </span>
+                  <Ikon nama={n.ikon} className="mt-1 w-5 text-center text-base" />
 
                   <span className="min-w-0 flex-1">
                     <span className="flex flex-wrap items-center gap-2">
@@ -89,9 +88,7 @@ export function HalamanNotifikasi({
                     </span>
                   </span>
 
-                  <span aria-hidden="true" className="mt-1 text-fg-subtle">
-                    →
-                  </span>
+                  <Ikon nama="chevron-right" className="mt-1.5 text-xs text-fg-subtle" />
                 </button>
               </li>
             ))}

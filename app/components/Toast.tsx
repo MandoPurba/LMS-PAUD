@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 
+import { Ikon } from "./Ikon";
+
 /**
  * Toast: umpan balik singkat untuk pelaku aksi (FR-13).
  *
@@ -42,9 +44,7 @@ export function PenyediaToast({ children }: { children: React.ReactNode }) {
       >
         {pesan && (
           <div className="pointer-events-auto flex max-w-md items-start gap-2.5 rounded-card bg-surface-raised px-4 py-3 text-sm shadow-pop ring-1 ring-border">
-            <span aria-hidden="true" className="text-success">
-              ✓
-            </span>
+            <Ikon nama="circle-check" className="mt-0.5 text-success" />
             <p className="min-w-0 flex-1">{pesan}</p>
             <button
               type="button"
@@ -52,7 +52,7 @@ export function PenyediaToast({ children }: { children: React.ReactNode }) {
               aria-label="Tutup pemberitahuan"
               className="shrink-0 rounded-field px-1 text-fg-subtle transition hover:bg-surface-hover"
             >
-              ✕
+              <Ikon nama="xmark" />
             </button>
           </div>
         )}
