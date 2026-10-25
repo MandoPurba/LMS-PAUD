@@ -2,10 +2,12 @@ import { Outlet, redirect } from "react-router";
 
 import type { Route } from "./+types/app-layout";
 import { AppShell } from "../components/AppShell";
+import { PenyediaToast } from "../components/Toast";
 import type { Session } from "../data/types";
+import { type Peristiwa, notifikasiSaya } from "../lib/notifikasi";
 import { ambilSesi, roleUntukPath } from "../lib/session";
 
-export type KontekAplikasi = { sesi: Session };
+export type KontekAplikasi = { sesi: Session; notifikasi: Peristiwa[] };
 
 /**
  * Route guard (FR-01). Berjalan di browser karena aplikasi memakai mode SPA.
@@ -25,14 +27,16 @@ export function clientLoader({ request }: Route.ClientLoaderArgs) {
     throw redirect("/403");
   }
 
-  return { sesi };
+  return { sesi, notifikasi: notifikasiSaya(sesi) };
 }
 
 export default function AppLayout({ loaderData }: Route.ComponentProps) {
-  const { sesi } = loaderData;
+  const { sesi, notifikasi } = loaderData;
   return (
-    <AppShell sesi={sesi}>
-      <Outlet context={{ sesi } satisfies KontekAplikasi} />
-    </AppShell>
+    <PenyediaToast>
+      <AppShell sesi={sesi} notifikasi={notifikasi}>
+        <Outlet context={{ sesi, notifikasi } satisfies KontekAplikasi} />
+      </AppShell>
+    </PenyediaToast>
   );
 }

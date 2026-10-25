@@ -11,6 +11,7 @@ import {
   TombolUtama,
 } from "../../components/form";
 import { Modal } from "../../components/Modal";
+import { useToast } from "../../components/Toast";
 import { JudulHalaman, Panel } from "../../components/ui";
 import type { JenisIzin } from "../../data/types";
 import {
@@ -49,6 +50,7 @@ export function clientLoader() {
 export default function OrtuIzin({ loaderData }: Route.ComponentProps) {
   const { anak, maksTanggal, riwayat } = loaderData;
   const { revalidate } = useRevalidator();
+  const { tampilkan } = useToast();
   const sesi = ambilSesi();
 
   const [terbuka, setTerbuka] = useState(false);
@@ -78,6 +80,7 @@ export default function OrtuIzin({ loaderData }: Route.ComponentProps) {
       ajukanIzin({ ...draf, diajukanOleh: sesi.id });
       setTerbuka(false);
       setPesanGagal(null);
+      tampilkan("Pengajuan terkirim. Guru kelas akan memverifikasinya.");
       revalidate();
     } catch (err) {
       setPesanGagal(err instanceof Error ? err.message : "Pengajuan gagal dikirim.");

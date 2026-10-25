@@ -40,6 +40,11 @@ export default [
     // 6.0 Laporan — FR-14
     route("admin/laporan", "routes/admin/laporan.tsx"),
     route("guru/laporan", "routes/guru/laporan.tsx"),
+
+    // Notifikasi lintas proses — FR-13
+    route("admin/notifikasi", "routes/admin/notifikasi.tsx"),
+    route("guru/notifikasi", "routes/guru/notifikasi.tsx"),
+    route("ortu/notifikasi", "routes/ortu/notifikasi.tsx"),
     route("ortu/rapor", "routes/ortu/rapor.tsx"),
   ]),
 ] satisfies RouteConfig;
