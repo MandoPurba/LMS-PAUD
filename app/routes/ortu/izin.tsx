@@ -5,7 +5,6 @@ import type { Route } from "./+types/izin";
 import {
   Field,
   Input,
-  PesanGagal,
   Select,
   TombolSekunder,
   TombolUtama,
@@ -13,18 +12,19 @@ import {
 import { Modal } from "../../components/Modal";
 import { useToast } from "../../components/Toast";
 import { JudulHalaman, Panel } from "../../components/ui";
-import type { JenisIzin } from "../../data/types";
+import type { Izin, JenisIzin } from "../../data/types";
 import {
   LABEL_JENIS,
   LABEL_STATUS_IZIN,
   MAKS_HARI_KE_DEPAN,
   WARNA_STATUS_IZIN,
   ajukanIzin,
+  izinBentrok,
   izinOrtu,
 } from "../../lib/izin";
 import { anakDariOrtu } from "../../lib/relasi";
 import { ambilSesi } from "../../lib/session";
-import { tanggalLokal, tanggalPendek } from "../../lib/tanggal";
+import { tanggalLokal, tanggalPanjang, tanggalPendek } from "../../lib/tanggal";
 
 export function meta() {
   return [{ title: "Ajukan Izin — LMS TK/PAUD" }];
@@ -60,7 +60,10 @@ export default function OrtuIzin({ loaderData }: Route.ComponentProps) {
     jenis: "izin" as JenisIzin,
     alasan: "",
   });
-  const [pesanGagal, setPesanGagal] = useState<string | null>(null);
+  /** Ditampilkan di dalam modal form, bukan di body halaman. */
+  const [galatForm, setGalatForm] = useState<string | null>(null);
+  /** Pengajuan yang sudah ada pada tanggal yang diminta. */
+  const [bentrok, setBentrok] = useState<{ izin: Izin; namaAnak: string } | null>(null);
 
   function buka() {
     setDraf({
@@ -69,22 +72,45 @@ export default function OrtuIzin({ loaderData }: Route.ComponentProps) {
       jenis: "izin",
       alasan: "",
     });
-    setPesanGagal(null);
+    setGalatForm(null);
     setTerbuka(true);
   }
 
   function kirim(e: React.FormEvent) {
     e.preventDefault();
     if (!sesi) return;
+
+    // Tanggal yang sudah punya pengajuan ditampilkan sebagai popup tersendiri,
+    // karena ini bukan salah ketik melainkan bentrok dengan data yang ada.
+    const sudahAda = izinBentrok(draf.siswaId, draf.tanggal);
+    if (sudahAda) {
+      setTerbuka(false);
+      setGalatForm(null);
+      setBentrok({
+        izin: sudahAda,
+        namaAnak: anak.find((a) => a.id === draf.siswaId)?.nama ?? "—",
+      });
+      return;
+    }
+
     try {
       ajukanIzin({ ...draf, diajukanOleh: sesi.id });
       setTerbuka(false);
-      setPesanGagal(null);
+      setGalatForm(null);
       tampilkan("Pengajuan terkirim. Guru kelas akan memverifikasinya.");
       revalidate();
     } catch (err) {
-      setPesanGagal(err instanceof Error ? err.message : "Pengajuan gagal dikirim.");
+      // Modal tetap terbuka, jadi pesannya harus tampil DI DALAM modal.
+      setGalatForm(err instanceof Error ? err.message : "Pengajuan gagal dikirim.");
     }
+  }
+
+  /** Buka kembali form dari popup bentrok, dengan tanggal dibersihkan. */
+  function gantiTanggal() {
+    setDraf({ ...draf, tanggal: "" });
+    setBentrok(null);
+    setGalatForm(null);
+    setTerbuka(true);
   }
 
   if (anak.length === 0) {
@@ -106,7 +132,6 @@ export default function OrtuIzin({ loaderData }: Route.ComponentProps) {
         judul="Ajukan Izin"
         deskripsi="Ajukan izin atau sakit untuk anak Anda. Guru kelas akan menyetujui atau menolaknya."
       />
-      <PesanGagal pesan={pesanGagal} />
 
       <div className="space-y-4">
         <div className="flex flex-wrap items-center gap-3 rounded-card border border-border bg-surface-raised p-4 shadow-card">
@@ -214,6 +239,15 @@ export default function OrtuIzin({ loaderData }: Route.ComponentProps) {
             />
           </Field>
 
+          {galatForm && (
+            <p
+              role="alert"
+              className="rounded-field bg-danger-soft px-3 py-2 text-sm font-medium text-danger"
+            >
+              {galatForm}
+            </p>
+          )}
+
           <div className="flex justify-end gap-2 pt-2">
             <TombolSekunder type="button" onClick={() => setTerbuka(false)}>
               Batal
@@ -221,6 +255,53 @@ export default function OrtuIzin({ loaderData }: Route.ComponentProps) {
             <TombolUtama type="submit">Kirim Pengajuan</TombolUtama>
           </div>
         </form>
+      </Modal>
+
+      <Modal
+        judul="Tanggal ini sudah diajukan"
+        terbuka={bentrok !== null}
+        onTutup={() => setBentrok(null)}
+      >
+        {bentrok && (
+          <>
+            <p className="text-sm text-fg-muted">
+              Sudah ada pengajuan untuk{" "}
+              <span className="font-semibold text-fg">{bentrok.namaAnak}</span> pada{" "}
+              <span className="font-semibold text-fg">{tanggalPanjang(bentrok.izin.tanggal)}</span>
+              , jadi pengajuan baru tidak dikirim.
+            </p>
+
+            <div className="mt-3 rounded-field bg-surface-sunken px-3 py-3">
+              <p className="flex flex-wrap items-center gap-2 text-sm">
+                <span
+                  className={`rounded-pill px-2 py-0.5 text-xs font-semibold ${WARNA_STATUS_IZIN[bentrok.izin.status]}`}
+                >
+                  {LABEL_STATUS_IZIN[bentrok.izin.status]}
+                </span>
+                <span className="font-medium">{LABEL_JENIS[bentrok.izin.jenis]}</span>
+              </p>
+              <p className="mt-1.5 text-sm text-fg-muted">{bentrok.izin.alasan}</p>
+              <p className="mt-1 text-xs text-fg-subtle">
+                Diajukan {tanggalPendek(bentrok.izin.tglPengajuan)}
+              </p>
+            </div>
+
+            <p className="mt-3 text-sm text-fg-muted">
+              {bentrok.izin.status === "pending"
+                ? "Pengajuan tersebut masih menunggu persetujuan guru kelas. Tunggu hasilnya, atau ajukan untuk tanggal lain."
+                : "Pengajuan tersebut sudah disetujui guru kelas. Bila tanggalnya keliru, hubungi guru kelas."}
+            </p>
+
+            <div className="mt-5 flex flex-wrap justify-end gap-2">
+              <TombolSekunder type="button" onClick={() => setBentrok(null)}>
+                Tutup
+              </TombolSekunder>
+              <TombolUtama type="button" onClick={gantiTanggal}>
+                Ajukan tanggal lain
+              </TombolUtama>
+            </div>
+          </>
+        )}
       </Modal>
     </>
   );
