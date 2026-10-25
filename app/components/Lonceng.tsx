@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import type { Session } from "../data/types";
 import { type Peristiwa, tandaiDibaca } from "../lib/notifikasi";
 import { tanggalPendek } from "../lib/tanggal";
+import { Ikon } from "./Ikon";
 
 const TAMPIL_DI_PANEL = 5;
 
@@ -50,7 +51,7 @@ export function Lonceng({ sesi, notifikasi }: { sesi: Session; notifikasi: Peris
         }
         className="relative rounded-field border border-border px-2.5 py-1.5 text-sm transition hover:bg-surface-hover"
       >
-        <span aria-hidden="true">🔔</span>
+        <Ikon nama="bell" />
         {belumDibaca > 0 && (
           <span className="absolute -right-1.5 -top-1.5 min-w-4 rounded-pill bg-danger px-1 text-[10px] font-bold text-fg-on-strong tabular-nums">
             {belumDibaca > 9 ? "9+" : belumDibaca}
@@ -84,7 +85,7 @@ export function Lonceng({ sesi, notifikasi }: { sesi: Session; notifikasi: Peris
                       n.belumDibaca ? "bg-primary-soft/40" : ""
                     }`}
                   >
-                    <span aria-hidden="true">{n.ikon}</span>
+                    <Ikon nama={n.ikon} className="mt-0.5 w-4 text-center" />
                     <span className="min-w-0 flex-1">
                       <span className="block text-sm font-medium">
                         {n.judul}

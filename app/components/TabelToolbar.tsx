@@ -1,3 +1,5 @@
+import { Ikon } from "./Ikon";
+
 export function Pencarian({
   nilai,
   onUbah,
@@ -46,7 +48,8 @@ export function Paginasi({
           disabled={halaman <= 1}
           className="rounded-field border border-border px-2.5 py-1.5 text-sm transition enabled:hover:bg-surface-hover disabled:opacity-40"
         >
-          ← Sebelumnya
+          <Ikon nama="chevron-left" className="mr-1 text-xs" />
+          Sebelumnya
         </button>
         <span className="text-xs text-fg-muted">
           {halaman} / {totalHalaman}
@@ -57,7 +60,8 @@ export function Paginasi({
           disabled={halaman >= totalHalaman}
           className="rounded-field border border-border px-2.5 py-1.5 text-sm transition enabled:hover:bg-surface-hover disabled:opacity-40"
         >
-          Berikutnya →
+          Berikutnya
+          <Ikon nama="chevron-right" className="ml-1 text-xs" />
         </button>
       </div>
     </div>

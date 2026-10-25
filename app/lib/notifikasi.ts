@@ -24,6 +24,7 @@ import { labelPeriode, tanggalPanjang, tanggalPendek } from "./tanggal";
 export type Peristiwa = {
   /** Tetap untuk peristiwa yang sama, mis. "rapor:rp-002". */
   kunci: string;
+  /** Nama ikon Font Awesome tanpa awalan. */
   ikon: string;
   judul: string;
   pesan: string;
@@ -43,7 +44,7 @@ const sumberDailyReport: Sumber = (sesi) => {
   return anakDariOrtu(sesi.id).flatMap((anak) =>
     reportTerbitSiswa(anak.id).map((r) => ({
       kunci: `report:${r.id}`,
-      ikon: "📔",
+      ikon: "book-open",
       judul: "Daily report baru",
       pesan: `${anak.nama} · ${tanggalPanjang(r.tanggal)}`,
       tanggal: r.tanggal,
@@ -58,7 +59,7 @@ const sumberRapor: Sumber = (sesi) => {
   return anakDariOrtu(sesi.id).flatMap((anak) =>
     raporTerbitSiswa(anak.id).map((r) => ({
       kunci: `rapor:${r.id}`,
-      ikon: "📄",
+      ikon: "file-lines",
       judul: "Rapor terbit",
       pesan: `${anak.nama} · ${labelPeriode({ tahunAjaran: r.tahunAjaran, semester: r.semester })}`,
       tanggal: r.tglPublikasi ?? "",
@@ -76,7 +77,7 @@ const sumberStatusIzin: Sumber = (sesi) => {
     .filter((i) => i.status !== "pending")
     .map((i) => ({
       kunci: `izin:${i.id}`,
-      ikon: i.status === "disetujui" ? "✅" : "❌",
+      ikon: i.status === "disetujui" ? "circle-check" : "circle-xmark",
       judul: i.status === "disetujui" ? "Izin disetujui" : "Izin ditolak",
       pesan: `${nama.get(i.siswaId) ?? "—"} · ${LABEL_JENIS[i.jenis]} ${tanggalPendek(i.tanggal)}`,
       tanggal: i.tanggal,
@@ -96,7 +97,7 @@ const sumberPengajuanIzin: Sumber = (sesi) => {
     .filter((i) => i.status === "pending")
     .map((i) => ({
       kunci: `izin-baru:${i.id}`,
-      ikon: "📝",
+      ikon: "file-signature",
       judul: "Pengajuan izin baru",
       pesan: `${nama.get(i.siswaId) ?? "—"} · ${LABEL_JENIS[i.jenis]} ${tanggalPendek(i.tanggal)}`,
       tanggal: i.tglPengajuan,

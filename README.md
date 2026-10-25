@@ -100,7 +100,7 @@ app/
 ├── app.css              token tema (warna HSL, mode terang & gelap)
 ├── root.tsx
 ├── routes.ts            daftar route
-├── components/          AppShell, RoleBadge, komponen UI bersama
+├── components/          AppShell, Ikon, RoleBadge, komponen UI bersama
 ├── data/
 │   ├── types.ts         tipe domain
 │   └── seed/            data awal, satu berkas per data store DFD

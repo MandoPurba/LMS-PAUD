@@ -8,6 +8,11 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
+// Hanya gaya solid & regular yang dipakai; berkas "all" turut membawa font
+// brands (115 KB) dan kompatibilitas v4 yang tidak pernah dipanggil.
+import "@fortawesome/fontawesome-free/css/fontawesome.min.css";
+import "@fortawesome/fontawesome-free/css/solid.min.css";
+import "@fortawesome/fontawesome-free/css/regular.min.css";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [

@@ -67,6 +67,11 @@ Seluruh token ada di `app/app.css`. **Tidak boleh ada warna hardcode** (`#fff`, 
 
 ## Antarmuka
 
+- **Ikon memakai Font Awesome lewat komponen `<Ikon nama="house" />`**, bukan emoji dan bukan kelas
+  `fa-*` langsung. CSS-nya dimuat dari paket npm di `app/root.tsx` (bukan CDN) supaya ikon tetap
+  tampil tanpa internet; hanya gaya `solid` dan `regular` yang dimuat, jadi jangan memakai `fa-brands`.
+  Sebelum memakai nama ikon baru, pastikan nama itu ada di versi free:
+  `grep -E "\.fa-NAMA[,{]" node_modules/@fortawesome/fontawesome-free/css/solid.min.css`
 - Seluruh teks **bahasa Indonesia** (NFR-07). Istilah domain tetap: Daily Report, STPPA, BB/MB/BSH/BSB.
 - Judul memakai `font-display` (Quicksand); teks isi memakai `font-sans` (Inter).
 - Harus terbaca di lebar 360 px.

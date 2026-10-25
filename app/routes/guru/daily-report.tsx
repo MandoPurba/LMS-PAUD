@@ -8,6 +8,7 @@ import {
   TombolSekunder,
   TombolUtama,
 } from "../../components/form";
+import { Ikon } from "../../components/Ikon";
 import { Modal } from "../../components/Modal";
 import { PilihIkon } from "../../components/PilihIkon";
 import { useToast } from "../../components/Toast";
@@ -363,9 +364,9 @@ export default function GuruDailyReport({ loaderData }: Route.ComponentProps) {
                       onClick={() =>
                         setDraf({ ...draf, foto: draf.foto.filter((_, j) => j !== i) })
                       }
-                      className="absolute -right-1.5 -top-1.5 rounded-pill bg-danger px-1.5 text-xs font-bold text-fg-on-strong"
+                      className="absolute -right-1.5 -top-1.5 rounded-pill bg-danger px-1.5 py-0.5 text-[10px] text-fg-on-strong"
                     >
-                      ✕
+                      <Ikon nama="xmark" />
                     </button>
                     <p className="mt-0.5 text-center text-[10px] text-fg-subtle">
                       {formatByte(byteDataUrl(f))}

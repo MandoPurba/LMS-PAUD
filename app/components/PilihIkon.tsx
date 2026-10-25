@@ -1,3 +1,5 @@
+import { Ikon } from "./Ikon";
+
 /** Pilihan berbentuk tombol berikon — cepat ditekan, sesuai NFR-06. */
 export function PilihIkon<T extends string>({
   label,
@@ -28,7 +30,7 @@ export function PilihIkon<T extends string>({
                   : "border border-border text-fg-muted hover:bg-surface-hover"
               }`}
             >
-              <span aria-hidden="true">{p.ikon}</span>
+              <Ikon nama={p.ikon} className="w-4 text-center" />
               {p.label}
             </button>
           );

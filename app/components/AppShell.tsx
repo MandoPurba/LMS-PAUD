@@ -5,6 +5,7 @@ import type { Session } from "../data/types";
 import type { Peristiwa } from "../lib/notifikasi";
 import { logout } from "../lib/session";
 import { MENU } from "../lib/menu";
+import { Ikon } from "./Ikon";
 import { Lonceng } from "./Lonceng";
 import { RoleBadge } from "./RoleBadge";
 
@@ -37,7 +38,7 @@ export function AppShell({
             aria-label="Buka menu"
             className="rounded-field border border-border px-2.5 py-1.5 text-sm md:hidden"
           >
-            ☰
+            <Ikon nama="bars" />
           </button>
 
           <div className="min-w-0">
@@ -84,7 +85,7 @@ export function AppShell({
                       }`
                     }
                   >
-                    <span aria-hidden="true">{m.ikon}</span>
+                    <Ikon nama={m.ikon} className="w-4 text-center" />
                     {m.label}
                   </NavLink>
                 </li>
@@ -94,9 +95,7 @@ export function AppShell({
                     title={`Dikerjakan di ${m.fr}`}
                     className="flex items-center gap-2.5 rounded-field px-3 py-2 text-sm text-fg-subtle"
                   >
-                    <span aria-hidden="true" className="opacity-50">
-                      {m.ikon}
-                    </span>
+                    <Ikon nama={m.ikon} className="w-4 text-center opacity-50" />
                     <span className="truncate">{m.label}</span>
                     <span className="ml-auto shrink-0 rounded-pill bg-surface-sunken px-1.5 py-0.5 text-[10px] font-semibold tracking-wide">
                       {m.fr}
