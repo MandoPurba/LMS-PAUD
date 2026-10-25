@@ -4,7 +4,7 @@ import type { Route } from "./+types/dashboard";
 import { JudulHalaman, KartuFitur, Panel } from "../../components/ui";
 import { tanggalPanjang } from "../../lib/tanggal";
 import { MENU } from "../../lib/menu";
-import { tahunAktif } from "../../lib/relasi";
+import { periodeAktif, semesterBerjalan, tahunAktif } from "../../lib/relasi";
 import { repoKelas, repoSiswa, repoUser } from "../../lib/repo";
 
 export function meta() {
@@ -18,6 +18,7 @@ export function clientLoader() {
 
   return {
     tahun,
+    semester: semesterBerjalan(),
     siswa: siswa.length,
     guru: user.filter((u) => u.role === "guru").length,
     ortu: user.filter((u) => u.role === "ortu").length,
@@ -64,7 +65,7 @@ export default function DashboardAdmin({ loaderData }: Route.ComponentProps) {
         judul="Dashboard Admin"
         deskripsi={
           loaderData.tahun
-            ? `${tanggalPanjang()} · Tahun ajaran ${loaderData.tahun.nama} Semester ${loaderData.tahun.semesterAktif}`
+            ? `${tanggalPanjang()} · Tahun ajaran ${loaderData.tahun.nama}${loaderData.semester ? ` Semester ${loaderData.semester}` : ""}`
             : `${tanggalPanjang()} · Belum ada tahun ajaran aktif`
         }
       />

@@ -1,6 +1,6 @@
 import type { DataLaporan } from "../components/HalamanLaporan";
 import { absensiKosong, bulanTersedia, rekapAbsensi, rekapCapaian } from "./laporan";
-import { kelasDariGuru, namaTahun, siswaDariKelas, tahunAktif } from "./relasi";
+import { kelasDariGuru, namaTahun, periodeAktif, siswaDariKelas, tahunAktif } from "./relasi";
 import { repoKelas } from "./repo";
 import { ambilSesi } from "./session";
 import { periodeTersedia } from "./stppa";
@@ -54,16 +54,14 @@ export function muatLaporan(url: string, role: "admin" | "guru"): DataLaporan {
     ? (params.get("bulan") as string)
     : daftarBulan[0];
 
-  const periodeAktif = tahun
-    ? { tahunAjaran: tahun.nama, semester: tahun.semesterAktif }
-    : periodeAkademik(tanggalLokal());
+  const periodeAwal = periodeAktif() ?? periodeAkademik(tanggalLokal());
   const daftarPeriode = [
     ...new Map(
-      [periodeAktif, ...kelasPeriode(kelas.id)].map((p) => [labelPeriode(p), p]),
+      [periodeAwal, ...kelasPeriode(kelas.id)].map((p) => [labelPeriode(p), p]),
     ).values(),
   ].sort((a, b) => b.tahunAjaran.localeCompare(a.tahunAjaran) || b.semester - a.semester);
   const periode =
-    daftarPeriode.find((p) => labelPeriode(p) === params.get("periode")) ?? periodeAktif;
+    daftarPeriode.find((p) => labelPeriode(p) === params.get("periode")) ?? periodeAwal;
 
   const absensi = rekapAbsensi(kelas.id, bulan);
 

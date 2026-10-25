@@ -15,9 +15,11 @@ import { Modal } from "../../components/Modal";
 import { JudulHalaman } from "../../components/ui";
 import type { Semester, TahunAjaran } from "../../data/types";
 import {
-  aktifkanPeriode,
+  aktifkanTahun,
   cekHapusTahunAjaran,
   kelasTahun,
+  rentangSemester,
+  semesterBerjalan,
   siswaDariKelas,
 } from "../../lib/relasi";
 import { GagalSimpan, repoTahunAjaran } from "../../lib/repo";
@@ -30,12 +32,14 @@ export function meta() {
 const SEMESTER: Semester[] = [1, 2];
 
 export function clientLoader() {
+  const berjalan = semesterBerjalan();
   const tahun = repoTahunAjaran
     .semua()
     .slice()
     .sort((a, b) => b.nama.localeCompare(a.nama));
 
   return {
+    semesterBerjalan: berjalan,
     tahun: tahun.map((t) => {
       const kelas = kelasTahun(t.id);
       return {
@@ -80,9 +84,7 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
   const [draf, setDraf] = useState<Draf>(DRAF_KOSONG);
   const [galat, setGalat] = useState<Galat>({});
   const [targetHapus, setTargetHapus] = useState<TahunAjaran | null>(null);
-  const [targetAktif, setTargetAktif] = useState<{ tahun: TahunAjaran; semester: Semester } | null>(
-    null,
-  );
+  const [targetAktif, setTargetAktif] = useState<TahunAjaran | null>(null);
   const [pesanGagal, setPesanGagal] = useState<string | null>(null);
   const [pesanSukses, setPesanSukses] = useState<string | null>(null);
 
@@ -90,7 +92,7 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
   const ringkasanTarget =
     targetAktif === null
       ? null
-      : (loaderData.tahun.find((t) => t.id === targetAktif.tahun.id) ?? null);
+      : (loaderData.tahun.find((t) => t.id === targetAktif.id) ?? null);
   const alasanTolak =
     targetHapus === null
       ? null
@@ -126,7 +128,7 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
     try {
       if (form.mode === "tambah") {
         // Tahun baru tidak langsung aktif; aktivasi adalah tindakan terpisah.
-        repoTahunAjaran.tambah({ nama: draf.nama.trim(), semesterAktif: 1, aktif: false });
+        repoTahunAjaran.tambah({ nama: draf.nama.trim(), aktif: false });
       } else if (form.tahun) {
         repoTahunAjaran.ubah(form.tahun.id, { nama: draf.nama.trim() });
       }
@@ -140,10 +142,10 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
   function aktifkan() {
     if (!targetAktif) return;
     try {
-      aktifkanPeriode(targetAktif.tahun.id, targetAktif.semester);
+      aktifkanTahun(targetAktif.id);
       setPesanSukses(
-        `${targetAktif.tahun.nama} Semester ${targetAktif.semester} kini menjadi periode aktif. ` +
-          "Kelas, absensi, daily report, observasi, rapor, dan laporan mengikuti periode ini.",
+        `Tahun ajaran ${targetAktif.nama} kini aktif, beserta Semester 1 dan Semester 2-nya. ` +
+          "Kelas, absensi, daily report, observasi, rapor, dan laporan mengikuti tahun ini.",
       );
       setTargetAktif(null);
       revalidate();
@@ -169,7 +171,7 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
     <>
       <JudulHalaman
         judul="Tahun Ajaran"
-        deskripsi="Setiap tahun ajaran terdiri dari Semester 1 dan Semester 2. Tepat satu semester berstatus aktif di seluruh sistem."
+        deskripsi="Setiap tahun ajaran terdiri dari Semester 1 dan Semester 2, dan keduanya berjalan sepanjang tahun tersebut. Tepat satu tahun ajaran berstatus aktif."
       />
       <PesanGagal pesan={pesanGagal} />
 
@@ -184,11 +186,16 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
 
       <div className="mb-4 flex flex-wrap items-center gap-3 rounded-card border border-border bg-surface-raised p-4 shadow-card">
         <div className="min-w-0">
-          <p className="text-xs text-fg-muted">Periode aktif</p>
+          <p className="text-xs text-fg-muted">Tahun ajaran aktif</p>
           <p className="font-display text-lg font-bold">
-            {aktifSekarang
-              ? `${aktifSekarang.nama} Semester ${aktifSekarang.semesterAktif}`
-              : "Belum ada"}
+            {aktifSekarang ? aktifSekarang.nama : "Belum ada"}
+          </p>
+          <p className="text-xs text-fg-subtle">
+            {loaderData.semesterBerjalan
+              ? `Semester ${loaderData.semesterBerjalan} sedang berjalan menurut kalender`
+              : aktifSekarang
+                ? "Bukan tahun kalender berjalan, jadi belum ada semester yang berlangsung"
+                : "Aktifkan salah satu tahun ajaran"}
           </p>
         </div>
         <div className="ml-auto">
@@ -218,6 +225,19 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
                 </div>
 
                 <div className="ml-auto flex flex-wrap items-center gap-1.5">
+                  {t.aktif ? (
+                    <span className="rounded-pill bg-success-soft px-2 py-0.5 text-xs font-semibold text-success">
+                      Aktif
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setTargetAktif(t)}
+                      className="rounded-field px-2 py-1 text-xs font-semibold text-success transition hover:bg-success-soft"
+                    >
+                      Jadikan aktif
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={() => bukaUbah(t)}
@@ -237,33 +257,23 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
 
               <ul className="divide-y divide-border">
                 {SEMESTER.map((sem) => {
-                  const aktif = t.aktif && t.semesterAktif === sem;
+                  const berjalan = t.aktif && loaderData.semesterBerjalan === sem;
                   return (
-                    <li
-                      key={sem}
-                      className="flex flex-wrap items-center gap-3 px-4 py-2.5 pl-6"
-                    >
+                    <li key={sem} className="flex flex-wrap items-center gap-3 px-4 py-2.5 pl-6">
                       <p className="text-sm">Semester {sem}</p>
+                      <p className="text-xs text-fg-subtle">{rentangSemester(t.nama, sem)}</p>
 
-                      {aktif ? (
-                        <span className="rounded-pill bg-success-soft px-2 py-0.5 text-xs font-semibold text-success">
-                          Aktif
-                        </span>
-                      ) : (
-                        <span className="text-xs text-fg-subtle">Tidak aktif</span>
-                      )}
-
-                      {!aktif && (
-                        <div className="ml-auto">
-                          <button
-                            type="button"
-                            onClick={() => setTargetAktif({ tahun: t, semester: sem })}
-                            className="rounded-field px-2 py-1 text-xs font-semibold text-success transition hover:bg-success-soft"
-                          >
-                            Jadikan aktif
-                          </button>
-                        </div>
-                      )}
+                      <div className="ml-auto">
+                        {berjalan ? (
+                          <span className="rounded-pill bg-primary-soft px-2 py-0.5 text-xs font-semibold text-primary">
+                            Sedang berjalan
+                          </span>
+                        ) : t.aktif ? (
+                          <span className="text-xs text-fg-subtle">Bagian dari tahun aktif</span>
+                        ) : (
+                          <span className="text-xs text-fg-subtle">—</span>
+                        )}
+                      </div>
                     </li>
                   );
                 })}
@@ -274,27 +284,20 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
       )}
 
       <Modal
-        judul="Jadikan periode ini aktif?"
+        judul="Jadikan tahun ajaran ini aktif?"
         terbuka={targetAktif !== null}
         onTutup={() => setTargetAktif(null)}
       >
         {targetAktif && (
           <>
             <p className="text-sm text-fg-muted">
-              Periode aktif akan berpindah dari{" "}
-              <span className="font-semibold text-fg">
-                {aktifSekarang
-                  ? `${aktifSekarang.nama} Semester ${aktifSekarang.semesterAktif}`
-                  : "—"}
-              </span>{" "}
-              ke{" "}
-              <span className="font-semibold text-fg">
-                {targetAktif.tahun.nama} Semester {targetAktif.semester}
-              </span>
-              . Hanya satu periode yang dapat aktif.
+              Tahun ajaran aktif akan berpindah dari{" "}
+              <span className="font-semibold text-fg">{aktifSekarang?.nama ?? "—"}</span> ke{" "}
+              <span className="font-semibold text-fg">{targetAktif.nama}</span>, beserta Semester 1
+              dan Semester 2-nya. Hanya satu tahun ajaran yang dapat aktif.
             </p>
 
-            <p className="mt-3 text-sm font-medium">Yang akan mengikuti periode ini:</p>
+            <p className="mt-3 text-sm font-medium">Yang akan mengikuti tahun ini:</p>
             <ul className="mt-1 space-y-0.5 text-sm text-fg-muted">
               <li>• Kelas yang tampil sebagai kelas berjalan</li>
               <li>• Kelas yang diampu guru, beserta absensi dan daily report-nya</li>
@@ -302,7 +305,7 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
             </ul>
 
             <p className="mt-3 rounded-field bg-info-soft px-3 py-2 text-xs text-info">
-              {targetAktif.tahun.nama} memiliki {ringkasanTarget?.jumlahKelas ?? 0} kelas dan{" "}
+              {targetAktif.nama} memiliki {ringkasanTarget?.jumlahKelas ?? 0} kelas dan{" "}
               {ringkasanTarget?.jumlahSiswa ?? 0} siswa. Guru yang tidak mengampu kelas di tahun
               ini akan melihat halamannya kosong.
             </p>
@@ -340,8 +343,9 @@ export default function AdminTahunAjaran({ loaderData }: Route.ComponentProps) {
           </Field>
 
           <p className="rounded-field bg-info-soft px-3 py-2 text-xs text-info">
-            Semester 1 dan Semester 2 dibuat otomatis untuk setiap tahun ajaran. Pilih semester
-            mana yang aktif lewat tombol “Jadikan aktif” pada daftar.
+            Semester 1 (Juli–Desember) dan Semester 2 (Januari–Juni) otomatis menjadi bagian
+            dari setiap tahun ajaran. Semester mana yang sedang berjalan ditentukan kalender, bukan
+            dipilih di sini.
           </p>
 
           <div className="flex justify-end gap-2 pt-2">

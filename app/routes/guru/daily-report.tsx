@@ -23,7 +23,7 @@ import {
   validasiReport,
 } from "../../lib/daily-report";
 import { MAKS_FOTO, byteDataUrl, formatByte, kompresFoto } from "../../lib/foto";
-import { kelasDariGuru, siswaDariKelas, tahunAktif } from "../../lib/relasi";
+import { kelasDariGuru, semesterBerjalan, siswaDariKelas, tahunAktif } from "../../lib/relasi";
 import { GagalSimpan } from "../../lib/repo";
 import { ambilSesi } from "../../lib/session";
 import { perkiraanPemakaian } from "../../lib/storage";
@@ -47,6 +47,7 @@ export function clientLoader({ request }: Route.ClientLoaderArgs) {
     maksTanggal,
     kelas,
     tahun: tahunAktif() ?? null,
+    semester: semesterBerjalan(),
     pemakaian: perkiraanPemakaian(),
     baris: siswa.map((s) => ({
       siswa: s,
@@ -87,7 +88,7 @@ function dariReport(r: DailyReport): Draf {
 }
 
 export default function GuruDailyReport({ loaderData }: Route.ComponentProps) {
-  const { tanggal, maksTanggal, kelas, tahun, baris, pemakaian } = loaderData;
+  const { tanggal, maksTanggal, kelas, tahun, semester, baris, pemakaian } = loaderData;
   const [, setParams] = useSearchParams();
   const { revalidate } = useRevalidator();
   const sesi = ambilSesi();
@@ -174,7 +175,7 @@ export default function GuruDailyReport({ loaderData }: Route.ComponentProps) {
         judul="Daily Report"
         deskripsi={
           kelas
-            ? `${kelas.nama}${tahun ? ` · ${tahun.nama} Semester ${tahun.semesterAktif}` : ""}`
+            ? `${kelas.nama}${tahun ? ` · ${tahun.nama}${semester ? ` Semester ${semester}` : ""}` : ""}`
             : "Belum ada kelas yang Anda ampu."
         }
       />

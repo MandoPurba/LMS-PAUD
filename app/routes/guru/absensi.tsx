@@ -13,7 +13,7 @@ import {
   rekapStatus,
   simpanAbsensi,
 } from "../../lib/absensi";
-import { kelasDariGuru, siswaDariKelas, tahunAktif } from "../../lib/relasi";
+import { kelasDariGuru, semesterBerjalan, siswaDariKelas, tahunAktif } from "../../lib/relasi";
 import { GagalSimpan } from "../../lib/repo";
 import { ambilSesi } from "../../lib/session";
 import { tanggalLokal, tanggalPanjang } from "../../lib/tanggal";
@@ -40,6 +40,7 @@ export function clientLoader({ request }: Route.ClientLoaderArgs) {
     maksTanggal,
     kelas,
     tahun: tahunAktif() ?? null,
+    semester: semesterBerjalan(),
     siswa,
     tersimpan: Object.fromEntries(tersimpan.map((a) => [a.siswaId, a.status])) as Record<
       string,
@@ -197,7 +198,7 @@ function FormAbsensi({
 }
 
 export default function GuruAbsensi({ loaderData }: Route.ComponentProps) {
-  const { tanggal, maksTanggal, kelas, tahun, siswa, tersimpan, sudahAda } = loaderData;
+  const { tanggal, maksTanggal, kelas, tahun, semester, siswa, tersimpan, sudahAda } = loaderData;
   const [, setParams] = useSearchParams();
   const { revalidate } = useRevalidator();
   const sesi = ambilSesi();
@@ -208,7 +209,7 @@ export default function GuruAbsensi({ loaderData }: Route.ComponentProps) {
         judul="Absensi Harian"
         deskripsi={
           kelas
-            ? `${kelas.nama}${tahun ? ` · ${tahun.nama} Semester ${tahun.semesterAktif}` : ""}`
+            ? `${kelas.nama}${tahun ? ` · ${tahun.nama}${semester ? ` Semester ${semester}` : ""}` : ""}`
             : "Belum ada kelas yang Anda ampu."
         }
       />

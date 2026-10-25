@@ -21,7 +21,7 @@ import {
   tarikKeDraft,
   terbitkanRapor,
 } from "../../lib/rapor";
-import { kelasDariGuru, siswaDariKelas, tahunAktif } from "../../lib/relasi";
+import { kelasDariGuru, periodeAktif, siswaDariKelas, tahunAktif } from "../../lib/relasi";
 import { ambilSesi } from "../../lib/session";
 import { LABEL_CAPAIAN, WARNA_CAPAIAN, labelAspek, periodeTersedia } from "../../lib/stppa";
 import { labelPeriode, periodeAkademik, tanggalLokal, tanggalPendek } from "../../lib/tanggal";
@@ -39,16 +39,14 @@ export function clientLoader({ request }: Route.ClientLoaderArgs) {
   const terpilih = siswa.find((s) => s.id === params.get("anak")) ?? siswa[0] ?? null;
 
   const tahun = tahunAktif() ?? null;
-  const periodeAktif = tahun
-    ? { tahunAjaran: tahun.nama, semester: tahun.semesterAktif }
-    : periodeAkademik(tanggalLokal());
+  const periodeAwal = periodeAktif() ?? periodeAkademik(tanggalLokal());
 
   const daftarPeriode = terpilih ? periodeTersedia(terpilih.id) : [];
-  if (!daftarPeriode.some((p) => labelPeriode(p) === labelPeriode(periodeAktif))) {
-    daftarPeriode.unshift(periodeAktif);
+  if (!daftarPeriode.some((p) => labelPeriode(p) === labelPeriode(periodeAwal))) {
+    daftarPeriode.unshift(periodeAwal);
   }
   const periode =
-    daftarPeriode.find((p) => labelPeriode(p) === params.get("periode")) ?? periodeAktif;
+    daftarPeriode.find((p) => labelPeriode(p) === params.get("periode")) ?? periodeAwal;
 
   return {
     kelas,
