@@ -4,6 +4,7 @@ import { useRevalidator } from "react-router";
 import type { Route } from "./+types/izin";
 import { Field, PesanGagal, TombolBahaya, TombolSekunder, TombolUtama } from "../../components/form";
 import { Modal } from "../../components/Modal";
+import { useToast } from "../../components/Toast";
 import { JudulHalaman, Panel } from "../../components/ui";
 import type { Izin } from "../../data/types";
 import { LABEL_STATUS, WARNA_STATUS, absensiSiswa } from "../../lib/absensi";
@@ -48,6 +49,7 @@ export function clientLoader() {
 export default function GuruIzin({ loaderData }: Route.ComponentProps) {
   const { kelas, daftar } = loaderData;
   const { revalidate } = useRevalidator();
+  const { tampilkan } = useToast();
   const sesi = ambilSesi();
 
   type Target = (typeof daftar)[number];
@@ -55,13 +57,12 @@ export default function GuruIzin({ loaderData }: Route.ComponentProps) {
   const [tolak, setTolak] = useState<Target | null>(null);
   const [catatan, setCatatan] = useState("");
   const [pesanGagal, setPesanGagal] = useState<string | null>(null);
-  const [pesanSukses, setPesanSukses] = useState<string | null>(null);
 
   function jalankanSetuju() {
     if (!setuju || !sesi) return;
     try {
       const hasil = setujuiIzin(setuju.id, sesi.id);
-      setPesanSukses(
+      tampilkan(
         hasil?.reportDitarik
           ? `Izin disetujui. Absensi ${tanggalPendek(setuju.tanggal)} menjadi ${LABEL_JENIS[setuju.jenis]}, dan daily report tanggal itu dikembalikan ke draft.`
           : `Izin disetujui. Absensi ${tanggalPendek(setuju.tanggal)} otomatis menjadi ${LABEL_JENIS[setuju.jenis]}.`,
@@ -78,7 +79,7 @@ export default function GuruIzin({ loaderData }: Route.ComponentProps) {
     if (!tolak || !sesi) return;
     try {
       tolakIzin(tolak.id, sesi.id, catatan);
-      setPesanSukses("Pengajuan ditolak. Absensi tidak diubah.");
+      tampilkan("Pengajuan ditolak. Orang tua akan melihat status dan catatan Anda.");
       setTolak(null);
       setCatatan("");
       revalidate();
@@ -110,15 +111,6 @@ export default function GuruIzin({ loaderData }: Route.ComponentProps) {
         deskripsi={`${kelas.nama} · menyetujui pengajuan akan langsung mengubah absensi tanggal tersebut`}
       />
       <PesanGagal pesan={pesanGagal} />
-
-      {pesanSukses && (
-        <p
-          role="status"
-          className="mb-4 rounded-field bg-success-soft px-3 py-2 text-sm font-medium text-success"
-        >
-          ✓ {pesanSukses}
-        </p>
-      )}
 
       <div className="space-y-4">
         <div className="rounded-card border border-border bg-surface-raised p-4 shadow-card">

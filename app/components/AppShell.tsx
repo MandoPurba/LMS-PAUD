@@ -2,11 +2,21 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 
 import type { Session } from "../data/types";
+import type { Peristiwa } from "../lib/notifikasi";
 import { logout } from "../lib/session";
 import { MENU } from "../lib/menu";
+import { Lonceng } from "./Lonceng";
 import { RoleBadge } from "./RoleBadge";
 
-export function AppShell({ sesi, children }: { sesi: Session; children: React.ReactNode }) {
+export function AppShell({
+  sesi,
+  notifikasi,
+  children,
+}: {
+  sesi: Session;
+  notifikasi: Peristiwa[];
+  children: React.ReactNode;
+}) {
   const [menuTerbuka, setMenuTerbuka] = useState(false);
   const navigate = useNavigate();
   const item = MENU[sesi.role];
@@ -40,6 +50,7 @@ export function AppShell({ sesi, children }: { sesi: Session; children: React.Re
               <p className="truncate text-sm font-medium">{sesi.nama}</p>
               <p className="truncate text-xs text-fg-subtle">{sesi.email}</p>
             </div>
+            <Lonceng sesi={sesi} notifikasi={notifikasi} />
             <RoleBadge role={sesi.role} />
             <button
               type="button"
