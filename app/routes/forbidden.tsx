@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 
 import type { Route } from "./+types/forbidden";
+import { Ikon } from "../components/Ikon";
 import { LABEL_ROLE } from "../lib/menu";
 import { ambilSesi, berandaRole } from "../lib/session";
 
@@ -18,9 +19,7 @@ export default function Forbidden({ loaderData }: Route.ComponentProps) {
   return (
     <main className="flex min-h-screen items-center justify-center px-4 py-10">
       <div className="w-full max-w-md rounded-card border border-border bg-surface-raised p-6 text-center shadow-card">
-        <span aria-hidden="true" className="text-4xl">
-          🔒
-        </span>
+        <Ikon nama="lock" className="text-4xl text-danger" />
         <p className="mt-2 font-display text-5xl font-bold text-danger">403</p>
         <h1 className="mt-2 text-xl">Akses ditolak</h1>
         <p className="mt-2 text-sm text-fg-muted">

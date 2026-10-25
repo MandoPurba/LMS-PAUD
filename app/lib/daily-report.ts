@@ -3,23 +3,23 @@ import { absensiSiswa } from "./absensi";
 import { repoDailyReport } from "./repo";
 
 export const MOOD: { nilai: Mood; label: string; ikon: string }[] = [
-  { nilai: "senang", label: "Senang", ikon: "😄" },
-  { nilai: "biasa", label: "Biasa", ikon: "🙂" },
-  { nilai: "rewel", label: "Rewel", ikon: "😣" },
-  { nilai: "sedih", label: "Sedih", ikon: "😢" },
-  { nilai: "lelah", label: "Lelah", ikon: "😴" },
+  { nilai: "senang", label: "Senang", ikon: "face-grin-beam" },
+  { nilai: "biasa", label: "Biasa", ikon: "face-smile" },
+  { nilai: "rewel", label: "Rewel", ikon: "face-grimace" },
+  { nilai: "sedih", label: "Sedih", ikon: "face-sad-tear" },
+  { nilai: "lelah", label: "Lelah", ikon: "face-tired" },
 ];
 
 export const MAKAN: { nilai: PorsiMakan; label: string; ikon: string }[] = [
-  { nilai: "habis", label: "Habis", ikon: "🍽️" },
-  { nilai: "sebagian", label: "Sebagian", ikon: "🥄" },
-  { nilai: "tidak", label: "Tidak mau", ikon: "🚫" },
+  { nilai: "habis", label: "Habis", ikon: "utensils" },
+  { nilai: "sebagian", label: "Sebagian", ikon: "spoon" },
+  { nilai: "tidak", label: "Tidak mau", ikon: "ban" },
 ];
 
 export const TIDUR: { nilai: TidurSiang; label: string; ikon: string }[] = [
-  { nilai: "nyenyak", label: "Nyenyak", ikon: "😴" },
-  { nilai: "sebentar", label: "Sebentar", ikon: "🛏️" },
-  { nilai: "tidak", label: "Tidak tidur", ikon: "☀️" },
+  { nilai: "nyenyak", label: "Nyenyak", ikon: "bed" },
+  { nilai: "sebentar", label: "Sebentar", ikon: "clock" },
+  { nilai: "tidak", label: "Tidak tidur", ikon: "sun" },
 ];
 
 export const LABEL_MOOD = Object.fromEntries(MOOD.map((m) => [m.nilai, m])) as Record<

@@ -77,6 +77,7 @@ maupun yang berhasil:
 | `/guru/observasi` | Catat observasi STPPA per aspek & indikator, filter semester |
 | `/admin/laporan` | Rekap absensi & capaian semua kelas |
 | `/guru/laporan` | Rekap absensi & capaian kelas yang diampu |
+| `/admin\|guru\|ortu/notifikasi` | Daftar notifikasi + tandai sudah dibaca |
 | `/guru/rapor` | Susun draft rapor dari observasi, sunting narasi, terbitkan |
 | `/ortu/rapor` | Orang tua melihat & mengunduh rapor anaknya sebagai PDF |
 | `/guru` | Dashboard Guru |
@@ -117,7 +118,7 @@ app/
 ├── app.css              token tema (warna HSL, mode terang & gelap)
 ├── root.tsx
 ├── routes.ts            daftar route
-├── components/          AppShell, RoleBadge, komponen UI bersama
+├── components/          AppShell, Ikon, RoleBadge, komponen UI bersama
 ├── data/
 │   ├── types.ts         tipe domain
 │   └── seed/            data awal, satu berkas per data store DFD
@@ -133,6 +134,7 @@ app/
 │   ├── rapor.ts         susun draft dari observasi, narasi, terbit/tarik
 │   ├── laporan.ts       agregasi rekap absensi & capaian
 │   ├── laporan-loader.ts  data laporan per role
+│   ├── notifikasi.ts    peristiwa notifikasi + penanda baca
 │   ├── tanggal.ts       helper tanggal zona waktu lokal
 │   ├── session.ts       login, logout, sesi, route guard
 │   ├── useTabelData.ts  pencarian + paginasi sisi klien

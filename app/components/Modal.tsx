@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+import { Ikon } from "./Ikon";
+
 export function Modal({
   judul,
   terbuka,
@@ -44,7 +46,7 @@ export function Modal({
             aria-label="Tutup"
             className="rounded-field px-2 py-1 text-fg-muted transition hover:bg-surface-hover"
           >
-            ✕
+            <Ikon nama="xmark" />
           </button>
         </div>
         {children}

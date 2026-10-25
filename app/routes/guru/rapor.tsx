@@ -10,6 +10,7 @@ import {
   TombolUtama,
 } from "../../components/form";
 import { Modal } from "../../components/Modal";
+import { useToast } from "../../components/Toast";
 import { JudulHalaman, Panel } from "../../components/ui";
 import type { CapaianRapor } from "../../data/types";
 import {
@@ -63,6 +64,7 @@ export default function GuruRapor({ loaderData }: Route.ComponentProps) {
   const { kelas, siswa, terpilih, periode, daftarPeriode, rapor, alasanTolak } = loaderData;
   const [params, setParams] = useSearchParams();
   const { revalidate } = useRevalidator();
+  const { tampilkan } = useToast();
   const sesi = ambilSesi();
 
   const [draf, setDraf] = useState<{
@@ -127,11 +129,12 @@ export default function GuruRapor({ loaderData }: Route.ComponentProps) {
   }
 
   function terbitkan() {
-    if (!rapor) return;
+    if (!rapor || !terpilih) return;
     try {
       terbitkanRapor(rapor.id);
       setKonfirmasiTerbit(false);
       setDraf(null);
+      tampilkan(`Rapor ${terpilih.nama} terbit. Orang tua sudah dapat melihatnya.`);
       revalidate();
     } catch {
       setPesanGagal("Rapor gagal diterbitkan.");
@@ -143,6 +146,7 @@ export default function GuruRapor({ loaderData }: Route.ComponentProps) {
     if (!rapor) return;
     try {
       tarikKeDraft(rapor.id);
+      tampilkan("Rapor ditarik ke draft dan tidak lagi terlihat orang tua.");
       revalidate();
     } catch {
       setPesanGagal("Gagal menarik rapor ke draft.");

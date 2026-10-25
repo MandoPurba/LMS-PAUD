@@ -8,8 +8,10 @@ import {
   TombolSekunder,
   TombolUtama,
 } from "../../components/form";
+import { Ikon } from "../../components/Ikon";
 import { Modal } from "../../components/Modal";
 import { PilihIkon } from "../../components/PilihIkon";
+import { useToast } from "../../components/Toast";
 import { JudulHalaman, Panel } from "../../components/ui";
 import type { DailyReport, Mood, PorsiMakan, Siswa, TidurSiang } from "../../data/types";
 import { LABEL_STATUS, WARNA_STATUS, absensiSiswa } from "../../lib/absensi";
@@ -91,6 +93,7 @@ export default function GuruDailyReport({ loaderData }: Route.ComponentProps) {
   const { tanggal, maksTanggal, kelas, tahun, semester, baris, pemakaian } = loaderData;
   const [, setParams] = useSearchParams();
   const { revalidate } = useRevalidator();
+  const { tampilkan } = useToast();
   const sesi = ambilSesi();
 
   const [form, setForm] = useState<{ siswa: Siswa; report: DailyReport | null } | null>(null);
@@ -159,6 +162,11 @@ export default function GuruDailyReport({ loaderData }: Route.ComponentProps) {
         dibuatOleh: sesi?.id ?? "",
       });
       setForm(null);
+      tampilkan(
+        status === "published"
+          ? `Daily report ${form.siswa.nama} terbit. Orang tua sudah dapat membacanya.`
+          : `Daily report ${form.siswa.nama} disimpan sebagai draft.`,
+      );
       revalidate();
     } catch (err) {
       setPesanGagal(
@@ -357,9 +365,9 @@ export default function GuruDailyReport({ loaderData }: Route.ComponentProps) {
                       onClick={() =>
                         setDraf({ ...draf, foto: draf.foto.filter((_, j) => j !== i) })
                       }
-                      className="absolute -right-1.5 -top-1.5 rounded-pill bg-danger px-1.5 text-xs font-bold text-fg-on-strong"
+                      className="absolute -right-1.5 -top-1.5 rounded-pill bg-danger px-1.5 py-0.5 text-[10px] text-fg-on-strong"
                     >
-                      ✕
+                      <Ikon nama="xmark" />
                     </button>
                     <p className="mt-0.5 text-center text-[10px] text-fg-subtle">
                       {formatByte(byteDataUrl(f))}

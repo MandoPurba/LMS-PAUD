@@ -81,6 +81,7 @@ di setiap layar, bukan hanya di menu.
 | T-7 | Tanggal selalu dihitung di zona waktu lokal lewat `app/lib/tanggal.ts`, tidak pernah dari `toISOString()` | Di WIB (UTC+7), potongan ISO menunjukkan tanggal kemarin sebelum pukul 07.00 — absensi "hari ini" bisa tercatat di tanggal yang keliru. |
 | T-8 | Semester diturunkan dari tanggal: Juli–Desember = Semester 1, Januari–Juni = Semester 2 (`periodeAkademik()`). Berlaku pula untuk semester yang sedang berjalan (`semesterBerjalan()`), sehingga `TahunAjaran` tidak menyimpan field semester sama sekali | Observasi dan rapor disaring per semester. Menyimpan semester — baik di record maupun sebagai pengaturan tahun ajaran — membuka peluang labelnya tidak cocok dengan tanggal datanya. Anak menempuh TK satu tahun penuh, jadi kedua semester memang berjalan dan tidak ada yang perlu dipilih. |
 | T-9 | Unduh PDF memakai `window.print()` dengan lembar gaya `@media print`, bukan pustaka seperti jsPDF | Nol dependensi tambahan, dan dialog cetak peramban sudah menyediakan "Save as PDF". Pustaka PDF juga harus menggambar ulang tata letak dari nol sehingga mudah berbeda dari yang terlihat di layar. |
+| T-10 | Notifikasi diturunkan dari data, bukan disimpan sebagai record; hanya penanda bacanya yang disimpan | Dua jalur pembatalan (tarik rapor ke draft, BR-14) akan meninggalkan notifikasi basi bila notifikasi disimpan. Lihat §4.6. |
 
 ### 4.1 Struktur data store
 
@@ -103,7 +104,7 @@ app/data/
     ├── observasi.json        ← D6  Observasi
     ├── rapor.json            ← D7  Rapor
     ├── pengumuman.json       ← pendukung FR-04
-    └── notifikasi.json       ← pendukung FR-13
+    └── (tanpa berkas)        ← notifikasi diturunkan, lihat §4.6
 ```
 
 ### 4.2 Skema entitas inti
@@ -179,7 +180,7 @@ resmi hanya memerlukan perubahan satu slug dan satu label di `app/data/seed/stpp
 | 5.0 | `/guru/rapor` | FR-11 |
 | 5.0 | `/ortu/rapor` | FR-12 |
 | 6.0 Laporan | `/admin/laporan`, `/guru/laporan` | FR-14 |
-| (lintas proses) | ikon notifikasi di header | FR-13 |
+| (lintas proses) | lonceng di header, `/admin\|guru\|ortu/notifikasi` | FR-13 |
 
 ### 4.4 Keutuhan data tanpa basis data
 
@@ -222,6 +223,37 @@ di mode gelap memakai `sand-950`, bukan `sand-900`, karena hanya dengan itu kont
 
 Skala capaian STPPA bukan kategori melainkan data berurutan (BB < MB < BSH < BSB), jadi memakai ramp
 satu rona terang→gelap, dan setiap sel selalu menuliskan kodenya sehingga tidak bergantung warna.
+
+### 4.6 Notifikasi diturunkan, bukan disimpan
+
+Notifikasi tidak dibuat sebagai record saat aksi terjadi, melainkan dihitung dari data yang sudah ada
+setiap kali dibutuhkan. Yang disimpan hanyalah **penanda baca**: daftar kunci peristiwa yang sudah
+dibuka tiap pengguna.
+
+Penyebabnya dua jalur pembatalan yang sudah ada di aplikasi ini: rapor dapat ditarik kembali ke draft
+(FR-11) dan menyetujui izin mengembalikan daily report terbit ke draft (BR-14). Bila notifikasi
+disimpan, keduanya meninggalkan notifikasi basi — orang tua mendapat kabar "rapor terbit", membukanya,
+lalu tidak menemukan apa pun karena rapor itu sudah bukan published. Menutup lubang tersebut berarti
+FR-13 harus menambahkan penghapusan notifikasi di dalam kode FR-11 dan FR-06.
+
+Dengan model turunan, pembatalan beres sendiri: rapor yang kembali draft tidak lagi menghasilkan
+peristiwa. Tidak ada satu pun pemicu yang perlu ditanam di 6 tempat pemanggilan aksi, sehingga tidak
+ada pula risiko lupa memasangnya saat menambah aksi baru.
+
+Kunci peristiwa bersifat tetap untuk peristiwa yang sama (`rapor:rp-002`, `report:dr-003`,
+`izin:iz-007`), sehingga status baca bertahan meskipun daftarnya dihitung ulang, bahkan setelah rapor
+ditarik lalu diterbitkan kembali.
+
+| Sumber peristiwa | Diturunkan dari | Penerima |
+|---|---|---|
+| Daily report terbit | D5, `status = published` | orang tua anak tersebut |
+| Rapor terbit | D7, `status = published` | orang tua anak tersebut |
+| Status izin diputus | D4, `status ≠ pending` | orang tua yang mengajukan |
+| Pengajuan izin masuk | D4, `status = pending` | guru kelas anak tersebut |
+| *Pengumuman baru* | *FR-04, belum tersedia* | orang tua & guru |
+
+Sumber disusun sebagai daftar, sehingga pengumuman ditambahkan kelak sebagai sumber kelima tanpa
+mengubah lonceng, halaman daftar, maupun penanda baca.
 
 ---
 
@@ -354,7 +386,7 @@ hal itu lebih berguna dicatat daripada diklaim terpenuhi.
 | NFR-08 | Availability | Android 9+/iOS 14+ untuk ortu; Chrome, Firefox, Edge untuk admin & guru | 🟡 Sebagian | Bagian web dipenuhi. Aplikasi mobile di luar scope (§2.3) |
 | NFR-09 | Efficiency | Foto dikompres otomatis ≤ 1 MB | ✅ Dipenuhi | Kompresi di klien lewat `<canvas>`: sisi terpanjang 1280 px, mutu JPEG diturunkan bertahap sampai ≤ 400 KB; foto yang tetap > 1 MB ditolak. Lihat §7.1 |
 | NFR-10 | Reliability | Backup harian, retensi 30 hari | ❌ Tidak dipenuhi | Tidak ada basis data. Tersedia tombol *reset ke seed* sebagai pengganti saat demo |
-| NFR-11 | Responsiveness | Notifikasi diterima ≤ 1 menit | 🟡 Disimulasikan | Notifikasi in-app muncul seketika; tanpa push/email |
+| NFR-11 | Responsiveness | Notifikasi diterima ≤ 1 menit | 🟡 Disimulasikan | Notifikasi in-app muncul seketika, tetapi sesi tersimpan per peramban sehingga dua pengguna tidak dapat masuk bersamaan — yang terperagakan alurnya, bukan latensi antar-pengguna. Tanpa push/email |
 | NFR-12 | Reliability | Log aktivitas untuk absensi, observasi, rapor | 🟡 Disimulasikan | Log disimpan sebagai array di localStorage dan dapat ditampilkan |
 
 **Rekapitulasi:** 3 dipenuhi · 5 disimulasikan/sebagian · 4 tidak dipenuhi.

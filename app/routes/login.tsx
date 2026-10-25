@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Form, redirect, useSearchParams } from "react-router";
 
 import type { Route } from "./+types/login";
+import { Ikon } from "../components/Ikon";
 import { LABEL_ROLE } from "../lib/menu";
 import { ambilSesi, berandaRole, login } from "../lib/session";
 
@@ -50,9 +51,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
     <main className="flex min-h-screen items-center justify-center px-4 py-10">
       <div className="w-full max-w-sm">
         <div className="text-center">
-          <span aria-hidden="true" className="text-4xl">
-            🎨
-          </span>
+          <Ikon nama="school" className="text-4xl text-primary" />
           <h1 className="mt-2 text-2xl">LMS TK/PAUD</h1>
           <p className="text-sm text-fg-muted">Tunas Harapan</p>
         </div>

@@ -3,6 +3,7 @@ import { useRevalidator, useSearchParams } from "react-router";
 
 import type { Route } from "./+types/absensi";
 import { PesanGagal, TombolSekunder, TombolUtama } from "../../components/form";
+import { Ikon } from "../../components/Ikon";
 import { JudulHalaman, Panel } from "../../components/ui";
 import type { Siswa, StatusHadir } from "../../data/types";
 import {
@@ -182,8 +183,9 @@ function FormAbsensi({
 
         <div className="mt-4 flex flex-wrap items-center gap-3">
           {tersimpanBaru && (
-            <p role="status" className="text-sm font-medium text-success">
-              ✓ Absensi tersimpan.
+            <p role="status" className="flex items-center gap-1.5 text-sm font-medium text-success">
+              <Ikon nama="circle-check" />
+              Absensi tersimpan.
             </p>
           )}
           <div className="ml-auto">

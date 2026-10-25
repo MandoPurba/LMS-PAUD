@@ -9,6 +9,7 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.3.1",
     "@react-router/node": "^8.5.0",
     "@react-router/serve": "^8.5.0",
     "isbot": "^5.1.36",
