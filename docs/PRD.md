@@ -116,7 +116,8 @@ AspekStppa = "nilai-moral-sosial" | "fisik-motorik" | "kognitif"
            | "bahasa" | "sosial-emosional" | "seni"
 
 User         { id, nama, email, password, role, aktif }
-TahunAjaran  { id, nama, semesterAktif, aktif }   // tepat satu aktif
+TahunAjaran  { id, nama, semesterAktif, aktif }   // tepat satu periode aktif;
+                                                 // semester 1 & 2 tersirat
 Kelas        { id, nama, tahunAjaranId, guruId }  // guruId = wali kelas
 Siswa        { id, nama, nisn, tglLahir, jenisKelamin, kelasId, ortuId }
 Absensi      { id, siswaId, tanggal, status, catatan, dicatatOleh }
@@ -259,7 +260,7 @@ prototype — bukan hanya digambar:
 | BR-4 | Rapor selalu diturunkan dari data observasi yang sudah tercatat; tidak bisa dibuat dari nol. | Use case: Rapor «include» Input Observasi |
 | BR-5 | Satu record absensi per siswa per tanggal; satu daily report per anak per hari. Menyimpan ulang menimpa, tidak menambah. | AC issue #6 dan #8 |
 | BR-6 | Guru hanya mengakses data kelasnya; ortu hanya data anaknya. | NFR-04 |
-| BR-7 | Tepat satu tahun ajaran berstatus aktif; mengaktifkan satu tahun menonaktifkan yang lain. | AC issue #4 |
+| BR-7 | Setiap tahun ajaran terdiri dari Semester 1 dan Semester 2. Tepat satu **periode** — pasangan tahun ajaran + semester — berstatus aktif; mengaktifkan satu periode menonaktifkan yang lain. Pergantian periode wajib dikonfirmasi karena mengubah apa yang dilihat guru. | AC issue #4 |
 | BR-8 | Satu guru menjadi wali paling banyak satu kelas per tahun ajaran, sehingga "kelas saya" selalu tunggal. | Dok. analisis menyebut "kelasnya" dalam bentuk tunggal |
 | BR-9 | Penghapusan ditolak bila masih dirujuk: ortu yang punya anak, guru yang jadi wali kelas, kelas yang berisi siswa, tahun ajaran yang aktif atau masih punya kelas. Alasannya **wajib ditampilkan saat pengguna mencoba menghapus**, bukan hanya lewat tombol yang dinonaktifkan. | Pengganti foreign key, lihat §4.4 |
 | BR-10 | Satu indikator STPPA punya satu catatan observasi per tanggal; tanggal berbeda tetap menghasilkan record baru agar progresi anak terjaga. | AC issue #11 |

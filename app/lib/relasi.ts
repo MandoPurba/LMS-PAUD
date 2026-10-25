@@ -6,18 +6,28 @@
  * menggantung yang baru terasa akibatnya di FR-05 ke atas.
  */
 
-import type { Kelas, Siswa, TahunAjaran, User } from "../data/types";
+import type { Kelas, Semester, Siswa, TahunAjaran, User } from "../data/types";
 import { repoKelas, repoSiswa, repoTahunAjaran, repoUser } from "./repo";
 
 export function tahunAktif(): TahunAjaran | undefined {
   return repoTahunAjaran.semua().find((t) => t.aktif);
 }
 
-/** Jadikan satu tahun ajaran aktif, sisanya otomatis nonaktif. */
-export function aktifkanTahun(id: string): void {
+/**
+ * Jadikan satu periode aktif, yaitu pasangan tahun ajaran + semester (BR-7).
+ *
+ * Seluruh baris disetel, bukan hanya yang dipilih, sehingga keadaan "tepat satu
+ * tahun ajaran aktif" tidak mungkin dilanggar.
+ */
+export function aktifkanPeriode(tahunAjaranId: string, semester: Semester): void {
   for (const t of repoTahunAjaran.semua()) {
-    const perlu = t.id === id;
-    if (t.aktif !== perlu) repoTahunAjaran.ubah(t.id, { aktif: perlu });
+    const perlu = t.id === tahunAjaranId;
+    const ubahan: Partial<Omit<TahunAjaran, "id">> = {};
+
+    if (t.aktif !== perlu) ubahan.aktif = perlu;
+    if (perlu && t.semesterAktif !== semester) ubahan.semesterAktif = semester;
+
+    if (Object.keys(ubahan).length > 0) repoTahunAjaran.ubah(t.id, ubahan);
   }
 }
 
