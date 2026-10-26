@@ -38,6 +38,10 @@ export default [
     route("guru/daily-report", "routes/guru/daily-report.tsx"),
     route("ortu/daily-report", "routes/ortu/daily-report.tsx"),
 
+    // 4.0 Daily Report & Galeri — FR-09
+    route("guru/galeri", "routes/guru/galeri.tsx"),
+    route("ortu/galeri", "routes/ortu/galeri.tsx"),
+
     // 5.0 Observasi & Rapor — FR-10
     route("guru/observasi", "routes/guru/observasi.tsx"),
     route("guru/rapor", "routes/guru/rapor.tsx"),

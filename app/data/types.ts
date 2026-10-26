@@ -172,6 +172,19 @@ export type MenuMakan = {
   dibuatOleh: string;
 };
 
+/** D5 — Galeri foto kegiatan kelas (FR-09). Terpisah dari Daily Report karena
+ * isinya dokumentasi kelas secara umum, bukan catatan per anak. */
+export type Galeri = {
+  id: string;
+  kelasId: string;
+  /** Format ISO, yyyy-mm-dd. */
+  tanggal: string;
+  caption: string;
+  /** Data URL hasil kompresi (NFR-09), sama seperti Daily Report. */
+  foto: string[];
+  diunggahOleh: string;
+};
+
 export type JenisIzin = "izin" | "sakit";
 export type StatusIzin = "pending" | "disetujui" | "ditolak";
 

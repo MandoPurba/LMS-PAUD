@@ -29,7 +29,7 @@ export const MENU: Record<Role, ItemMenu[]> = {
     { label: "Absensi", to: "/guru/absensi", ikon: "clipboard-check", fr: "FR-05", siap: true },
     { label: "Pengajuan Izin", to: "/guru/izin", ikon: "file-signature", fr: "FR-06", siap: true },
     { label: "Daily Report", to: "/guru/daily-report", ikon: "book-open", fr: "FR-07", siap: true },
-    { label: "Galeri", to: "/guru/galeri", ikon: "images", fr: "FR-09", siap: false },
+    { label: "Galeri", to: "/guru/galeri", ikon: "images", fr: "FR-09", siap: true },
     { label: "Observasi STPPA", to: "/guru/observasi", ikon: "seedling", fr: "FR-10", siap: true },
     { label: "Rapor", to: "/guru/rapor", ikon: "file-lines", fr: "FR-11", siap: true },
     { label: "Laporan", to: "/guru/laporan", ikon: "chart-column", fr: "FR-14", siap: true },
@@ -37,7 +37,7 @@ export const MENU: Record<Role, ItemMenu[]> = {
   ortu: [
     { label: "Dashboard", to: "/ortu", ikon: "house", fr: "FR-01", siap: true },
     { label: "Daily Report", to: "/ortu/daily-report", ikon: "book-open", fr: "FR-08", siap: true },
-    { label: "Galeri", to: "/ortu/galeri", ikon: "images", fr: "FR-09", siap: false },
+    { label: "Galeri", to: "/ortu/galeri", ikon: "images", fr: "FR-09", siap: true },
     { label: "Ajukan Izin", to: "/ortu/izin", ikon: "file-signature", fr: "FR-06", siap: true },
     { label: "Rapor", to: "/ortu/rapor", ikon: "file-lines", fr: "FR-12", siap: true },
   ],
