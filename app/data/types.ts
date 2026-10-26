@@ -136,6 +136,42 @@ export type Rapor = {
   disusunOleh: string;
 };
 
+/** Pendukung FR-04 — Pengumuman sekolah. Satu-satunya sumber yang dibaca FR-13. */
+export type Pengumuman = {
+  id: string;
+  judul: string;
+  isi: string;
+  /** Tanggal publikasi, format ISO yyyy-mm-dd. */
+  tanggal: string;
+  dibuatOleh: string;
+};
+
+/** Pendukung FR-04 — Jadwal kegiatan sekolah (tidak spesifik satu kelas). */
+export type JadwalKegiatan = {
+  id: string;
+  nama: string;
+  /** Format ISO, yyyy-mm-dd. */
+  tanggal: string;
+  /** Mis. "08.00–09.30". Opsional karena beberapa kegiatan berlangsung sehari penuh. */
+  waktu: string | null;
+  lokasi: string | null;
+  keterangan: string | null;
+  dibuatOleh: string;
+};
+
+/** Pendukung FR-04 — Menu makan harian. Satu menu per tanggal. */
+export type MenuMakan = {
+  id: string;
+  /** Format ISO, yyyy-mm-dd. */
+  tanggal: string;
+  makananPokok: string;
+  laukPauk: string;
+  sayur: string;
+  buah: string;
+  catatanAlergi: string | null;
+  dibuatOleh: string;
+};
+
 export type JenisIzin = "izin" | "sakit";
 export type StatusIzin = "pending" | "disetujui" | "ditolak";
 
