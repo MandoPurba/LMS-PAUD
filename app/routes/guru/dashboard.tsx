@@ -2,8 +2,9 @@ import { Link } from "react-router";
 
 import type { Route } from "./+types/dashboard";
 import { JudulHalaman, KartuFitur, Panel } from "../../components/ui";
-import { tanggalPanjang } from "../../lib/tanggal";
+import { tanggalLokal, tanggalPanjang, tanggalPendek } from "../../lib/tanggal";
 import { MENU } from "../../lib/menu";
+import { jadwalMendatang, menuTanggal } from "../../lib/pengumuman";
 import { kelasDariGuru, semesterBerjalan, siswaDariKelas, tahunAktif } from "../../lib/relasi";
 import { ambilSesi } from "../../lib/session";
 
@@ -22,11 +23,14 @@ export function clientLoader() {
     semester: semesterBerjalan(),
     kelas,
     siswa: kelas ? siswaDariKelas(kelas.id) : [],
+    // FR-04: jadwal kegiatan terdekat dan menu makan hari ini, dilihat lewat dashboard (lihat lib/pengumuman.ts).
+    jadwal: jadwalMendatang(tanggalLokal(), 3),
+    menuHariIni: menuTanggal(tanggalLokal()) ?? null,
   };
 }
 
 export default function DashboardGuru({ loaderData }: Route.ComponentProps) {
-  const { nama, tahun, semester, kelas, siswa } = loaderData;
+  const { nama, tahun, semester, kelas, siswa, jadwal, menuHariIni } = loaderData;
   const belumSiap = MENU.guru.filter((m) => !m.siap);
 
   return (
@@ -74,6 +78,49 @@ export default function DashboardGuru({ loaderData }: Route.ComponentProps) {
               )}
             </>
           )}
+        </Panel>
+
+        <Panel judul="Jadwal Kegiatan & Menu Makan">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <p className="text-xs font-semibold text-fg-muted">Kegiatan mendatang</p>
+              {jadwal.length === 0 ? (
+                <p className="mt-1.5 text-sm text-fg-subtle">Belum ada jadwal kegiatan.</p>
+              ) : (
+                <ul className="mt-1.5 space-y-2">
+                  {jadwal.map((j) => (
+                    <li key={j.id} className="rounded-field bg-surface-sunken px-3 py-2">
+                      <p className="text-sm font-medium">{j.nama}</p>
+                      <p className="text-xs text-fg-subtle">
+                        {tanggalPendek(j.tanggal)}
+                        {j.lokasi ? ` · ${j.lokasi}` : ""}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div>
+              <p className="text-xs font-semibold text-fg-muted">Menu makan hari ini</p>
+              {menuHariIni === null ? (
+                <p className="mt-1.5 text-sm text-fg-subtle">Menu makan hari ini belum diisi.</p>
+              ) : (
+                <div className="mt-1.5 rounded-field bg-surface-sunken px-3 py-2 text-sm">
+                  <p>
+                    {menuHariIni.makananPokok} · {menuHariIni.laukPauk}
+                  </p>
+                  {menuHariIni.sayur && <p className="text-fg-muted">{menuHariIni.sayur}</p>}
+                  {menuHariIni.buah && <p className="text-fg-muted">{menuHariIni.buah}</p>}
+                  {menuHariIni.catatanAlergi && (
+                    <p className="mt-1 text-xs font-medium text-warning">
+                      {menuHariIni.catatanAlergi}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
         </Panel>
 
         <Panel judul="Tugas harian">
