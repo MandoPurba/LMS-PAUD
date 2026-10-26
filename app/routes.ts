@@ -22,6 +22,11 @@ export default [
     route("admin/tahun-ajaran", "routes/admin/tahun-ajaran.tsx"),
     route("admin/kelas", "routes/admin/kelas.tsx"),
 
+    // 2.0 Kelola Master Data — FR-04
+    route("admin/pengumuman", "routes/admin/pengumuman.tsx"),
+    route("admin/jadwal", "routes/admin/jadwal.tsx"),
+    route("admin/menu-makan", "routes/admin/menu-makan.tsx"),
+
     // 3.0 Absensi & Izin — FR-05
     route("guru/absensi", "routes/guru/absensi.tsx"),
 

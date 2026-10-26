@@ -15,6 +15,7 @@
 
 import type { Session } from "../data/types";
 import { reportTerbitSiswa } from "./daily-report";
+import { pengumumanTerbaru } from "./pengumuman";
 import { LABEL_JENIS, izinKelas, izinOrtu } from "./izin";
 import { raporTerbitSiswa } from "./rapor";
 import { anakDariOrtu, kelasDariGuru, siswaDariKelas } from "./relasi";
@@ -106,6 +107,23 @@ const sumberPengajuanIzin: Sumber = (sesi) => {
 };
 
 /**
+ * FR-04 — pengumuman admin tampil sebagai notifikasi untuk Guru dan Ortu.
+ * Admin tidak diberi tahu soal pengumumannya sendiri.
+ */
+const sumberPengumuman: Sumber = (sesi) => {
+  if (sesi.role === "admin") return [];
+
+  return pengumumanTerbaru(10).map((p) => ({
+    kunci: `pengumuman:${p.id}`,
+    ikon: "bullhorn",
+    judul: p.judul,
+    pesan: tanggalPanjang(p.tanggal),
+    tanggal: p.tanggal,
+    tautan: `/${sesi.role}`,
+  }));
+};
+
+/**
  * Daftar sumber notifikasi. Pengumuman (FR-04) ditambahkan di sini sebagai
  * sumber berikutnya tanpa mengubah lonceng, daftar, maupun penanda baca.
  */
@@ -114,6 +132,7 @@ const SUMBER: Sumber[] = [
   sumberRapor,
   sumberStatusIzin,
   sumberPengajuanIzin,
+  sumberPengumuman,
 ];
 
 // ——— Penanda baca ———

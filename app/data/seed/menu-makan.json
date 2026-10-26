@@ -1,0 +1,22 @@
+[
+  {
+    "id": "mn-001",
+    "tanggal": "2026-10-27",
+    "makananPokok": "Nasi putih",
+    "laukPauk": "Ayam suwir",
+    "sayur": "Sup wortel & buncis",
+    "buah": "Pisang",
+    "catatanAlergi": "Tanpa kacang.",
+    "dibuatOleh": "u-001"
+  },
+  {
+    "id": "mn-002",
+    "tanggal": "2026-10-28",
+    "makananPokok": "Bubur ayam",
+    "laukPauk": "Telur kecap",
+    "sayur": "Tumis labu siam",
+    "buah": "Semangka",
+    "catatanAlergi": null,
+    "dibuatOleh": "u-001"
+  }
+]

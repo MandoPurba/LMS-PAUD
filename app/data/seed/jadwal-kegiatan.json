@@ -1,0 +1,20 @@
+[
+  {
+    "id": "jd-001",
+    "nama": "Senam Pagi Bersama",
+    "tanggal": "2026-10-30",
+    "waktu": "07.30–08.00",
+    "lokasi": "Halaman sekolah",
+    "keterangan": "Anak memakai baju olahraga.",
+    "dibuatOleh": "u-001"
+  },
+  {
+    "id": "jd-002",
+    "nama": "Kunjungan Edukasi ke Kebun Binatang",
+    "tanggal": "2026-11-05",
+    "waktu": "08.00–11.00",
+    "lokasi": "Kebun Binatang Kota",
+    "keterangan": "Wajib membawa surat izin yang sudah ditandatangani orang tua.",
+    "dibuatOleh": "u-001"
+  }
+]

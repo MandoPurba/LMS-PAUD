@@ -19,9 +19,9 @@ export const MENU: Record<Role, ItemMenu[]> = {
     { label: "Data Orang Tua", to: "/admin/orang-tua", ikon: "user-group", fr: "FR-02", siap: true },
     { label: "Kelas", to: "/admin/kelas", ikon: "school", fr: "FR-03", siap: true },
     { label: "Tahun Ajaran", to: "/admin/tahun-ajaran", ikon: "calendar-days", fr: "FR-03", siap: true },
-    { label: "Pengumuman", to: "/admin/pengumuman", ikon: "bullhorn", fr: "FR-04", siap: false },
-    { label: "Jadwal Kegiatan", to: "/admin/jadwal", ikon: "calendar-check", fr: "FR-04", siap: false },
-    { label: "Menu Makan", to: "/admin/menu-makan", ikon: "utensils", fr: "FR-04", siap: false },
+    { label: "Pengumuman", to: "/admin/pengumuman", ikon: "bullhorn", fr: "FR-04", siap: true },
+    { label: "Jadwal Kegiatan", to: "/admin/jadwal", ikon: "calendar-check", fr: "FR-04", siap: true },
+    { label: "Menu Makan", to: "/admin/menu-makan", ikon: "utensils", fr: "FR-04", siap: true },
     { label: "Laporan", to: "/admin/laporan", ikon: "chart-column", fr: "FR-14", siap: true },
   ],
   guru: [
