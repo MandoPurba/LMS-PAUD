@@ -1,8 +1,12 @@
 import seedAbsensi from "../data/seed/absensi.json";
 import seedDailyReport from "../data/seed/daily-report.json";
+import seedGaleri from "../data/seed/galeri.json";
 import seedIzin from "../data/seed/izin.json";
+import seedJadwalKegiatan from "../data/seed/jadwal-kegiatan.json";
 import seedKelas from "../data/seed/kelas.json";
+import seedMenuMakan from "../data/seed/menu-makan.json";
 import seedObservasi from "../data/seed/observasi.json";
+import seedPengumuman from "../data/seed/pengumuman.json";
 import seedRapor from "../data/seed/rapor.json";
 import seedSiswa from "../data/seed/siswa.json";
 import seedTahunAjaran from "../data/seed/tahun-ajaran.json";
@@ -10,9 +14,13 @@ import seedUsers from "../data/seed/users.json";
 import type {
   Absensi,
   DailyReport,
+  Galeri,
   Izin,
+  JadwalKegiatan,
   Kelas,
+  MenuMakan,
   Observasi,
+  Pengumuman,
   Rapor,
   Siswa,
   TahunAjaran,
@@ -129,3 +137,19 @@ export const repoTahunAjaran = buatRepo<TahunAjaran>(
   "ta",
   seedTahunAjaran as TahunAjaran[],
 );
+
+// Pendukung FR-04 — lihat PRD §4.1.
+export const repoPengumuman = buatRepo<Pengumuman>(
+  "pengumuman",
+  "pg",
+  seedPengumuman as Pengumuman[],
+);
+export const repoJadwalKegiatan = buatRepo<JadwalKegiatan>(
+  "jadwal-kegiatan",
+  "jd",
+  seedJadwalKegiatan as JadwalKegiatan[],
+);
+export const repoMenuMakan = buatRepo<MenuMakan>("menu-makan", "mn", seedMenuMakan as MenuMakan[]);
+
+// D5 — Galeri foto kegiatan kelas (FR-09).
+export const repoGaleri = buatRepo<Galeri>("galeri", "gl", seedGaleri as Galeri[]);
